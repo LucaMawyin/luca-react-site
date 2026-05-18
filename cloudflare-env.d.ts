@@ -6,6 +6,8 @@ interface __BaseEnv_CloudflareEnv {
 	ASSETS: Fetcher;
 	NEXTJS_ENV: string;
 	WORKER_SELF_REFERENCE: Fetcher /* luca-react-site */;
+
+    luca_db: D1Database;
 }
 declare namespace Cloudflare {
 	interface Env extends __BaseEnv_CloudflareEnv {}
