@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CapitalizeTitle } from "@/lib/CapitalizeTitle";
-import { pages } from "@/lib/info";
+import { icons, pages } from "@/lib/info";
 
 export default function NavBar(props : {visible : boolean}){
 
@@ -93,7 +93,7 @@ export default function NavBar(props : {visible : boolean}){
                 md:hidden
                 justify-between
                 items-center
-                pl-6 pr-6
+                pl-4 pr-4
                 w-full
             ">
                 <a
@@ -126,7 +126,7 @@ export default function NavBar(props : {visible : boolean}){
                 bg-(--primary-colour)
 
                 flex flex-col items-center justify-center
-                gap-8
+                gap-12
 
                 z-50
                 
@@ -137,14 +137,10 @@ export default function NavBar(props : {visible : boolean}){
                 }
             `}>
                 <a
-                    className="
-                        transition-transform duration-(--transition-duration)
-                        hover:scale-(--link-scale)
-                        hover:cursor-pointer
-                    "
+                    className="hover:cursor-pointer text-xl"
                     onClick={() => setOpen(false)}
                 >
-                    X
+                    x
                 </a>
 
                 {pages.map((page) => (
@@ -153,8 +149,9 @@ export default function NavBar(props : {visible : boolean}){
                         href={page.href}
                         target={page.href.endsWith(".pdf") ? "_blank" : undefined}
                         className="
+                            text-xl
                             transition-transform duration-(--transition-duration)
-                            hover:scale-(--link-scale)
+                            hover:scale-(--link-scale) 
                         "
                         onClick={() => setOpen(false)}
                     >
@@ -162,8 +159,31 @@ export default function NavBar(props : {visible : boolean}){
                     </a>
                 ))}
             </div>
-         
 
-        </header>
+            {/* Logos hang in top right */}
+            <div className="
+                fixed right-0 top-[10vh] z-40
+            ">
+                {icons.map((icon) => (
+                    <a
+                        key={icon.title}
+                        href={icon.href}
+                        target="_blank"
+                        className="
+                            block w-fit 
+                            sm:p-3 p-2
+                            transition-all duration-(--transition-duration) ease-out
+                            hover:scale-(--link-scale)
+                        "
+                    >
+                        <img 
+                            src={`/icons/${icon.title}.svg`}
+                            className="sm:w-[4vh] w-[5vh]"
+                        />
+                    </a>
+                ))}
+            </div>              
+        </header>   
+
     );
 }

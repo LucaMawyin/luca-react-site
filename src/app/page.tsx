@@ -83,9 +83,9 @@ export default function Home(){
 								target="_blank"
 								className={`
 									flex items-center justify-center
-									transition-all duration-500 ease-out
+									transition-all duration-(--transition-duration) ease-out
 
-									hover:scale-110
+									hover:scale-(--link-scale)
 
 									${loaded 
 										? "opacity-100 translate-y-0" 
