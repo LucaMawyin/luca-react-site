@@ -1,6 +1,7 @@
 "use client";
 
 import NavBar from "@/components/NavBar";
+import Projects from "@/components/Projects";
 import { CapitalizeTitle } from "@/lib/CapitalizeTitle";
 import { icons, pages } from "@/lib/info"; 
 import { useEffect, useState } from "react";
@@ -214,11 +215,7 @@ export default function Home(){
 
 			{/* Projects */}
 			<section id="projects">
-				<div
-					className="min-h-[90vh]"
-				>Projects
-
-				</div>
+					<Projects/>
 			</section>		
 		</>
 

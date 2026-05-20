@@ -10,6 +10,7 @@
 	--contrast-colour: #000000;
 	--transition-duration: 200ms;
 	--link-scale: 1.1;
+	--subtle-scale: 1.01;
 	--shadow-strength: 0.25;
 	font-family: "Geist Mono", Helvetica, sans-serif;
 }
