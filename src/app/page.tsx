@@ -2,7 +2,7 @@
 
 import NavBar from "@/components/NavBar";
 import { CapitalizeTitle } from "@/lib/CapitalizeTitle";
-import { pages } from "@/lib/pages"; 
+import { icons, pages } from "@/lib/info"; 
 import { useEffect, useState } from "react";
 
 export default function Home(){
@@ -63,15 +63,45 @@ export default function Home(){
 	return (
 		<>
 			<NavBar visible={showNav}/>
+
+			{/* Hero */}
 			<section 
 				id="hero"
 				className="
 					h-full 
 					w-full
 					flex justify-center items-center
-					clamp(1rem, 2vw, 2rem)
 			">
 				<div className="w-fit">
+
+					{/* Icon Row on hero */}
+					<div className="flex flex-row gap-6">
+						{icons.map((icon) => (
+							<a
+								key={icon.title}
+								href={icon.href}
+								target="_blank"
+								className={`
+									flex items-center justify-center
+									transition-all duration-500 ease-out
+
+									hover:scale-110
+
+									${loaded 
+										? "opacity-100 translate-y-0" 
+										: "opacity-0 translate-y-4"
+									}
+								`}
+							>
+								<img
+									src={`/icons/${icon.title}.svg`}
+									className="h-[clamp(3rem,5vw,4rem)]"
+								/>
+							</a>
+						))}
+					</div>
+
+					{/* Hero name */}
 					<h1 
 						className={`
 							mb-2
@@ -83,6 +113,8 @@ export default function Home(){
 					`}>
 						Luca Mawyin
 					</h1>
+
+					{/* Hero links */}
 					<div className="
 						flex flex-col
 						w-fit
@@ -128,15 +160,18 @@ export default function Home(){
 				</div>
 			</section>
 
+			{/* About me */}
 			<section 
 				id="about"
 				className="
+					min-h-90vh
 					h-[90vh]
 				"
 			>
 				<div>ABOUT ME</div>
 			</section>	
 
+			{/* Projects */}
 			<section 
 				id="projects"
 				className="h-full"
