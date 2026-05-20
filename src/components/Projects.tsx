@@ -33,8 +33,10 @@ export default function Projects() {
         <h1 className="text-center">Most Recent Projects</h1>
         <div className="
             min-h-[90vh]
-            flex flex-col
-            items-center
+            grid
+            justify-items-center
+            items-stretch
+            auto-rows-fr
             pt-[2.5%]
             p-[5%]
             gap-8

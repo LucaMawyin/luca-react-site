@@ -24,16 +24,19 @@ export default function ProjectCard( props : {
                 flex
                 flex-col
                 rounded-xl
-                shadow-sm
+                shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                w-full
                 md:w-[60%]
                 min-h-25
-                p-8
+                md:p-8
+                p-4
                 gap-8
 
                 transition-all
                 duration-(--transition-duration)
                 hover:scale-(--subtle-scale)
-                hover:shadow-lg
+                hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                justify-evenly
             `}
         >   
 
