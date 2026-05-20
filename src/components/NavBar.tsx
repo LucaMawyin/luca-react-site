@@ -58,10 +58,12 @@ export default function NavBar(props : {visible : boolean}){
 
             {/* Desktop navbar */}
             <div className="
+                w-full
                 m-8
                 hidden
-                md:flex gap-8
-
+                md:flex
+                justify-between
+                text-lg
             ">  
                 <a
                     href="/"
@@ -72,19 +74,22 @@ export default function NavBar(props : {visible : boolean}){
                 >
                     Luca Mawyin
                 </a>
-                {pages.map((page) => (
-                    <a
-                        key={page.title}
-                        href={page.href}
-                        target={page.href.endsWith(".pdf") ? "_blank" : undefined}
-                        className="
-                            transition-transform duration-(--transition-duration)
-                            hover:scale-(--link-scale)
-                        "
-                    >
-                        {CapitalizeTitle(page.title)}
-                    </a>
-                ))}
+                <div className="flex gap-8">
+                    {pages.map((page) => (
+                        <a
+                            key={page.title}
+                            href={page.href}
+                            target={page.href.endsWith(".pdf") ? "_blank" : undefined}
+                            className="
+                                transition-transform duration-(--transition-duration)
+                                hover:scale-(--link-scale)
+                            "
+                        >
+                            {CapitalizeTitle(page.title)}
+                        </a>
+                    ))}                    
+                </div>
+
             </div>
 
             {/* Mobile navbar */}
