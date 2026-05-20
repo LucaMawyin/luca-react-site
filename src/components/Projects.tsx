@@ -28,8 +28,6 @@ export default function Projects() {
     load();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-
   return(
     <>
         <h1 className="text-center">Most Recent Projects</h1>
@@ -41,13 +39,18 @@ export default function Projects() {
             p-[5%]
             gap-8
         ">  
-            {projects.map((project,i) => (
-                <ProjectCard
-                    key={project.id ?? i}
-                    project={project}
-                    position={`${i % 2 === 0 ? "start" : "end"}`}
-                />
-            ))}
+            {loading ? (
+                <p>Loading...</p>
+            ):(                
+                projects.map((project,i) => (
+                    <ProjectCard
+                        key={project.id ?? i}
+                        project={project}
+                        position={`${i % 2 === 0 ? "start" : "end"}`}
+                    />
+                ))
+            )}
+
         </div>    
     </>
 

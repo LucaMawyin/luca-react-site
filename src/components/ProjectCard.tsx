@@ -61,7 +61,7 @@ export default function ProjectCard( props : {
                 `}
             >
                 {/* Image */}
-                <div className="flex-1 min-w-[300px] flex justify-center">
+                <div className="flex-1 min-w-75 flex justify-center">
                     <div className="aspect-3/2 w-full overflow-hidden rounded-xl">
                         <img
                             src="/images/banana.jpg"
