@@ -9,7 +9,6 @@ export default function Home(){
 
 	const [loaded, setLoaded] = useState(false);
 	const [showNav, setShowNav] = useState(false);
-	const [showArrow, setShowArrow] = useState(false);
 
 	useEffect(() => {
 		setLoaded(true);
@@ -46,7 +45,6 @@ export default function Home(){
 				if (bestSection?.id && bestRatio > 0.4 && bestSection?.id !== "hero") {
 					window.history.replaceState(null, "", `#${bestSection.id}`);
 					setShowNav(true);
-					setShowArrow(false);
 				} else {
 					window.history.replaceState(null, "", "/");
 					setShowNav(false);
@@ -60,15 +58,6 @@ export default function Home(){
 		sections.forEach((section) => observer.observe(section));
 
 		return () => observer.disconnect();
-	}, []);
-
-	useEffect(() => {
-	const onScroll = () => {
-		setShowArrow(window.scrollY < 50);
-	};
-
-	window.addEventListener("scroll", onScroll);
-	return () => window.removeEventListener("scroll", onScroll);
 	}, []);
 
 	return (
