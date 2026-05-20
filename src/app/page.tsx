@@ -9,6 +9,7 @@ export default function Home(){
 
 	const [loaded, setLoaded] = useState(false);
 	const [showNav, setShowNav] = useState(false);
+	const [showArrow, setShowArrow] = useState(false);
 
 	useEffect(() => {
 		setLoaded(true);
@@ -45,6 +46,7 @@ export default function Home(){
 				if (bestSection?.id && bestRatio > 0.4 && bestSection?.id !== "hero") {
 					window.history.replaceState(null, "", `#${bestSection.id}`);
 					setShowNav(true);
+					setShowArrow(false);
 				} else {
 					window.history.replaceState(null, "", "/");
 					setShowNav(false);
@@ -60,6 +62,15 @@ export default function Home(){
 		return () => observer.disconnect();
 	}, []);
 
+	useEffect(() => {
+	const onScroll = () => {
+		setShowArrow(window.scrollY < 50);
+	};
+
+	window.addEventListener("scroll", onScroll);
+	return () => window.removeEventListener("scroll", onScroll);
+	}, []);
+
 	return (
 		<>
 			<NavBar visible={showNav}/>
@@ -68,7 +79,7 @@ export default function Home(){
 			<section 
 				id="hero"
 				className="
-					h-full 
+					min-h-full
 					w-full
 					flex justify-center items-center
 			">
@@ -106,8 +117,6 @@ export default function Home(){
 						className={`
 							mb-2
 							sm:mb-0
-							text-[clamp(3rem,5vw,5rem)]
-							font-[650]
 							transition-all duration-700 ease-out
 							${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
 					`}>
@@ -118,7 +127,7 @@ export default function Home(){
 					<div className="
 						flex flex-col
 						w-fit
-						text-xl
+						text-2xl
 					">
 						{pages.map((page, index) => (
 							<a
@@ -149,34 +158,78 @@ export default function Home(){
 									}
 								`}
 								style={{
-									transitionDelay: `${(index+1) * 300}ms`
+									transitionDelay: `${(index+1) * 200}ms`
 								}}
 							>
-								{`/${CapitalizeTitle(page.title)}`}
+								{`${CapitalizeTitle(page.title)}`}
 							</a>
 						))}				
 					</div>
 
 				</div>
+
+				<a href="#about" className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 animate-arrow-entry">
+					<div className="animate-bounce-slow">
+						<svg
+							className="w-6 h-6 text-black"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							viewBox="0 0 24 24"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M19 9l-7 7-7-7"
+							/>
+						</svg>
+					</div>
+				</a>
 			</section>
 
 			{/* About me */}
-			<section 
-				id="about"
-				className="
-					min-h-90vh
-					h-[90vh]
-				"
-			>
-				<div>ABOUT ME</div>
+			<section id="about" >
+				<div className="
+					w-full
+					min-h-[90vh]
+					flex flex-wrap-reverse
+					p-[15%]
+					sm:p-[10%]
+					justify-between
+				">
+					<div className="
+						basis-full
+						w-full lg:basis-1/2
+						text-center sm:text-left
+					">
+						<h1 className="py-2">About Me</h1>
+						<p className="mb-8">Hi, my name is Luca Mawyin. I am currently a second year Computer Science student at McMaster University. I enjoy creating full stack web applications, with a focus on clean responsive UI, and seamless backend integration. Other areas of interest include algorithm design and machine learning.</p>
+						<p>I am interested in sports, especially hockey, listening to and writing music, and researching and learning about human anatomy and physiology. I love meeting new people and trying to make a meaningful positive impact on the world.</p>
+					</div>
+
+					<div className="
+						overflow-hidden
+						basis-full lg:basis-1/4
+						flex justify-center lg:justify-end
+						rounded-2xl
+					">
+					<img
+						src="/images/headshot.png"
+						className="w-full h-auto object-contain"
+
+					/>
+					</div>					
+				</div>
+
 			</section>	
 
 			{/* Projects */}
-			<section 
-				id="projects"
-				className="h-full"
-			>
-				<div>Projects</div>
+			<section id="projects">
+				<div
+					className="min-h-[90vh]"
+				>Projects
+
+				</div>
 			</section>		
 		</>
 
