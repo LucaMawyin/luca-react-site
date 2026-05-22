@@ -1,13 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CapitalizeTitle } from "@/lib/CapitalizeTitle";
+import { CapitalizeTitle } from "@/lib/capitalizeTitle";
 import { icons, pages } from "@/lib/info";
+import { usePathname } from "next/navigation";
 
-export default function NavBar(props : {visible : boolean}){
+export default function NavBar(props : {isLoggedIn : boolean}){
 
+    const pathname = usePathname();
+    const isHome = pathname === "/";
+    const [scrolled, setScrolled] = useState(false);
+
+    const visiblePages = pages.filter(page =>
+        !page.requireLogin || props.isLoggedIn
+    );
+
+    useEffect(() => {
+        if (!isHome) {
+            setScrolled(true);
+            return;
+        }
+
+        const onScroll = () => {
+            setScrolled(window.scrollY > 100);
+        };
+
+        window.addEventListener("scroll", onScroll);
+        onScroll();
+
+        return () => window.removeEventListener("scroll", onScroll);
+    }, [isHome]);
+
+    const visible = isHome ? scrolled : true;
+
+    // Locking page when mobile navbar is dropped
     const [open, setOpen] = useState(false);
-
     useEffect(() => {
         if (open) {
             document.body.style.overflow = "hidden";
@@ -50,7 +77,7 @@ export default function NavBar(props : {visible : boolean}){
                 shadow-sm
 
                 transition-all duration-150 ease-out
-                ${props.visible 
+                ${visible 
                     ? "opacity-100 translate-y-0" 
                     : "opacity-0 -translate-y-4 pointer-events-none"
                 }
@@ -75,7 +102,7 @@ export default function NavBar(props : {visible : boolean}){
                     Luca Mawyin
                 </a>
                 <div className="flex gap-8">
-                    {pages.map((page) => (
+                    {visiblePages.map((page) => (
                         <a
                             key={page.title}
                             href={page.href}

@@ -1,7 +1,9 @@
 export const pages = [
-    { title:"about", href:"#about" },
-    { title: "projects", href:"#projects" },
-    { title: "resume", href:"/resume/resume.pdf" }
+    { title:"about", href:"/#about", requireLogin : false },
+    { title: "projects", href:"/#projects", requireLogin : false },
+    { title: "resume", href:"/resume/resume.pdf", requireLogin : false },
+    { title: "settings", href:"/settings", requireLogin : true },
+    { title: "logout", href: "/logout", requireLogin : true },
 ]
 
 export const icons = [

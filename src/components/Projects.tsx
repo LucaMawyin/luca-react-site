@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { Project } from "@/lib/types";
 import ProjectCard from "./ProjectCard";
+import Button from "./Button";
 
-export default function Projects() {
+export default function Projects(props : {isLoggedIn : boolean}) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +31,24 @@ export default function Projects() {
 
   return(
     <>
-        <h1 className="text-center">Most Recent Projects</h1>
+        <h1 className={`
+          text-center
+          ${props.isLoggedIn ? "pb-[1%]" : "pb-0"}
+        `}>
+          Most Recent Projects
+        </h1>
+        {props.isLoggedIn && 
+          <div className="
+            flex 
+            w-screen
+            justify-center
+          ">
+            <Button 
+              text="Add Project"
+            />            
+          </div>
+
+        }
         <div className="
             min-h-[90vh]
             grid
