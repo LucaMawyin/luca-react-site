@@ -40,7 +40,7 @@ export default function Projects(props : {isLoggedIn : boolean}) {
         {props.isLoggedIn && 
           <div className="
             flex 
-            w-screen
+            w-full
             justify-center
           ">
             <Button 
