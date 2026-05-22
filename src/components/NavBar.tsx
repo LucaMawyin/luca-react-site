@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CapitalizeTitle } from "@/lib/capitalizeTitle";
+import { capitalizeTitle } from "@/lib/capitalizeTitle";
 import { icons, pages } from "@/lib/info";
 import { usePathname } from "next/navigation";
 
@@ -112,7 +112,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                                 hover:scale-(--link-scale)
                             "
                         >
-                            {CapitalizeTitle(page.title)}
+                            {capitalizeTitle(page.title)}
                         </a>
                     ))}                    
                 </div>
@@ -187,7 +187,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                         "
                         onClick={() => setOpen(false)}
                     >
-                        {CapitalizeTitle(page.title)}
+                        {capitalizeTitle(page.title)}
                     </a>
                 ))}
             </div>

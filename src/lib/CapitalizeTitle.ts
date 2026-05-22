@@ -1,4 +1,4 @@
-export function CapitalizeTitle(title: string): string {
+export function capitalizeTitle(title: string): string {
 	return title
 		.trim()
 		.toLowerCase()
