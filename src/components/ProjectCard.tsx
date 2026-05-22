@@ -65,12 +65,13 @@ export default function ProjectCard( props : {
             >
                 {/* Image */}
                 <div className="flex-1 min-w-75 flex justify-center">
-                    <div className="aspect-3/2 w-full overflow-hidden rounded-xl">
+                    {props.project.image_type && 
                         <img
-                            src="/images/banana.jpg"
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
+                            src={`/api/projects/image/${props.project.id}`}
+                            alt={`Project ${props.project.id}`}
+                            className="w-full h-full object-cover rounded-xl"
+                        />                        
+                    }
                 </div>
 
                 {/* Text Content */}

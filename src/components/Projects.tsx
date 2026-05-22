@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 import { Project } from "@/lib/types";
 import ProjectCard from "./ProjectCard";
 import Button from "./Button";
+import { useRouter } from "next/navigation";
 
 export default function Projects(props : {isLoggedIn : boolean}) {
+
+  const router = useRouter();
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,6 +49,7 @@ export default function Projects(props : {isLoggedIn : boolean}) {
           ">
             <Button 
               text="Add Project"
+              onClick={() => (router.push("/add-project"))}
             />            
           </div>
 

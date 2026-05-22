@@ -1,4 +1,6 @@
+import { validateSession } from "@/lib/auth";
 import { getDB } from "@/lib/db";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request : NextRequest){
@@ -26,6 +28,14 @@ export async function GET(request : NextRequest){
 }
 
 export async function POST(req: NextRequest) {
+  const session = await validateSession();
+
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
 
   try {
     const formData = await req.formData();
