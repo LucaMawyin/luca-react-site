@@ -1,6 +1,6 @@
-PWD c:\Users\lucam\Desktop\Code\Website\resume
+PWD c:\Users\lucam\Desktop\Code\new-website\public\resume
 INPUT C:\Users\lucam\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\lucam\Desktop\Code\Website\resume\resume.tex
+INPUT c:\Users\lucam\Desktop\Code\new-website\public\resume\resume.tex
 OUTPUT resume.log
 INPUT C:\Users\lucam\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
 INPUT C:\Users\lucam\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls

@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1778973111.03404 "c:/Users/lucam/Desktop/Code/Website/resume/resume.tex" "resume.pdf" "resume" 1778973111.90029 0
+["pdflatex"] 1779475728.69148 "c:/Users/lucam/Desktop/Code/new-website/public/resume/resume.tex" "resume.pdf" "resume" 1779475729.52024 0
   "C:/Users/lucam/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1771804424 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/lucam/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1759109775 11548 098c436962c0448fd0a751797f3050b8 ""
   "C:/Users/lucam/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1758769530 13286966 56cf3831de8057cd5a3c8f37e0be2756 ""
@@ -172,10 +172,10 @@
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/tex/latex/tools/tabularx.sty" 1749468414 7243 a2c17f18e2c9b702b84fad03d5f9c78b ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/lucam/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "c:/Users/lucam/Desktop/Code/Website/resume/resume.tex" 1778973110 7407 d6adffb570262fcb76968765f3575207 ""
-  "resume.aux" 1778973111 162 55205a9e8a8eca30d36afb389b0617bf "pdflatex"
-  "resume.out" 1778973111 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "resume.tex" 1778973110 7407 d6adffb570262fcb76968765f3575207 ""
+  "c:/Users/lucam/Desktop/Code/new-website/public/resume/resume.tex" 1779475728 7401 b0e45b67e4a6b2022c197c0119bfadd7 ""
+  "resume.aux" 1779475729 162 55205a9e8a8eca30d36afb389b0617bf "pdflatex"
+  "resume.out" 1779475729 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "resume.tex" 1779475728 7401 b0e45b67e4a6b2022c197c0119bfadd7 ""
   (generated)
   "resume.aux"
   "resume.log"
