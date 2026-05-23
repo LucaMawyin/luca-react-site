@@ -1,5 +1,6 @@
 import { validateSession } from "@/lib/auth";
 import { getDB } from "@/lib/db";
+import { Project } from "@/lib/types";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -159,6 +160,48 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { error: "Failed to create project" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+
+  const session = await validateSession();
+
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
+  try {
+
+    const db = await getDB();
+    const { id } = await req.json() as Project;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing project id" },
+        { status: 400 }
+      );
+    }
+
+    await db
+      .prepare("DELETE FROM projects WHERE id = ?")
+      .bind(id)
+      .run();
+
+    return NextResponse.json({
+      success: true,
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    return NextResponse.json(
+      { error: "Failed to delete project" },
       { status: 500 }
     );
   }
