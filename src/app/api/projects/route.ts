@@ -44,7 +44,14 @@ export async function POST(req: NextRequest) {
 
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
-    const link = (formData.get("link") as string) || null;
+    const rawLink = (formData.get("link") as string) || null;
+
+    const link =
+      rawLink
+        ? (rawLink.startsWith("https://")
+          ? rawLink.trim()
+          : `https://${rawLink.trim()}`)
+        : null;
 
     const languages =
         (formData.get("languages") as string)
