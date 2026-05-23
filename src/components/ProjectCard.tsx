@@ -84,8 +84,8 @@ export default function ProjectCard( props : {
                     {props.project.description}
                     <div>
                         <div className="flex flex-wrap gap-2 mt-2">
-                            {languages.length > 0 && <b>Languages:</b>}
-                            {languages.map((lang, i) => (
+                            {(languages ?? []).length > 0 && <b>Languages:</b>}
+                            {(languages ?? []).map((lang, i) => (
                             <span
                                 key={i}
                                 className="px-2 py-1 text-sm rounded-full bg-gray-200"
@@ -96,8 +96,8 @@ export default function ProjectCard( props : {
                         </div>
 
                         <div className="flex flex-wrap gap-2 mt-2">
-                            {tools.length > 0 && <b>Tools:</b>}
-                            {tools.map((tool, i) => (
+                            {(tools ?? []).length > 0 && <b>Tools:</b>}
+                            {(tools ?? []).map((tool, i) => (
                             <span
                                 key={i}
                                 className="px-2 py-1 text-sm rounded-full bg-gray-300"
