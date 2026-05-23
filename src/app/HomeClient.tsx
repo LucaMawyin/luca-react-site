@@ -1,7 +1,7 @@
 "use client";
 
 import Projects from "@/components/Projects";
-import { capitalizeTitle } from "@/lib/capitalizeTitle";
+import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { icons, pages } from "@/lib/info"; 
 import { useEffect, useState } from "react";
 
@@ -149,7 +149,7 @@ export default function Home(props : {isLoggedIn : boolean}){
                                     transitionDelay: `${(index+1) * 200}ms`
                                 }}
                             >
-                                {`${capitalizeTitle(page.title)}`}
+                                {`${capitalizeNamesAndTitles(page.title)}`}
                             </a>
                         ))}				
                     </div>

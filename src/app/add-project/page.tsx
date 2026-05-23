@@ -7,7 +7,7 @@ import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LoginResponse } from "@/lib/types";
-import { capitalizeTitle } from "@/lib/capitalizeTitle";
+import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 
 export default function CreateProjectPage() {
 
@@ -35,10 +35,15 @@ export default function CreateProjectPage() {
     ) => {
         const { name, value } = e.target;
 
+        const shouldCapitalize =
+            name === "name" ||
+            name === "tools" ||
+            name === "languages";
+
         setForm({
             ...form,
-            [name]: name === "name"
-                ? capitalizeTitle(value)
+            [name]: shouldCapitalize
+                ? capitalizeNamesAndTitles(value)
                 : value,
         });
     };
