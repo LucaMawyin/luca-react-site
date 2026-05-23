@@ -4,9 +4,9 @@ export default function Footer(){
             <p>© {new Date().getFullYear()} Luca Mawyin</p>
 
             <div className="flex gap-4">
-                <a href="mailto:you@email.com">Email</a>
-                <a href="https://github.com/yourname" target="_blank">GitHub</a>
-                <a href="https://linkedin.com/in/yourname" target="_blank">LinkedIn</a>
+                <a href="mailto:lucamawyin@gmail.com">Email</a>
+                <a href="https://github.com/LucaMawyin" target="_blank">GitHub</a>
+                <a href="https://www.linkedin.com/in/lucamawyin" target="_blank">LinkedIn</a>
             </div>
         </footer>
     );
