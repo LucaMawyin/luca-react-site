@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LoginResponse } from "@/lib/types";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
+import { ensurePunctuation } from "@/lib/ensurePunctuation";
 
 export default function CreateProjectPage() {
 
@@ -198,6 +199,12 @@ export default function CreateProjectPage() {
                             placeholder="Description"
                             value={form.description}
                             onChange={handleChange}
+                            onBlur={(e) => {
+                                setForm({
+                                    ...form,
+                                    description: ensurePunctuation(e.target.value),
+                                });
+                            }}
                             required
                         />
 
