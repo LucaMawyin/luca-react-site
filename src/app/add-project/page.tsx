@@ -203,16 +203,14 @@ export default function CreateProjectPage() {
                             placeholder="Languages (comma separated)"
                             value={form.languages}
                             onChange={handleChange}
-                            required
                         />
 
-                        <label htmlFor="link">Tools Used</label>
+                        <label htmlFor="tools">Tools Used</label>
                         <input
                             name="tools"
                             placeholder="Tools (comma separated)"
                             value={form.tools}
                             onChange={handleChange}
-                            required
                         />
 
                         {/* IMAGE INPUT */}
