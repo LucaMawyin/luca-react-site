@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/Footer";
 import Projects from "@/components/Projects";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { icons, pages } from "@/lib/info"; 
@@ -215,6 +216,7 @@ export default function Home(props : {isLoggedIn : boolean}){
             <section id="projects">
                     <Projects isLoggedIn={props.isLoggedIn}/>
             </section>		
+            <Footer/>
         </>
 
     );
