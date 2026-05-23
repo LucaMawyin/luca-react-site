@@ -1,10 +1,12 @@
 import { minorWords, specialWords } from "@/lib/titleCaseRules";
 
 export function capitalizeNamesAndTitles(title: string): string {
-	const words = title.trim().split(/\s+/);
+	const words = title.split(" ");
 
 	return words
 		.map((word, index) => {
+			if (!word) return "";
+
 			const key = word.toLowerCase();
 
 			if (specialWords[key]) return specialWords[key];
@@ -17,7 +19,7 @@ export function capitalizeNamesAndTitles(title: string): string {
 				return word.charAt(0).toUpperCase() + word.slice(1);
 			}
 
-			return key;
+			return word;
 		})
 		.join(" ");
 }
