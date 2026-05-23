@@ -7,6 +7,7 @@ import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LoginResponse } from "@/lib/types";
+import { capitalizeTitle } from "@/lib/capitalizeTitle";
 
 export default function CreateProjectPage() {
 
@@ -32,7 +33,14 @@ export default function CreateProjectPage() {
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+
+        setForm({
+            ...form,
+            [name]: name === "name"
+                ? capitalizeTitle(value)
+                : value,
+        });
     };
 
   

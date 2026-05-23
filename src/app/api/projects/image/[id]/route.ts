@@ -18,7 +18,6 @@ export async function GET(
     }
 
     const bytes = new Uint8Array(row.image);
-    console.log(row.image);
 
     return new Response(bytes, {
         headers: {
