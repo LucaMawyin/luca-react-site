@@ -53,17 +53,23 @@ export async function POST(req: NextRequest) {
           : `https://${rawLink.trim()}`)
         : null;
 
-    const languages =
-        (formData.get("languages") as string)
-            ?.split(",")
-            .map((x) => x.trim())
-            .filter(Boolean) ?? [];
+    const languagesRaw = (formData.get("languages") as string)?.trim();
 
-    const tools =
-        (formData.get("tools") as string)
-            ?.split(",")
+    const languages = languagesRaw
+        ? languagesRaw
+            .split(",")
             .map((x) => x.trim())
-            .filter(Boolean) ?? [];
+            .filter(Boolean)
+        : null;
+
+    const toolsRaw = (formData.get("tools") as string)?.trim();
+
+    const tools = toolsRaw
+        ? toolsRaw
+            .split(",")
+            .map((x) => x.trim())
+            .filter(Boolean)
+        : null;
 
     const image = formData.get("image") as File | null;
 
@@ -102,8 +108,8 @@ export async function POST(req: NextRequest) {
           description,
           link,
 
-          JSON.stringify(languages),
-          JSON.stringify(tools),
+          languages ? JSON.stringify(languages) : null,
+          tools ? JSON.stringify(tools) : null,
 
           imageBuffer,
           imageBuffer,
