@@ -50,3 +50,7 @@ export type ChangePasswordBody = {
   currentPassword: string;
   newPassword: string;
 };
+
+export type ChangePasswordResponse =
+  | { success: true ; error : "" }
+  | { success: false; error: string };

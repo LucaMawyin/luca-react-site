@@ -69,7 +69,7 @@ export default function Login(props : {isLoggedIn : boolean}){
                 gap-8 
                 justify-center items-center"
             >
-                <h1>You are already logged in</h1>
+                <h1 className="text-[2em]!">You are already logged in</h1>
                 <Button 
                     text="Return to Home" 
                     onClick={() => {

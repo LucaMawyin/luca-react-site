@@ -24,7 +24,7 @@ export default function Tile(props : {
             ${props.className??""}`}>
             <h1 
                 className={`
-                    ${props.titleClassName?.includes("text-") ? "" : "text-[3em]" } 
+                    ${props.titleClassName?.includes("text-") ? "" : "text-[3em]!" } 
                     ${props.titleClassName}`
                 }
             >
