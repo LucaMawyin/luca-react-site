@@ -29,7 +29,6 @@ export const specialWords: Record<string, string> = {
 	sveltekit: "SvelteKit",
 
 	tailwindcss: "Tailwind CSS",
-	tailwind: "Tailwind CSS",
 
 	html: "HTML",
 	css: "CSS",
