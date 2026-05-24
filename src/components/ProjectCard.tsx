@@ -71,7 +71,7 @@ export default function ProjectCard( props : {
                             <img
                                 src={`/api/projects/image/${props.project.id}`}
                                 alt={`Project ${props.project.id}`}
-                                className="w-full h-fit rounded-xl"
+                                className="w-full h-auto rounded-xl"
                             />                                   
                         </div>
                  
