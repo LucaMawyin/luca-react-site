@@ -36,7 +36,7 @@ export default function DeleteButton({
     return (
         <>
             <Button
-                text="Delete Project"
+                text="Delete"
                 type="button"
                 className="bg-red-600 hover:bg-red-700 w-fit"
                 onClick={() => setOpen(true)}
