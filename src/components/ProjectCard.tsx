@@ -57,6 +57,7 @@ export default function ProjectCard( props : {
             <div
                 className={`
                     flex
+                    flex-1
                     flex-wrap
                     ${props.position === "end" ? "flex-row-reverse" : "flex-row"}
                     justify-between
@@ -66,11 +67,14 @@ export default function ProjectCard( props : {
                 {/* Image */}
                 <div className="flex-1 min-w-75 flex justify-center">
                     {props.project.image_type && 
-                        <img
-                            src={`/api/projects/image/${props.project.id}`}
-                            alt={`Project ${props.project.id}`}
-                            className="w-full h-auto object-contain rounded-xl"
-                        />                        
+                        <div className="flex items-center">
+                            <img
+                                src={`/api/projects/image/${props.project.id}`}
+                                alt={`Project ${props.project.id}`}
+                                className="w-full h-fit rounded-xl"
+                            />                                   
+                        </div>
+                 
                     }
                 </div>
 
@@ -79,7 +83,7 @@ export default function ProjectCard( props : {
                     flex-1 
                     flex flex-col
                     min-w-75
-                    justify-between
+                    justify-evenly
                 ">
                     {props.project.description}
                     <div>
