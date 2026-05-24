@@ -175,7 +175,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     x
                 </a>
 
-                {pages.map((page) => (
+                {visiblePages.map((page) => (
                     <a
                         key={page.title}
                         href={page.href}
