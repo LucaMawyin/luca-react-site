@@ -1,10 +1,12 @@
 import { validateSession } from "@/lib/auth";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
-import Footer from "@/components/Footer";
 
 export const metadata = {
     title: "Luca Mawyin",
+    icons : {
+      icon : "/icon.svg",
+    },
 };
 
 export default async function RootLayout({
