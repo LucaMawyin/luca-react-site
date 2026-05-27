@@ -3,10 +3,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 
 export const metadata = {
-    title: "Luca Mawyin",
-    icons : {
-      icon : "/icon.svg",
-    },
+  title: "Luca Mawyin",
 };
 
 export default async function RootLayout({
