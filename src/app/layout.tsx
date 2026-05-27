@@ -4,6 +4,11 @@ import NavBar from "@/components/NavBar";
 
 export const metadata = {
   title: "Luca Mawyin",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+    ],
+  },
 };
 
 export default async function RootLayout({
