@@ -4,7 +4,6 @@ import NavBar from "@/components/NavBar";
 
 export const metadata = {
   title: "Luca Mawyin",
-  icons: "/favicon.ico",
 };
 
 export default async function RootLayout({
@@ -17,6 +16,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+
       <body>
         <NavBar isLoggedIn={!!session} />
         {children}
