@@ -30,22 +30,7 @@ html, body {
 
 section:not(#hero) {
 	scroll-margin-top: 10vh;
-	opacity: 1;
 	min-height: 90vh;
-}
-
-section:not(#hero).show {
-	animation: fadeUp 500ms ease-out forwards;
-}
-
-@keyframes fadeUp {
-	from {
-		transform: translateY(5vh);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
 }
 
 h1{
