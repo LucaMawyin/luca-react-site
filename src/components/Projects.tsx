@@ -56,7 +56,6 @@ export default function Projects(props : {isLoggedIn : boolean}) {
 
         }
         <div className="
-            min-h-[90vh]
             grid
             items-stretch
             auto-rows-fr

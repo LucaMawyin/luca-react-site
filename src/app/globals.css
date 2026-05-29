@@ -19,17 +19,33 @@
 html, body {
 	padding: 0;
 	margin: 0;
-	border-style: bode;
 	font-weight: 500;
 	height: 100%;
-	scroll-snap-type: y proximity;
+	scroll-snap-type: y mandatory;
 	scroll-behavior: smooth;
 	user-select: none;
 	font-weight: 400;
 }
 
-section{
+
+section:not(#hero) {
 	scroll-margin-top: 10vh;
+	opacity: 0;
+	min-height: 90vh;
+}
+
+section:not(#hero).show {
+	animation: fadeUp 500ms ease-out forwards;
+}
+
+@keyframes fadeUp {
+	from {
+		transform: translateY(5vh);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 h1{

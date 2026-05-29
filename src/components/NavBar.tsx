@@ -93,7 +93,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 text-lg
             ">  
                 <a
-                    href="/"
+                    href="/#"
                     className="
                         transition-transform duration-(--transition-duration)
                         hover:scale-(--link-scale)
@@ -102,7 +102,9 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     Luca Mawyin
                 </a>
                 <div className="flex gap-8">
-                    {visiblePages.map((page) => (
+                    {visiblePages
+                        .filter((page) => !page.mobile)
+                        .map((page) => (
                         <a
                             key={page.title}
                             href={page.href}
@@ -114,7 +116,8 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                         >
                             {capitalizeNamesAndTitles(page.title)}
                         </a>
-                    ))}                    
+                        ))
+                    }                    
                 </div>
 
             </div>
@@ -129,7 +132,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 w-full
             ">
                 <a
-                    href="/"
+                    href="/#"
                     className="
                         transition-transform duration-(--transition-duration)
                         hover:scale-(--link-scale)

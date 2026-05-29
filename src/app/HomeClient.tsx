@@ -24,13 +24,14 @@ export default function Home(props : {isLoggedIn : boolean}){
 
         if (!sections.length) return;
 
-        const observer = new IntersectionObserver(() => {
+        const observer = new IntersectionObserver(
+            () => {
 
                 let bestSection: HTMLElement | null = null;
                 let bestRatio = 0;
 
                 // Detect which section is most present on screen
-                for (const section of sections) {
+                sections.forEach(section => {
                     const rect = section.getBoundingClientRect();
 
                     const height = window.innerHeight;
@@ -43,18 +44,28 @@ export default function Home(props : {isLoggedIn : boolean}){
                         bestRatio = ratio;
                         bestSection = section;
                     }
-                }
 
-                // Change state to id unless it's hero
-                if (bestSection?.id && bestRatio > 0.4 && bestSection?.id !== "hero") {
-                    window.history.replaceState(null, "", `#${bestSection.id}`);
-                } else {
-                    window.history.replaceState(null, "", "/");
-                }
+                    if (ratio >= 0.2) {
+                        section.classList.add("show");
+                    }
+
+                    else{
+                        section.classList.remove("show");
+                    }
+
+                    // Change state to id unless it's hero
+                    if (bestSection?.id && bestRatio > 0.4 && bestSection?.id !== "hero") {
+                        window.history.replaceState(null, "", `#${bestSection.id}`);
+                    } else {
+                        window.history.replaceState(null, "", "/");
+                    }
+                });
             },
+
             {
                 threshold: [0, 0.1, 0.5, 1],
             }
+        
         );
 
         sections.forEach((section) => observer.observe(section));
@@ -68,7 +79,7 @@ export default function Home(props : {isLoggedIn : boolean}){
             <section 
                 id="hero"
                 className="
-                    min-h-full
+                    min-h-screen
                     w-full
                     flex justify-center items-center
             ">
@@ -118,41 +129,44 @@ export default function Home(props : {isLoggedIn : boolean}){
                         w-fit
                         text-2xl
                     ">
-                        {visiblePages.map((page, index) => (
-                            <a
-                                key={page.title}
-                                href={page.href}
-                                target={page.href.endsWith(".pdf") ? "_blank" : undefined}
-                                className={`
-                                    relative w-fit
-                                    ml-0
-                                    m-4
-                                    sm:m-4
-                                    sm:ml-0
+                        {visiblePages
+                            .filter((page) => !page.mobile)
+                            .map((page, index) => (
+                                <a
+                                    key={page.title}
+                                    href={page.href}
+                                    target={page.href.endsWith(".pdf") ? "_blank" : undefined}
+                                    className={`
+                                        relative w-fit
+                                        ml-0
+                                        m-4
+                                        sm:m-4
+                                        sm:ml-0
 
-                                    after:content-['']
-                                    after:absolute after:left-0 after:bottom-0
-                                    after:h-0.5 after:w-full
-                                    after:scale-x-0
-                                    after:origin-left
-                                    after:bg-black
-                                    after:transition-transform
-                                    after:duration-300
+                                        after:content-['']
+                                        after:absolute after:left-0 after:bottom-0
+                                        after:h-0.5 after:w-full
+                                        after:scale-x-0
+                                        after:origin-left
+                                        after:bg-black
+                                        after:transition-transform
+                                        after:duration-300
 
-                                    hover:after:scale-x-100
-                                    transition-all duration-500 ease-out
-                                    ${loaded 
-                                        ? "opacity-100 translate-y-0" 
-                                        : "opacity-0 translate-y-4"
-                                    }
-                                `}
-                                style={{
-                                    transitionDelay: `${(index+1) * 200}ms`
-                                }}
-                            >
-                                {`${capitalizeNamesAndTitles(page.title)}`}
-                            </a>
-                        ))}				
+                                        hover:after:scale-x-100
+                                        transition-all duration-500 ease-out
+                                        ${loaded 
+                                            ? "opacity-100 translate-y-0" 
+                                            : "opacity-0 translate-y-4"
+                                        }
+                                    `}
+                                    style={{
+                                        transitionDelay: `${(index+1) * 200}ms`
+                                    }}
+                                >
+                                    {`${capitalizeNamesAndTitles(page.title)}`}
+                                </a>
+                            ))
+                        }				
                     </div>
 
                 </div>
@@ -180,7 +194,6 @@ export default function Home(props : {isLoggedIn : boolean}){
             <section id="about" >
                 <div className="
                     w-full
-                    min-h-[90vh]
                     flex flex-wrap-reverse
                     p-[15%]
                     sm:p-[10%]
@@ -198,15 +211,14 @@ export default function Home(props : {isLoggedIn : boolean}){
 
                     <div className="
                         overflow-hidden
-                        basis-full lg:basis-1/4
-                        flex justify-center lg:justify-end
-                        rounded-2xl
+                        w-full lg:max-w-[25%]
+                        flex justify-center
                     ">
-                    <img
-                        src="/images/headshot.png"
-                        className="w-full h-auto object-contain"
+                        <img
+                            src="/images/headshot.png"
+                            className="my-auto w-full h-auto object-contain rounded-2xl"
 
-                    />
+                        />
                     </div>					
                 </div>
 
