@@ -49,10 +49,6 @@ export default function Home(props : {isLoggedIn : boolean}){
                         section.classList.add("show");
                     }
 
-                    else{
-                        section.classList.remove("show");
-                    }
-
                     // Change state to id unless it's hero
                     if (bestSection?.id && bestRatio > 0.4 && bestSection?.id !== "hero") {
                         window.history.replaceState(null, "", `#${bestSection.id}`);
