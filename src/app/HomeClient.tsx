@@ -45,6 +45,7 @@ export default function Home(props : {isLoggedIn : boolean}){
                         bestSection = section;
                     }
 
+                    // Ratio for making sections fade into view
                     if (ratio >= 0.2) {
                         section.classList.add("show");
                     }
