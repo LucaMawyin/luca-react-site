@@ -30,7 +30,7 @@ html, body {
 
 section:not(#hero) {
 	scroll-margin-top: 10vh;
-	opacity: 0;
+	opacity: 1;
 	min-height: 90vh;
 }
 
