@@ -31,7 +31,7 @@ export default function Home(props : {isLoggedIn : boolean}){
                 let bestRatio = 0;
 
                 // Detect which section is most present on screen
-                sections.forEach(section => {
+                for (const section of sections) {
                     const rect = section.getBoundingClientRect();
 
                     const height = window.innerHeight;
@@ -50,13 +50,17 @@ export default function Home(props : {isLoggedIn : boolean}){
                         section.classList.add("show");
                     }
 
+                    else {
+                        section.classList.remove("show");
+                    }
+
                     // Change state to id unless it's hero
                     if (bestSection?.id && bestRatio > 0.4 && bestSection?.id !== "hero") {
                         window.history.replaceState(null, "", `#${bestSection.id}`);
                     } else {
                         window.history.replaceState(null, "", "/");
                     }
-                });
+                }
             },
 
             {
