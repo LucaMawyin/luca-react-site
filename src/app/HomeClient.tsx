@@ -18,53 +18,6 @@ export default function Home(props : {isLoggedIn : boolean}){
         setLoaded(true);
     }, []);
 
-    // Changing url path & showing nav dynamically on home page
-    useEffect(() => {
-        const sections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
-
-        if (!sections.length) return;
-
-        const observer = new IntersectionObserver(
-            () => {
-
-                let bestSection: HTMLElement | null = null;
-                let bestRatio = 0;
-
-                // Detect which section is most present on screen
-                for (const section of sections) {
-                    const rect = section.getBoundingClientRect();
-
-                    const height = window.innerHeight;
-                    const visibleHeight =
-                        Math.min(rect.bottom, height) - Math.max(rect.top, 0);
-
-                    const ratio = Math.max(0, visibleHeight / height);
-
-                    if (ratio > bestRatio) {
-                        bestRatio = ratio;
-                        bestSection = section;
-                    }
-
-                    // Change state to id unless it's hero
-                    if (bestSection?.id && bestRatio > 0.4 && bestSection?.id !== "hero") {
-                        window.history.replaceState(null, "", `#${bestSection.id}`);
-                    } else {
-                        window.history.replaceState(null, "", "/");
-                    }
-                }
-            },
-
-            {
-                threshold: [0, 0.1, 0.5, 1],
-            }
-        
-        );
-
-        sections.forEach((section) => observer.observe(section));
-
-        return () => observer.disconnect();
-    }, []);
-
     return (
         <>
             {/* Hero */}
