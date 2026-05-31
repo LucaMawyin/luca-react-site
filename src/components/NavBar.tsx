@@ -22,10 +22,24 @@ export default function NavBar(props : {isLoggedIn : boolean}){
         e: React.MouseEvent<HTMLAnchorElement>,
         page: Page
     ) => {
+
         if (page.href.includes("#")) {
             e.preventDefault();
 
             const id = page.href.split("#")[1];
+
+            if (pathname !== "/") {
+                router.push("/");
+
+                // wait for DOM to render
+                setTimeout(() => {
+                    document.getElementById(id)?.scrollIntoView({
+                        behavior: "smooth",
+                    });
+                }, 100);
+
+                return;
+            }
 
             document.getElementById(id)?.scrollIntoView({
                 behavior: "smooth",
@@ -130,7 +144,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                         <a
                             key={page.title}
                             href={page.href}
-                            onClick={(e) => handleClick(e, page)}
+                            onClick={!page.href.endsWith(".pdf") ? (e) => handleClick(e, page) : () => {}}
                             target={page.href.endsWith(".pdf") ? "_blank" : undefined}
                             className="
                                 transition-transform duration-(--transition-duration)

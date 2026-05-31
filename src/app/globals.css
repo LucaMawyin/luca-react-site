@@ -29,8 +29,13 @@ html, body {
 
 
 section:not(#hero) {
+	opacity: 0;
 	scroll-margin-top: 10vh;
 	min-height: 90vh;
+}
+
+section:not(#hero).show {
+	animation: fadeUp 500ms ease-out forwards;
 }
 
 @keyframes fadeUp {

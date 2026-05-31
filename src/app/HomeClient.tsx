@@ -30,6 +30,7 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
 
                 if (visible.length > 0) {
                     const id = visible[0].target.id;
+                    visible[0].target.classList.add("show");
                     window.history.replaceState(
                         null,
                         "",
