@@ -20,46 +20,27 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
 
     // Change URL depending on section
     useEffect(() => {
-        const sections = document.querySelectorAll<HTMLElement>("section[id]");
-        if (!sections.length) return;
-
-        let activeId = "";
+        const sections = document.querySelectorAll("section[id]");
 
         const observer = new IntersectionObserver(
             (entries) => {
-                let bestEntry: IntersectionObserverEntry | null = null;
+                const visible = entries
+                    .filter(e => e.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
 
-                for (const entry of entries) {
-                    if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
-                        bestEntry = entry;
-                    }
-                }
-
-                if (!bestEntry) return;
-
-                const id = bestEntry.target.id;
-                const ratio = bestEntry.intersectionRatio;
-
-                // prevent spam updates
-                if (ratio < 0.4) return;
-                if (id === activeId) return;
-
-                activeId = id;
-
-                if (id !== "hero") {
-                    window.history.replaceState(null, "", `/${id}`);
-                } else {
-                    window.history.replaceState(null, "", "/");
+                if (visible.length > 0) {
+                    const id = visible[0].target.id;
+                    window.history.replaceState(null, "", id === "hero" ? "" : id);
                 }
             },
             {
-                threshold: [0.25, 0.5, 0.75, 1],
                 root: null,
-                rootMargin: "-20% 0px -20% 0px",
+                threshold: 0,
+                rootMargin: "-45% 0px -45% 0px" 
             }
         );
 
-        sections.forEach((section) => observer.observe(section));
+        sections.forEach((s) => observer.observe(s));
 
         return () => observer.disconnect();
     }, []);
