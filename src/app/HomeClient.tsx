@@ -6,7 +6,7 @@ import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { icons, pages } from "@/lib/info"; 
 import { useEffect, useState } from "react";
 
-export default function Home(props : {isLoggedIn : boolean}){
+export default function HomeClient(props : {isLoggedIn : boolean}){
 
     const visiblePages = pages.filter(page =>
         !page.requireLogin || props.isLoggedIn
@@ -16,6 +16,51 @@ export default function Home(props : {isLoggedIn : boolean}){
 
     useEffect(() => {
         setLoaded(true);
+    }, []);
+
+    // Change URL depending on section
+    useEffect(() => {
+        const sections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
+
+        if (sections.length === 0) return;
+
+        const observer = new IntersectionObserver(
+            () => {
+                let bestSection: HTMLElement | null = null;
+                let bestRatio = 0;
+
+                sections.forEach((section) => {
+                    const rect = section.getBoundingClientRect();
+
+                    const height = window.innerHeight;
+                    const visibleHeight = Math.min(rect.bottom, height) - Math.max(rect.top, 0);
+                    const ratio = Math.max(0, visibleHeight / height);
+
+                    if (ratio > bestRatio) {
+                        bestRatio = ratio;
+                        bestSection = section;
+                    }
+
+                    // Change URL hash to section
+                    if (bestSection?.id && bestRatio > 0.4 && bestSection?.id !== "hero") {
+                        window.history.replaceState(null, "", `${bestSection.id}`);
+                    }   
+                    else {
+                        window.history.replaceState(null, "", "/");
+                    }                 
+                });
+
+
+            },
+            
+            {
+                threshold: [0, 0.1, 0.5, 1],
+            }
+        );
+
+        sections.forEach((section) => observer.observe(section));
+
+        return () => observer.disconnect();
     }, []);
 
     return (

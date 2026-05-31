@@ -3,9 +3,12 @@
 import { useEffect, useState } from "react";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { icons, pages } from "@/lib/info";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Page } from "@/lib/types";
 
 export default function NavBar(props : {isLoggedIn : boolean}){
+
+    const router = useRouter();
 
     const pathname = usePathname();
     const isHome = pathname === "/";
@@ -14,6 +17,25 @@ export default function NavBar(props : {isLoggedIn : boolean}){
     const visiblePages = pages.filter(page =>
         !page.requireLogin || props.isLoggedIn
     );
+
+    const handleClick = (
+        e: React.MouseEvent<HTMLAnchorElement>,
+        page: Page
+    ) => {
+        if (page.href.includes("#")) {
+            e.preventDefault();
+
+            const id = page.href.split("#")[1];
+
+            document.getElementById(id)?.scrollIntoView({
+                behavior: "smooth",
+            });
+
+            return;
+        }
+
+        router.push(page.href);
+    };
 
     useEffect(() => {
         if (!isHome) {
@@ -108,6 +130,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                         <a
                             key={page.title}
                             href={page.href}
+                            onClick={(e) => handleClick(e, page)}
                             target={page.href.endsWith(".pdf") ? "_blank" : undefined}
                             className="
                                 transition-transform duration-(--transition-duration)
