@@ -211,7 +211,10 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                             transition-transform duration-(--transition-duration)
                             hover:scale-(--link-scale) 
                         "
-                        onClick={() => setOpen(false)}
+                        onClick={(e) => {
+                            setOpen(false)
+                            handleClick(e, page)
+                        }}
                     >
                         {capitalizeNamesAndTitles(page.title)}
                     </a>
