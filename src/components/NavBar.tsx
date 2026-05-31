@@ -23,6 +23,12 @@ export default function NavBar(props : {isLoggedIn : boolean}){
         page: Page
     ) => {
 
+        const normalizePath = (href: string) => "/" + href.split("#")[1];
+
+        if (normalizePath(page.href) === pathname) {
+            return;
+        }
+
         if (page.href.includes("#")) {
             e.preventDefault();
 
