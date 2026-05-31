@@ -30,7 +30,12 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
 
                 if (visible.length > 0) {
                     const id = visible[0].target.id;
-                    window.history.replaceState(null, "", id === "hero" ? "" : id);
+                    console.log(id);
+                    window.history.replaceState(
+                        null,
+                        "",
+                        id === "hero" ? "/" : id
+                    );
                 }
             },
             {
