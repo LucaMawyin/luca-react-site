@@ -115,7 +115,11 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 text-lg
             ">  
                 <a
-                    href="/#"
+                    href="/"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        router.push("/");
+                    }}
                     className="
                         transition-transform duration-(--transition-duration)
                         hover:scale-(--link-scale)
@@ -155,7 +159,11 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 w-full
             ">
                 <a
-                    href="/#"
+                    href="/"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        router.push("/");
+                    }}
                     className="
                         transition-transform duration-(--transition-duration)
                         hover:scale-(--link-scale)
