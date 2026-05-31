@@ -20,41 +20,42 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
 
     // Change URL depending on section
     useEffect(() => {
-        const sections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
+        const sections = document.querySelectorAll<HTMLElement>("section[id]");
+        if (!sections.length) return;
 
-        if (sections.length === 0) return;
+        let activeId = "";
 
         const observer = new IntersectionObserver(
-            () => {
-                let bestSection: HTMLElement | null = null;
-                let bestRatio = 0;
+            (entries) => {
+                let bestEntry: IntersectionObserverEntry | null = null;
 
-                sections.forEach((section) => {
-                    const rect = section.getBoundingClientRect();
-
-                    const height = window.innerHeight;
-                    const visibleHeight = Math.min(rect.bottom, height) - Math.max(rect.top, 0);
-                    const ratio = Math.max(0, visibleHeight / height);
-
-                    if (ratio > bestRatio) {
-                        bestRatio = ratio;
-                        bestSection = section;
+                for (const entry of entries) {
+                    if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
+                        bestEntry = entry;
                     }
+                }
 
-                    // Change URL hash to section
-                    if (bestSection?.id && bestRatio > 0.4 && bestSection?.id !== "hero") {
-                        window.history.replaceState(null, "", `${bestSection.id}`);
-                    }   
-                    else {
-                        window.history.replaceState(null, "", "/");
-                    }                 
-                });
+                if (!bestEntry) return;
 
+                const id = bestEntry.target.id;
+                const ratio = bestEntry.intersectionRatio;
 
+                // prevent spam updates
+                if (ratio < 0.4) return;
+                if (id === activeId) return;
+
+                activeId = id;
+
+                if (id !== "hero") {
+                    window.history.replaceState(null, "", `/${id}`);
+                } else {
+                    window.history.replaceState(null, "", "/");
+                }
             },
-            
             {
-                threshold: [0, 0.1, 0.5, 1],
+                threshold: [0.25, 0.5, 0.75, 1],
+                root: null,
+                rootMargin: "-20% 0px -20% 0px",
             }
         );
 
