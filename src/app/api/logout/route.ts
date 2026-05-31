@@ -11,7 +11,7 @@ export async function POST() {
 
   if (token) {
     await db.prepare(`
-        DELETE FROM sessions WHERE token = ?
+      DELETE FROM sessions WHERE token = ?
     `).bind(token).run();
   }
 

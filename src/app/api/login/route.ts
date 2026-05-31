@@ -6,8 +6,12 @@ import { User, LoginBody } from "@/lib/types";
 
 export async function POST(request: Request) {
   try {
+
+    const sessionDurationDays = 1
+
     const { email, password } = (await request.json()) as LoginBody;
 
+    // No email or password provided
     if (!email || !password) {
       return NextResponse.json({
         status: "error",
@@ -17,9 +21,7 @@ export async function POST(request: Request) {
 
     const db = await getDB();
 
-    // -------------------------
-    // Find user
-    // -------------------------
+    // Find user by email
     const user = (await db
       .prepare("SELECT * FROM users WHERE email = ?")
       .bind(email)
@@ -35,9 +37,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // -------------------------
     // Check password
-    // -------------------------
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
@@ -50,13 +50,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // -------------------------
     // Create session
-    // -------------------------
     const token = crypto.randomBytes(32).toString("hex");
 
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7); // 7 day session
+    expiresAt.setDate(expiresAt.getDate() + sessionDurationDays);
 
     await db
       .prepare(`
@@ -66,9 +64,7 @@ export async function POST(request: Request) {
       .bind(token, user.id, expiresAt.toISOString())
       .run();
 
-    // -------------------------
-    // Set cookie
-    // -------------------------
+    // Return status and set cookie
     const res = NextResponse.json({
       status: "success",
     });
@@ -78,7 +74,7 @@ export async function POST(request: Request) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * sessionDurationDays,
     });
 
     return res;

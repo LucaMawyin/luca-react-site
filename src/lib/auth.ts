@@ -5,29 +5,28 @@ import { Session } from "@/lib/types";
 
 
 export async function validateSession() {
+
+    const db = await getDB();
+
+    // Delete all sessions that are older than current date
+    await db.prepare(`
+        DELETE FROM sessions
+        WHERE expires_at < ?
+    `)
+    .bind(new Date().toISOString())
+    .run();
+    
     const cookieStore = await cookies();
     const token = cookieStore.get("session")?.value;
 
     if (!token) return null;
 
-    const db = await getDB();
-
+    // Now check for active token
     const session = await db.prepare(`
         SELECT * FROM sessions WHERE token = ?
     `).bind(token).first<Session>();
 
     if (!session) return null;
-
-    const expiresAt = new Date(session.expires_at);
-
-    if (expiresAt < new Date()){
-        await db.prepare(`
-            DELETE FROM sessions
-            WHERE token = ?
-        `).bind(token).run()
-
-        return null;
-    }
 
     return session;
 }
