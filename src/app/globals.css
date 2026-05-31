@@ -35,12 +35,12 @@ section:not(#hero) {
 
 @keyframes fadeUp {
 	from {
-			transform:translateY(5vh);
-		}
-		to{
-				opacity:1;
-				transform:translateY(0);
-			}
+		transform:translateY(5vh);
+	}
+	to{
+		opacity:1;
+		transform:translateY(0);
+	}
 }
 
 h1{
