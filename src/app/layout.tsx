@@ -2,6 +2,8 @@ import { validateSession } from "@/lib/auth";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Luca Mawyin",
   description: "Full-Stack Developer and Computer Science Student",
