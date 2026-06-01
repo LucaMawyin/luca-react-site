@@ -1,7 +1,7 @@
 export const pages = [
     {title:"home", href:"/", requireLogin : false, mobile : true},
-    { title:"about", href:"/#about", requireLogin : false },
-    { title: "projects", href:"/#projects", requireLogin : false },
+    { title:"about", href:"/", section : "about", requireLogin : false },
+    { title: "projects", href:"/", section : "projects", requireLogin : false },
     { title: "resume", href:"/resume/resume.pdf", requireLogin : false },
     { title: "settings", href:"/settings", requireLogin : true },
     { title: "logout", href: "/logout", requireLogin : true },

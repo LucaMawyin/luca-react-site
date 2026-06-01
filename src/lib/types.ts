@@ -59,6 +59,7 @@ export type ChangePasswordResponse =
 export type Page = {
   title: string;
   href: string;
+  section?: string;
   requireLogin: boolean;
   mobile?: boolean;
 };

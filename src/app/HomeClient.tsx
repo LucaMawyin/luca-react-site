@@ -3,17 +3,20 @@
 import Footer from "@/components/Footer";
 import Projects from "@/components/Projects";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
+import { getHref } from "@/lib/getHref";
 import { icons, pages } from "@/lib/info"; 
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function HomeClient(props : {isLoggedIn : boolean}){
 
+    // Getting pages that are visible to user
     const visiblePages = pages.filter(page =>
         !page.requireLogin || props.isLoggedIn
     );
 
+    // Page animation on load
     const [loaded, setLoaded] = useState(false);
-
     useEffect(() => {
         setLoaded(true);
     }, []);
@@ -111,7 +114,7 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
                             .map((page, index) => (
                                 <a
                                     key={page.title}
-                                    href={page.href}
+                                    href={getHref(page)}
                                     target={page.href.endsWith(".pdf") ? "_blank" : undefined}
                                     className={`
                                         relative w-fit

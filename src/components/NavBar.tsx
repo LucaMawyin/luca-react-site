@@ -5,6 +5,7 @@ import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { icons, pages } from "@/lib/info";
 import { usePathname, useRouter } from "next/navigation";
 import { Page } from "@/lib/types";
+import { getHref } from "@/lib/getHref";
 
 export default function NavBar(props : {isLoggedIn : boolean}){
 
@@ -14,6 +15,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
     const isHome = pathname === "/";
     const [scrolled, setScrolled] = useState(false);
 
+    // Checking what pages are allowed to be shown to user
     const visiblePages = pages.filter(page =>
         !page.requireLogin || props.isLoggedIn
     );
@@ -29,15 +31,14 @@ export default function NavBar(props : {isLoggedIn : boolean}){
             return;
         }
 
-        if (page.href.includes("#")) {
+        if (page.section) {
             e.preventDefault();
 
-            const id = page.href.split("#")[1];
+            const id = page.section;
 
             if (pathname !== "/") {
                 router.push("/");
 
-                // wait for DOM to render
                 setTimeout(() => {
                     document.getElementById(id)?.scrollIntoView({
                         behavior: "smooth",
@@ -149,7 +150,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                         .map((page) => (
                         <a
                             key={page.title}
-                            href={page.href}
+                            href={getHref(page)}
                             onClick={!page.href.endsWith(".pdf") ? (e) => handleClick(e, page) : () => {}}
                             target={page.href.endsWith(".pdf") ? "_blank" : undefined}
                             className="
@@ -224,7 +225,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 {visiblePages.map((page) => (
                     <a
                         key={page.title}
-                        href={page.href}
+                        href={getHref(page)}
                         target={page.href.endsWith(".pdf") ? "_blank" : undefined}
                         className="
                             text-xl
