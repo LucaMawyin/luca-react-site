@@ -21,6 +21,27 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
         setLoaded(true);
     }, []);
 
+    // Scroll to section if URL has section on load
+    const pathname = usePathname();
+    useEffect(() => {
+
+        if (pathname === "/") return;
+
+        const section = pathname.replace("/", "");
+        const validSections = pages
+            .filter(page => page.section)
+            .map(page => page.section);
+        
+        if (!validSections.includes(section)) return;
+
+        setTimeout(() => {
+            const element = document.getElementById(section);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
+        }, 100);
+    }, []);
+
     // Change URL depending on section
     useEffect(() => {
         const sections = document.querySelectorAll("section[id]");
