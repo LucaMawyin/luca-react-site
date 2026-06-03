@@ -15,12 +15,19 @@ export default function NavBar(props : {isLoggedIn : boolean}){
     );
 
     // Handling clicks on navbar links
+    const [pendingScroll, setPendingScroll] = useState<{
+        path: string;
+        id: string;
+    } | null>(null);
+    
     const router = useRouter();
     const pathname = usePathname();
     const handleClick = (
         e: React.MouseEvent<HTMLAnchorElement>,
         page: Page
     ) => {
+
+        if (page.newTab) return;
 
         const normalizePath = (href: string) => "/" + href.split("#")[1];
 
@@ -34,14 +41,8 @@ export default function NavBar(props : {isLoggedIn : boolean}){
             const id = page.section;
 
             if (pathname !== "/") {
+                setPendingScroll({ path: pathname, id });
                 router.push("/");
-
-                setTimeout(() => {
-                    document.getElementById(id)?.scrollIntoView({
-                        behavior: "smooth",
-                    });
-                }, 100);
-
                 return;
             }
 
@@ -54,6 +55,19 @@ export default function NavBar(props : {isLoggedIn : boolean}){
 
         router.push(page.href);
     };
+
+    // Scroll to section if user clicks link before page has loaded
+    useEffect(() => {
+        if (!pendingScroll) return;
+        if (pathname !== "/") return;
+
+        const el = document.getElementById(pendingScroll?.id);
+
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+            setPendingScroll(null);
+        }
+    }, [pathname, pendingScroll]);
 
     // Show navbar on scroll or if not on home page
     const isHome = pathname === "/";
@@ -151,8 +165,10 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                         <a
                             key={page.title}
                             href={getHref(page)}
-                            onClick={!page.href.endsWith(".pdf") ? (e) => handleClick(e, page) : () => {}}
-                            target={page.href.endsWith(".pdf") ? "_blank" : undefined}
+                            onClick={(e) => {
+                                handleClick(e, page)
+                            }}
+                            target={page.newTab ? "_blank" : undefined}
                             className="
                                 transition-transform duration-(--transition-duration)
                                 hover:scale-(--link-scale)
@@ -226,15 +242,15 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     <a
                         key={page.title}
                         href={getHref(page)}
-                        target={page.href.endsWith(".pdf") ? "_blank" : undefined}
+                        target={page.newTab ? "_blank" : undefined}
                         className="
                             text-xl
                             transition-transform duration-(--transition-duration)
                             hover:scale-(--link-scale) 
                         "
                         onClick={(e) => {
-                            setOpen(false)
-                            handleClick(e, page)
+                            setOpen(false);
+                            handleClick(e, page);
                         }}
                     >
                         {capitalizeNamesAndTitles(page.title)}

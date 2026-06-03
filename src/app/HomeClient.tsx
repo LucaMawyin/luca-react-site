@@ -136,7 +136,7 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
                                 <a
                                     key={page.title}
                                     href={getHref(page)}
-                                    target={page.href.endsWith(".pdf") ? "_blank" : undefined}
+                                    target={page.newTab ? "_blank" : undefined}
                                     className={`
                                         relative w-fit
                                         ml-0
@@ -198,9 +198,12 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
                 <div className="
                     w-full
                     flex flex-wrap-reverse
-                    p-[15%]
-                    sm:p-[10%]
+                    px-[15%]
+                    sm:px-[10%]
                     justify-between
+                    my-auto
+                    md:py-0
+                    p-[5%]
                 ">
                     <div className="
                         basis-full

@@ -5,6 +5,7 @@ export default function Footer(){
 
             <div className="flex gap-4">
                 <a href="mailto:lucamawyin@gmail.com">Email</a>
+                <a href="/resume" target="_blank">Resume</a>
                 <a href="https://github.com/LucaMawyin" target="_blank">GitHub</a>
                 <a href="https://www.linkedin.com/in/lucamawyin" target="_blank">LinkedIn</a>
             </div>

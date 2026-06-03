@@ -21,7 +21,6 @@ html, body {
 	margin: 0;
 	font-weight: 500;
 	height: 100%;
-	scroll-snap-type: y mandatory;
 	scroll-behavior: smooth;
 	user-select: none;
 	font-weight: 400;
@@ -29,6 +28,8 @@ html, body {
 
 
 section:not(#hero) {
+	display:flex;
+	flex-direction: column;
 	opacity: 0;
 	scroll-margin-top: 10vh;
 	min-height: 90vh;

@@ -62,4 +62,5 @@ export type Page = {
   section?: string;
   requireLogin: boolean;
   mobile?: boolean;
+  newTab?: boolean;
 };
