@@ -27,13 +27,10 @@ export default function NavBar(props : {isLoggedIn : boolean}){
         page: Page
     ) => {
 
-        e.preventDefault();
-
         // Dont do anything if opening new tab
-        if (page.newTab) {
-            window.open(page.href, "_blank");
-            return;
-        }
+        if (page.newTab) return;
+
+        e.preventDefault();
 
         const normalizePath = (href: string) => "/" + href.split("#")[1];
 
