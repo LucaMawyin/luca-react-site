@@ -34,12 +34,11 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
         
         if (!validSections.includes(section)) return;
 
-        setTimeout(() => {
-            const element = document.getElementById(section);
-            if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-            }
-        }, 100);
+        const element = document.getElementById(section);
+        if (element) {
+            element.scrollIntoView({ behavior: "auto", block: "start" });
+        }
+
     }, []);
 
     // Change URL depending on section

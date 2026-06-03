@@ -27,16 +27,20 @@ export default function NavBar(props : {isLoggedIn : boolean}){
         page: Page
     ) => {
 
+        e.preventDefault();
+
+        // Dont do anything if opening new tab
         if (page.newTab) return;
 
         const normalizePath = (href: string) => "/" + href.split("#")[1];
 
-        if (normalizePath(page.href) === pathname) {
+        // Return if already on page
+        if (normalizePath(getHref(page)) === pathname) {
             return;
         }
 
+        // Scroll to section
         if (page.section) {
-            e.preventDefault();
 
             const id = page.section;
 
