@@ -6,14 +6,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     /* config options here */
-    async rewrites() {
+    rewrites() {
         return [
             {
-                source: "/resume",
-                destination: "/resume/resume.pdf",
+            source: "/resume",
+            destination: "/resume/resume.pdf",
             },
         ];
-    },
+    }
 };
 
 
