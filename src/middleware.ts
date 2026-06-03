@@ -10,9 +10,9 @@ export function middleware(req: NextRequest) {
 
     // Resume pdf gets served on /resume
     if (path === "/resume" || path === "/resume/") {
-        return NextResponse.rewrite(
-            new URL("/resume/resume.pdf", req.url)
-        );
+        const url = req.nextUrl.clone();
+        url.pathname = "/resume/resume.pdf";
+        return NextResponse.rewrite(url);
     }
 
     // Check if the route is protected and if the user has a session cookie
