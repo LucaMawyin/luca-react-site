@@ -12,12 +12,15 @@ export default function Button(props : {
     value?:string;
 }){
 
+    // Handle click event
     function clickEvent(e: React.MouseEvent<HTMLButtonElement>) {
         props.onClick?.(e);
     }
 
+    // Base button style
     const base = "min-h-14 py-4 px-8 rounded-lg transition duration-(--transition-duration) cursor-pointer";
 
+    // Variant styles
     const styles = {
         primary:
         "bg-(--contrast-light) text-white hover:bg-(--contrast-colour) hover:shadow-xl",
@@ -26,6 +29,7 @@ export default function Button(props : {
         red : "bg-red-600 text-white hover:bg-red-700 hover:shadow-md",
     };
 
+    // Add disabled styles if the button is disabled
     const disabledStyle = props.disabled
     ? "opacity-50 cursor-not-allowed"
     : "";

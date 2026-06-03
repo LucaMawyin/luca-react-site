@@ -172,6 +172,7 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
 
                 </div>
 
+                {/* Scroll down arrow */}
                 <a href="#about" className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 animate-arrow-entry">
                     <div className="animate-bounce-slow">
                         <svg
@@ -189,6 +190,7 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
                         </svg>
                     </div>
                 </a>
+
             </section>
 
             {/* About me */}
@@ -227,8 +229,9 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
 
             {/* Projects */}
             <section id="projects">
-                    <Projects isLoggedIn={props.isLoggedIn}/>
+                <Projects isLoggedIn={props.isLoggedIn}/>
             </section>		
+
             <Footer/>
         </>
 

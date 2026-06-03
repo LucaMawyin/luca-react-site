@@ -6,21 +6,20 @@ import Tile from "./Tile";
 
 export default function DeleteButton({
   action,
-  className = "",
 }: {
   action: () => void;
-  className?: string;
 }) {
-
-    const [open, setOpen] = useState(false);
+    
+    // Handle delete action with transition
     const [isPending, startTransition] = useTransition();
-
     const handleDelete = () => {
         startTransition(async () => {
             await action();
         });
     };
 
+    // Prevent background scrolling on confirmation dialog
+    const [open, setOpen] = useState(false);
     useEffect(() => {
         if (open) {
             document.body.style.overflow = "hidden";
@@ -41,6 +40,8 @@ export default function DeleteButton({
                 className="bg-red-600 hover:bg-red-700 w-fit"
                 onClick={() => setOpen(true)}
             />
+
+            {/* Confirmation dialog */}
             {open && (
                 <div 
                     className="

@@ -5,18 +5,22 @@ import { useEffect } from "react";
 
 
 export default function Logout() {
+  
   const router = useRouter();
 
+  // Logout on component mount
   useEffect(() => {
     async function logout() {
-        await fetch("/api/logout", {
+      await fetch("/api/logout", {
         method: "POST",
-        });
+      });
 
-        router.replace("/")
-        router.refresh();
+      router.replace("/")
+      router.refresh();
     }
+
     logout();
+
   }, [router]);
 
 

@@ -6,31 +6,36 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request : NextRequest){
     try {
-        const db = await getDB();
-        const {results} = await db
-        .prepare(`
-            SELECT * FROM projects 
-            ORDER BY created_at DESC 
-            LIMIT 5
-        `)
-        .all();
 
-        return NextResponse.json({
-            projects: results
-        });        
+      // Fetch 5 most recent projects
+      const db = await getDB();
+      const {results} = await db
+      .prepare(`
+        SELECT * FROM projects 
+        ORDER BY created_at DESC 
+        LIMIT 5
+      `)
+      .all();
+
+      return NextResponse.json({
+        projects: results
+      });        
     }   
     
+    // Fetch failed
     catch (err) {
-        return NextResponse.json(
-            { error: "Failed to fetch projects" },
-            { status: 500 }
-        );
+      return NextResponse.json(
+        { error: "Failed to fetch projects" },
+        { status: 500 }
+      );
     }
 }
 
+// Create/update projects
 export async function POST(req: NextRequest) {
   const session = await validateSession();
 
+  // Authenticate before proceeding
   if (!session) {
     return NextResponse.json(
       { error: "Unauthorized" },
@@ -39,14 +44,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const formData = await req.formData();
+    const formData = await req.formData();    
 
-    const id = formData.get("id") as string | null;
-
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
+    // Ensure link starts with https:// if provided
     const rawLink = (formData.get("link") as string) || null;
-
     const link =
       rawLink
         ? (rawLink.startsWith("https://")
@@ -54,24 +55,25 @@ export async function POST(req: NextRequest) {
           : `https://${rawLink.trim()}`)
         : null;
 
+    // Process languages and tools as comma-separated values
     const languagesRaw = (formData.get("languages") as string)?.trim();
-
     const languages = languagesRaw
-        ? languagesRaw
-            .split(",")
-            .map((x) => x.trim())
-            .filter(Boolean)
-        : null;
+      ? languagesRaw
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean)
+      : null;
 
     const toolsRaw = (formData.get("tools") as string)?.trim();
-
     const tools = toolsRaw
-        ? toolsRaw
-            .split(",")
-            .map((x) => x.trim())
-            .filter(Boolean)
-        : null;
+      ? toolsRaw
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean)
+      : null;
 
+    
+    // Image upload
     const image = formData.get("image") as File | null;
 
     const imageType =
@@ -85,23 +87,27 @@ export async function POST(req: NextRequest) {
       imageBuffer = Buffer.from(arrayBuffer);
     }
 
+    // Project name, description and id (for updates)
+    const id = formData.get("id") as string | null;
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+
+
     const db = await getDB();
 
-    // -------------------------
     // UPDATE PROJECT
-    // -------------------------
     if (id) {
       await db
         .prepare(`
           UPDATE projects
           SET name = ?,
-              description = ?,
-              link = ?,
-              languages = ?,
-              tools = ?,
-              image = CASE WHEN ? IS NOT NULL THEN ? ELSE image END,
-              image_type = CASE WHEN ? IS NOT NULL THEN ? ELSE image_type END,
-              updated_at = CURRENT_TIMESTAMP
+            description = ?,
+            link = ?,
+            languages = ?,
+            tools = ?,
+            image = CASE WHEN ? IS NOT NULL THEN ? ELSE image END,
+            image_type = CASE WHEN ? IS NOT NULL THEN ? ELSE image_type END,
+            updated_at = CURRENT_TIMESTAMP
           WHERE id = ?
         `)
         .bind(
@@ -128,9 +134,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // -------------------------
     // CREATE PROJECT
-    // -------------------------
     const result = await db
       .prepare(`
         INSERT INTO projects
@@ -155,7 +159,10 @@ export async function POST(req: NextRequest) {
       id: newId,
     });
 
-  } catch (err) {
+  } 
+  
+  // Create/update failed
+  catch (err) {
     console.error("POST /projects error:", err);
 
     return NextResponse.json(
@@ -165,10 +172,11 @@ export async function POST(req: NextRequest) {
   }
 }
 
+// Delete project
 export async function DELETE(req: NextRequest) {
 
+  // Authenticate before proceeding
   const session = await validateSession();
-
   if (!session) {
     return NextResponse.json(
       { error: "Unauthorized" },
@@ -181,6 +189,7 @@ export async function DELETE(req: NextRequest) {
     const db = await getDB();
     const { id } = await req.json() as Project;
 
+    // No project id provided
     if (!id) {
       return NextResponse.json(
         { error: "Missing project id" },
@@ -197,7 +206,10 @@ export async function DELETE(req: NextRequest) {
       success: true,
     });
 
-  } catch (err) {
+  } 
+  
+  // Delete failed
+  catch (err) {
     console.error(err);
 
     return NextResponse.json(

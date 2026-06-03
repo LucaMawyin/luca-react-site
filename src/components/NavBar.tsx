@@ -9,17 +9,14 @@ import { getHref } from "@/lib/getHref";
 
 export default function NavBar(props : {isLoggedIn : boolean}){
 
-    const router = useRouter();
-
-    const pathname = usePathname();
-    const isHome = pathname === "/";
-    const [scrolled, setScrolled] = useState(false);
-
     // Checking what pages are allowed to be shown to user
     const visiblePages = pages.filter(page =>
         !page.requireLogin || props.isLoggedIn
     );
 
+    // Handling clicks on navbar links
+    const router = useRouter();
+    const pathname = usePathname();
     const handleClick = (
         e: React.MouseEvent<HTMLAnchorElement>,
         page: Page
@@ -58,6 +55,9 @@ export default function NavBar(props : {isLoggedIn : boolean}){
         router.push(page.href);
     };
 
+    // Show navbar on scroll or if not on home page
+    const isHome = pathname === "/";
+    const [scrolled, setScrolled] = useState(false);
     useEffect(() => {
         if (!isHome) {
             setScrolled(true);

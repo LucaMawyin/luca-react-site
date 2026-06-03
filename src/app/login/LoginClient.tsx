@@ -9,19 +9,19 @@ import { LoginResponse } from "@/lib/types";
 
 export default function Login(props : {isLoggedIn : boolean}){
 
-    const router = useRouter();
-    const searchParams = useSearchParams();
-
-    console.log(useSearchParams());
-
-    const next = searchParams.get("next") || "/";
-
+    // Email, password and error states
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
 
+    // Login form submission
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const next = searchParams.get("next") || "/";
+
     async function handleSubmit(e : React.FormEvent){
+
         e.preventDefault();
 
         const response = await fetch("/api/login", {
@@ -41,6 +41,7 @@ export default function Login(props : {isLoggedIn : boolean}){
             return;
         }
 
+        // Push to verification page (TODO)
         if (data.status === "verification_required") {
 
             router.push(
@@ -48,19 +49,22 @@ export default function Login(props : {isLoggedIn : boolean}){
             );
             return;
         } 
-        
-        if (data.status === "error") {
-            setError(data.error || "Login failed");
-            return;
-        }
 
+        // Redirect to next page on successful login
         if (data.status === "success"){
             router.push(next);
             router.refresh();
         }
 
+        // Show error message on failure
+        if (data.status === "error") {
+            setError(data.error || "Login failed");
+            return;
+        }
+
     }
 
+    // Show message if user is already logged in
     if (props.isLoggedIn){
         return (
             <div className="
@@ -97,7 +101,7 @@ export default function Login(props : {isLoggedIn : boolean}){
                         justify-center
                         gap-3"
                 >
-
+                    {/* Email input */}
                     <label htmlFor="email">Enter Your Email:</label>
                     <input 
                         id="email" 
@@ -108,6 +112,7 @@ export default function Login(props : {isLoggedIn : boolean}){
                         required
                     />
 
+                    {/* Password input */}
                     <label htmlFor="password">Enter Your Password:</label>
                     <div className="flex gap-2 w-full">
                         <input
@@ -120,6 +125,7 @@ export default function Login(props : {isLoggedIn : boolean}){
                             required
                         />
 
+                        {/* Show/hide password button */}
                         <button
                             type="button"
                             className="flex-0 hover:cursor-pointer"
@@ -129,6 +135,7 @@ export default function Login(props : {isLoggedIn : boolean}){
                         </button>
                     </div>
 
+                    {/* Error message */}
                     {error && (
                         <p className="text-red-500 text-sm text-center">
                             {error}

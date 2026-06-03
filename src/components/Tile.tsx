@@ -22,6 +22,8 @@ export default function Tile(props : {
             transition-all duration-(--transition-time) ease-out
             ${props.disableHover? "" : "hover:shadow-2xl hover:-translate-y-2"}
             ${props.className??""}`}>
+
+            {/* Title */ }
             <h1 
                 className={`
                     ${props.titleClassName?.includes("text-") ? "" : "text-[3em]!" } 
@@ -31,6 +33,7 @@ export default function Tile(props : {
                 {props.title}
             </h1>
 
+            {/* Tile content */}
             <div className="mt-auto flex flex-col">
                 {props.children}
             </div>

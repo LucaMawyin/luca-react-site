@@ -12,6 +12,7 @@ import { ensurePunctuation } from "@/lib/ensurePunctuation";
 
 export default function CreateProjectPage() {
 
+    // Max image size is 200KB
     const MAX_SIZE = 0.2 * 1024 * 1024;
 
     const router = useRouter();
@@ -31,6 +32,7 @@ export default function CreateProjectPage() {
     const [preview, setPreview] = useState<string | null>(null);
     const [fadeOut, setFadeOut] = useState(false);
 
+    // Auto capitalize project name, tools and languages
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -48,17 +50,17 @@ export default function CreateProjectPage() {
                 : value,
         });
     };
-
   
-    // Handling thumbnail for post
+    // Image select
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        
         const file = e.target.files?.[0];
         if (!file) return;
 
+        // Resize image until it's under the max size
         let finalFile = await resizeImage(file);
-
         while (finalFile.size > MAX_SIZE) {
-        finalFile = await resizeImage(finalFile);
+            finalFile = await resizeImage(finalFile);
         }
 
         setError(null);
@@ -74,10 +76,10 @@ export default function CreateProjectPage() {
         if (!file) return;
         if (!file.type.startsWith("image/")) return;
 
+        // Resize image until it's under the max size
         let finalFile = await resizeImage(file);
-
         while (finalFile.size > MAX_SIZE) {
-        finalFile = await resizeImage(finalFile);
+            finalFile = await resizeImage(finalFile);
         }
 
         setError(null);
@@ -85,22 +87,23 @@ export default function CreateProjectPage() {
         setPreview(URL.createObjectURL(finalFile));
     };
 
+    // Form submit
     const handleSubmit = async (e: React.FormEvent) => {
+        
         e.preventDefault();
 
         if (!imageFile) {
             setError("Please upload an image");
             setFadeOut(false);
 
-            // force reflow cycle
             requestAnimationFrame(() => {
                 setTimeout(() => {
-                setFadeOut(true);
+                    setFadeOut(true);
                 }, 2000);
 
                 setTimeout(() => {
-                setError(null);
-                setFadeOut(false);
+                    setError(null);
+                    setFadeOut(false);
                 }, 3000);
             });
             return;
@@ -108,14 +111,12 @@ export default function CreateProjectPage() {
 
         const formData = new FormData();
 
+        // Append form data
         formData.append("name", form.name);
         formData.append("description", form.description);
         formData.append("link", form.link);
         formData.append("languages", form.languages);
         formData.append("tools", form.tools);
-
-
-
         formData.append("image", imageFile);
         formData.append("imageType", imageFile.type);
     
@@ -125,7 +126,7 @@ export default function CreateProjectPage() {
             body: formData,
         });
 
-
+        // Reset form
         if (res.ok) {
 
             setForm({
@@ -143,10 +144,14 @@ export default function CreateProjectPage() {
             router.push("/#projects");
             router.refresh();
         } 
+
+        // Unauthorized redirect to login
         else if (res.status == 401){
             setError(null);
             router.push("/login");
         }
+
+        // Submission error
         else {
             const data = await res.json() as LoginResponse;
             setFadeOut(false);
@@ -154,12 +159,12 @@ export default function CreateProjectPage() {
 
             requestAnimationFrame(() => {
                 setTimeout(() => {
-                setFadeOut(true);
+                    setFadeOut(true);
                 }, 2000);
 
                 setTimeout(() => {
-                setError(null);
-                setFadeOut(false);
+                    setError(null);
+                    setFadeOut(false);
                 }, 3000);
             });
         }
@@ -184,6 +189,7 @@ export default function CreateProjectPage() {
                         "
                     >
 
+                        {/* Name, description, link, languages, tools */}
                         <label htmlFor="name">Project Name</label>
                         <input
                             name="name"
@@ -259,6 +265,8 @@ export default function CreateProjectPage() {
                                 <img src={preview} alt="Preview" />
                             )}
                         </div>
+
+                        {/* Error messages */}
                         <div className="h-5">
                             {error && (
                                 <p
@@ -275,6 +283,8 @@ export default function CreateProjectPage() {
                                 </p>
                             )}
                         </div>
+
+                        {/* Button container */}
                         <div className="
                             flex 
                             flex-col 

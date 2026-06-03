@@ -8,6 +8,7 @@ export async function GET(
 
     const db = await getDB();
 
+    // Fetch project image from database
     const row = await db
         .prepare("SELECT image, image_type FROM projects WHERE id = ?")
         .bind(id)

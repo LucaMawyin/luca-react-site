@@ -7,17 +7,18 @@ import { useState } from "react";
 
 export default function SettingsClient(props : {user : User}){
 
-    // Passwords
+    // Password states
     const [showPassword, setShowPassword] = useState(false);
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    // Success / error
+    // Success / error states
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
     const [visible, setVisible] = useState(true);
 
+    // Handling password change
     async function handlePasswordChange(
         e: React.FormEvent
     ){
@@ -46,6 +47,7 @@ export default function SettingsClient(props : {user : User}){
 
         const data = await response.json() as ChangePasswordResponse;
 
+        // Showing success or error message for 300ms
         if (response.ok){
             setSuccess("Password updated");
             setCurrentPassword("");
@@ -102,6 +104,7 @@ export default function SettingsClient(props : {user : User}){
                     </div>
                 </div>
 
+                {/* Change password section */}
                 <div className="border-t pt-6 space-y-4">
                         <h2 className="text-lg">
                             Change Password
@@ -169,6 +172,7 @@ export default function SettingsClient(props : {user : User}){
                             </div>
                         </div>
 
+                        {/* Message area */}
                         <p   
                             className={`
                                 text-sm text-center min-h-5

@@ -4,11 +4,13 @@ import { getDB } from "@/lib/db";
 
 export async function POST() {
 
+  // Get session token from cookies
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
   const db = await getDB();
 
+  // Delete session from database if token exists
   if (token) {
     await db.prepare(`
       DELETE FROM sessions WHERE token = ?

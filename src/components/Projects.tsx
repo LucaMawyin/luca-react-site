@@ -11,9 +11,10 @@ export default function Projects(props : {isLoggedIn : boolean}) {
 
   const router = useRouter();
 
+  // Fetching projects on load
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     async function load() {
       try {
@@ -42,6 +43,8 @@ export default function Projects(props : {isLoggedIn : boolean}) {
         `}>
           Most Recent Projects
         </h1>
+
+        {/* Add Project button if logged in */}
         {props.isLoggedIn && 
           <div className="
             flex 
@@ -55,6 +58,8 @@ export default function Projects(props : {isLoggedIn : boolean}) {
           </div>
 
         }
+        
+        {/* Project cards */}
         <div className="
             grid
             items-stretch
@@ -77,6 +82,7 @@ export default function Projects(props : {isLoggedIn : boolean}) {
                           position={`${i % 2 === 0 ? "start" : "end"}`}
                       />
 
+                      {/* Delete button if logged in */}
                       {props.isLoggedIn && (
                         <DeleteButton
                           action={async () => {
@@ -87,7 +93,7 @@ export default function Projects(props : {isLoggedIn : boolean}) {
                               },
                               body: JSON.stringify({ id: project.id }),
                             });
-
+                            
                             setProjects((prev) =>
                               prev.filter((p) => p.id !== project.id)
                             );
