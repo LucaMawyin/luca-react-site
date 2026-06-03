@@ -65,7 +65,7 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
             {
                 root: null,
                 threshold: 0,
-                rootMargin: "-60% 0px -75% 0px"
+                rootMargin: "-45% 0px -45% 0px"
             }
         );
 
