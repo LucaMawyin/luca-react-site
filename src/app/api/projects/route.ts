@@ -1,35 +1,7 @@
 import { validateSession } from "@/lib/auth";
 import { getDB } from "@/lib/db";
 import { Project } from "@/lib/types";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-
-export async function GET(request : NextRequest){
-    try {
-
-      // Fetch 5 most recent projects
-      const db = await getDB();
-      const {results} = await db
-      .prepare(`
-        SELECT * FROM projects 
-        ORDER BY created_at DESC 
-        LIMIT 5
-      `)
-      .all();
-
-      return NextResponse.json({
-        projects: results
-      });        
-    }   
-    
-    // Fetch failed
-    catch (err) {
-      return NextResponse.json(
-        { error: "Failed to fetch projects" },
-        { status: 500 }
-      );
-    }
-}
 
 // Create/update projects
 export async function POST(req: NextRequest) {

@@ -1,39 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Project } from "@/lib/types";
 import ProjectCard from "./ProjectCard";
 import Button from "./Button";
 import { useRouter } from "next/navigation";
 import DeleteButton from "./DeleteButton";
 
-export default function Projects(props : {isLoggedIn : boolean}) {
+export default function Projects(props : {
+    isLoggedIn : boolean,
+    projects : Project[]
+  }) {
 
   const router = useRouter();
 
   // Fetching projects on load
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  
-  useEffect(() => {
-    async function load() {
-      try {
-        const res = await fetch("/api/projects");
-
-        if (!res.ok) throw new Error("Failed to fetch");
-
-        const data: { projects?: Project[] } = await res.json();
-
-        setProjects(data.projects ?? []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    load();
-  }, []);
+  const [projects, setProjects] = useState<Project[]>(props.projects);
 
   return(
     <>
@@ -68,41 +50,39 @@ export default function Projects(props : {isLoggedIn : boolean}) {
             p-[5%]
             gap-8
         ">  
-            {loading ? (
-                <p>Loading...</p>
-            ):(                
-                projects.map((project,i) => (
-                    <div
-                      key={project.id}
-                      className="w-full flex flex-col items-center gap-8 justify-between"
-                    >
-                      <ProjectCard
-                          key={project.id ?? i}
-                          project={project}
-                          position={`${i % 2 === 0 ? "start" : "end"}`}
-                      />
+            {                
+              projects.map((project,i) => (
+                  <div
+                    key={project.id}
+                    className="w-full flex flex-col items-center gap-8 justify-between"
+                  >
+                    <ProjectCard
+                        key={project.id ?? i}
+                        project={project}
+                        position={`${i % 2 === 0 ? "start" : "end"}`}
+                    />
 
-                      {/* Delete button if logged in */}
-                      {props.isLoggedIn && (
-                        <DeleteButton
-                          action={async () => {
-                            await fetch("/api/projects", {
-                              method: "DELETE",
-                              headers: {
-                                "Content-Type": "application/json",
-                              },
-                              body: JSON.stringify({ id: project.id }),
-                            });
-                            
-                            setProjects((prev) =>
-                              prev.filter((p) => p.id !== project.id)
-                            );
-                          }}
-                        />
-                      )}
-                    </div>
-                ))
-            )}
+                    {/* Delete button if logged in */}
+                    {props.isLoggedIn && (
+                      <DeleteButton
+                        action={async () => {
+                          await fetch("/api/projects", {
+                            method: "DELETE",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ id: project.id }),
+                          });
+                          
+                          setProjects((prev) =>
+                            prev.filter((p) => p.id !== project.id)
+                          );
+                        }}
+                      />
+                    )}
+                </div>
+              ))
+            }
 
         </div>    
     </>

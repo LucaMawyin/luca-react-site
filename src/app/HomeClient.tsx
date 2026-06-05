@@ -5,10 +5,15 @@ import Projects from "@/components/Projects";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getHref } from "@/lib/getHref";
 import { icons, pages } from "@/lib/info"; 
+import { Project } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function HomeClient(props : {isLoggedIn : boolean}){
+export default function HomeClient(props : 
+    {
+        isLoggedIn : boolean, 
+        projects : Project[]
+    }) {
 
     // Getting pages that are visible to user
     const visiblePages = pages.filter(page =>
@@ -231,7 +236,10 @@ export default function HomeClient(props : {isLoggedIn : boolean}){
 
             {/* Projects */}
             <section id="projects">
-                <Projects isLoggedIn={props.isLoggedIn}/>
+                <Projects 
+                    isLoggedIn={props.isLoggedIn}
+                    projects={props.projects}
+                />
             </section>		
 
             <Footer/>

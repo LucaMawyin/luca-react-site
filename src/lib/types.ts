@@ -11,7 +11,7 @@ export type Project= {
   name : string;
   description : string;
   link : string;
-  image : Buffer | null;
+  image : string | null;
   image_type : string | null;
   languages : string | null;
   tools : string | null;

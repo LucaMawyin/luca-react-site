@@ -66,10 +66,10 @@ export default function ProjectCard( props : {
             >
                 {/* Image */}
                 <div className="flex-1 min-w-75 flex justify-center">
-                    {props.project.image_type && 
+                    {props.project.image && 
                         <div className="flex items-center">
                             <img
-                                src={`/api/projects/image/${props.project.id}`}
+                                src={props.project.image}
                                 alt={`Project ${props.project.id}`}
                                 className="w-full h-auto rounded-xl"
                             />                                   

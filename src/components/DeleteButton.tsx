@@ -3,6 +3,7 @@
 import Button from "@/components/Button";
 import { useEffect, useState, useTransition } from "react";
 import Tile from "./Tile";
+import { createPortal } from "react-dom";
 
 export default function DeleteButton({
   action,
@@ -42,14 +43,14 @@ export default function DeleteButton({
             />
 
             {/* Confirmation dialog */}
-            {open && (
+            {open && createPortal(
                 <div 
                     className="
-                    fixed inset-0 
-                    bg-black/50 
-                    flex items-center justify-center
-                    z-50"
-                >
+                        fixed inset-0
+                        bg-black/50
+                        flex items-center justify-center
+                        z-60
+                ">
                     <Tile 
                         title="Delete project?" 
                         className="bg-white p-[5%] rounded shadow-md max-w-full sm:max-w-fit sm:p-[2%]"
@@ -84,7 +85,7 @@ export default function DeleteButton({
                             </Button>
                         </div>
                     </Tile>
-                </div>
+                </div>, document.body
             )}
         </>
     );
