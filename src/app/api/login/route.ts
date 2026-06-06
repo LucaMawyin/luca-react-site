@@ -118,88 +118,90 @@ export async function POST(request: Request) {
 }
 
 async function getGeoFromIp(ip: string) {
-    const token = process.env.IPINFO_KEY;
+  const token = process.env.IPINFO_KEY;
 
-    if (!token || ip === "unknown") return null;
+  if (!token || ip === "unknown") return null;
 
-    try {
-        const res = await fetch(
-          `https://ipinfo.io/${ip}?token=${token}`
-        );
-        if (!res.ok) return null;
-        return await res.json();
-    } catch (err) {
-        return err;
-    }
+  try {
+    const res = await fetch(
+      `https://ipinfo.io/${ip}?token=${token}`
+    );
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (err) {
+    return err;
+  }
 }
 
 async function sendVerificationEmail(
-    email: string,
-    code: string,
-    ip: string,
-    geo: any,
-    userAgent: string
+  email: string,
+  code: string,
+  ip: string,
+  geo: any,
+  userAgent: string
 ) {
-    const resend = new Resend(process.env.RESEND_KEY);
+  const resend = new Resend(process.env.RESEND_KEY);
+
+  console.log(geo);
     
-    await resend.emails.send({
-        from: "Luca Mawyin <security@lucamawyin.com>",
-        to: email,
-        subject: "Your Login Verification Code",
-        html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; color: #111;">
-                
-                <h2 style="margin-bottom: 10px;">
-                    Verify Your Login
-                </h2>
+  await resend.emails.send({
+    from: "Luca Mawyin <security@lucamawyin.com>",
+    to: email,
+    subject: "Your Login Verification Code",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; color: #111;">
+          
+        <h2 style="margin-bottom: 10px;">
+          Verify Your Login
+        </h2>
 
-                <p>
-                    A login attempt was made on your account.
-                </p>
+        <p>
+          A login attempt was made on your account.
+        </p>
 
-                <div
-                    style="
-                        margin: 30px 0;
-                        padding: 20px;
-                        text-align: center;
-                        background: #f4f4f4;
-                        border-radius: 10px;
-                    "
-                >
-                    <p style="margin: 0; font-size: 14px; color: #666;">
-                        Your verification code
-                    </p>
+        <div
+          style="
+            margin: 30px 0;
+            padding: 20px;
+            text-align: center;
+            background: #f4f4f4;
+            border-radius: 10px;
+          "
+        >
+          <p style="margin: 0; font-size: 14px; color: #666;">
+            Your verification code
+          </p>
 
-                    <h1
-                        style="
-                            margin: 10px 0 0;
-                            font-size: 42px;
-                            letter-spacing: 8px;
-                        "
-                    >
-                        ${code}
-                    </h1>
-                </div>
+          <h1
+            style="
+              margin: 10px 0 0;
+              font-size: 42px;
+              letter-spacing: 8px;
+            "
+          >
+            ${code}
+          </h1>
+        </div>
 
-                <h3 style="margin-top: 30px;">
-                    Login Details
-                </h3>
+        <h3 style="margin-top: 30px;">
+          Login Details
+        </h3>
 
-                <p><strong>IP Address:</strong> ${ip}</p>
-                <p><strong>Device:</strong> ${userAgent}</p>
-                <p><strong>Country:</strong> ${geo?.location?.country || "Unknown"}</p>
-                <p><strong>Region:</strong> ${geo?.location?.region || "Unknown"}</p>
-                <p><strong>City:</strong> ${geo?.location?.city || "Unknown"}</p>
+        <p><strong>IP Address:</strong> ${ip}</p>
+        <p><strong>Device:</strong> ${userAgent}</p>
+        <p><strong>Country:</strong> ${geo?.country || "Unknown"}</p>
+        <p><strong>Region:</strong> ${geo?.region || "Unknown"}</p>
+        <p><strong>City:</strong> ${geo?.city || "Unknown"}</p>
 
-                <p style="margin-top: 30px;">
-                    This code expires in 10 minutes.
-                </p>
+        <p style="margin-top: 30px;">
+          This code expires in 10 minutes.
+        </p>
 
-                <p style="color: #666; font-size: 14px;">
-                    If this wasn't you, you can safely ignore this email.
-                </p>
+        <p style="color: #666; font-size: 14px;">
+          If this wasn't you, you can safely ignore this email.
+        </p>
 
-            </div>
-        `,
-    });
+      </div>
+    `,
+  });
 }
