@@ -55,6 +55,10 @@ export type ChangePasswordResponse =
   | { success: true ; error : "" }
   | { success: false; error: string };
 
+export type VerifyLoginBody = {
+  code: string;
+};
+
 
 export type Page = {
   title: string;

@@ -17,7 +17,8 @@
     "bcryptjs": "^3.0.3",
     "next": "16.2.6",
     "react": "^19.1.7",
-    "react-dom": "^19.1.7"
+    "react-dom": "^19.1.7",
+    "resend": "^6.12.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
