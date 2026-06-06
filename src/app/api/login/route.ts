@@ -142,8 +142,13 @@ async function sendVerificationEmail(
 ) {
   const resend = new Resend(process.env.RESEND_KEY);
 
-  console.log(geo);
-    
+  // Mapping lat and long
+  const [lat, lng] = geo?.loc?.split(",") ?? [];
+  const mapImg =
+    lat && lng
+      ? `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=12&size=600x300&markers=color:red%7C${lat},${lng}`
+      : null;
+      
   await resend.emails.send({
     from: "Luca Mawyin <security@lucamawyin.com>",
     to: email,
@@ -192,9 +197,11 @@ async function sendVerificationEmail(
         <p><strong>Country:</strong> ${geo?.country || "Unknown"}</p>
         <p><strong>Region:</strong> ${geo?.region || "Unknown"}</p>
         <p><strong>City:</strong> ${geo?.city || "Unknown"}</p>
-        <p><strong>Latitude:</strong> ${geo?.latitude || "Unknown"}</p>
-        <p><strong>Longitude:</strong> ${geo?.longitude || "Unknown"}</p>
-
+        <img
+          src="${mapImg}"
+          style="width:100%; border-radius:10px; margin-top:10px;"
+        />
+        
         <p style="margin-top: 30px;">
           This code expires in 10 minutes.
         </p>
