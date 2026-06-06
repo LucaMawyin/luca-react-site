@@ -192,6 +192,8 @@ async function sendVerificationEmail(
         <p><strong>Country:</strong> ${geo?.country || "Unknown"}</p>
         <p><strong>Region:</strong> ${geo?.region || "Unknown"}</p>
         <p><strong>City:</strong> ${geo?.city || "Unknown"}</p>
+        <p><strong>Latitude:</strong> ${geo?.latitude || "Unknown"}</p>
+        <p><strong>Longitude:</strong> ${geo?.longitude || "Unknown"}</p>
 
         <p style="margin-top: 30px;">
           This code expires in 10 minutes.
