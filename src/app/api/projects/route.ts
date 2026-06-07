@@ -78,8 +78,7 @@ export async function POST(req: NextRequest) {
             languages = ?,
             tools = ?,
             image = CASE WHEN ? IS NOT NULL THEN ? ELSE image END,
-            image_type = CASE WHEN ? IS NOT NULL THEN ? ELSE image_type END,
-            updated_at = CURRENT_TIMESTAMP
+            image_type = CASE WHEN ? IS NOT NULL THEN ? ELSE image_type END
           WHERE id = ?
         `)
         .bind(

@@ -6,23 +6,27 @@ import Tile from "@/components/Tile";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { LoginResponse } from "@/lib/types";
+import { LoginResponse, Project } from "@/lib/types";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { ensurePunctuation } from "@/lib/ensurePunctuation";
+import { useEffect } from "react";
+import { normalizeArray } from "@/lib/normalizeJSON";
 
-export default function CreateProjectPage() {
+
+export default function CreateProjectPage(props : {initialData? : any}) {
 
     // Max image size is 200KB
     const MAX_SIZE = 0.2 * 1024 * 1024;
 
     const router = useRouter();
 
+    // Initial form data
     const [form, setForm] = useState({
-        name: "",
-        description: "",
-        link: "",
-        languages: "",
-        tools: "",
+        name: props.initialData?.name ?? "",
+        description: props.initialData?.description ?? "",
+        link: props.initialData?.link ?? "",
+        languages: props.initialData?.languages ? normalizeArray(props.initialData?.languages) : "",
+        tools: props.initialData?.tools ? normalizeArray(props.initialData?.tools) : "",
     });
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -31,6 +35,16 @@ export default function CreateProjectPage() {
     const [error, setError] = useState<string | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [fadeOut, setFadeOut] = useState(false);
+
+    // Setting data if loading a draft that exists
+    useEffect(() => {
+        if (!props.initialData) return;
+
+        if (props.initialData.imageUrl) {
+            setPreview(props.initialData.imageUrl);
+        }
+        
+    }, [props.initialData]); 
 
     // Auto capitalize project name, tools and languages
     const handleChange = (
@@ -92,7 +106,8 @@ export default function CreateProjectPage() {
         
         e.preventDefault();
 
-        if (!imageFile) {
+        // No image file and no id means there is no image
+        if (!imageFile && !props.initialData?.id) {
             setError("Please upload an image");
             setFadeOut(false);
 
@@ -111,15 +126,21 @@ export default function CreateProjectPage() {
 
         const formData = new FormData();
 
+        // If we already have an id we will add it to form
+        if (props.initialData?.id) {
+            formData.append("id", props.initialData.id);
+        }
+
         // Append form data
         formData.append("name", form.name);
         formData.append("description", form.description);
         formData.append("link", form.link);
         formData.append("languages", form.languages);
         formData.append("tools", form.tools);
-        formData.append("image", imageFile);
-        formData.append("imageType", imageFile.type);
-    
+        if (imageFile){
+            formData.append("image", imageFile);
+            formData.append("imageType", imageFile.type);            
+        }
 
         const res = await fetch("/api/projects", {
             method: "POST",
@@ -173,7 +194,7 @@ export default function CreateProjectPage() {
     return (
         <div className="flex justify-center min-h-[90vh]">
             <div className="flex flex-col md:w-[40%] w-full max-w-full justify-center mt-[10vh]">
-                <Link href="/" className="self-start pt-4 pb-4 pl-6 md:pl-0">&lt; Return </Link>
+                <Link href="/projects" className="self-start pt-4 pb-4 pl-6 md:pl-0">&lt; Return </Link>
                 <Tile 
                     title="Add Project"
                     disableHover={true}

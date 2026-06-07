@@ -64,21 +64,31 @@ export default function Projects(props : {
 
                     {/* Delete button if logged in */}
                     {props.isLoggedIn && (
-                      <DeleteButton
-                        action={async () => {
-                          await fetch("/api/projects", {
-                            method: "DELETE",
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({ id: project.id }),
-                          });
-                          
-                          setProjects((prev) =>
-                            prev.filter((p) => p.id !== project.id)
-                          );
-                        }}
-                      />
+                      <div className="w-full md:w-[60%] flex justify-between">
+                        <Button
+                          text="Edit"
+                          className="min-w-32"
+                          onClick={() => {router.push(`add-project/edit?id=${project.id}`)}}
+                        />
+                        <DeleteButton
+                          className="min-w-32"
+                          action={async () => {
+                            await fetch("/api/projects", {
+                              method: "DELETE",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({ id: project.id }),
+                            });
+                            
+                            setProjects((prev) =>
+                              prev.filter((p) => p.id !== project.id)
+                            );
+                          }}
+                        />                        
+                      </div>
+
+
                     )}
                 </div>
               ))

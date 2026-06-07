@@ -7,8 +7,10 @@ import { createPortal } from "react-dom";
 
 export default function DeleteButton({
   action,
+  className = "",
 }: {
   action: () => void;
+  className?: string;
 }) {
     
     // Handle delete action with transition
@@ -38,7 +40,7 @@ export default function DeleteButton({
             <Button
                 text="Delete"
                 type="button"
-                className="bg-red-600 hover:bg-red-700 w-fit"
+                className={`bg-red-600 hover:bg-red-700 ${className}`}
                 onClick={() => setOpen(true)}
             />
 
