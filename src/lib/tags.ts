@@ -16,6 +16,8 @@ export const tagOptions = [
     "",
     "Live",
     "In Progress",
+    "Hackathon",
+    "Winner",
     "Tool",
     "Game",
     "Fullstack",
