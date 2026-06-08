@@ -20,7 +20,6 @@ html, body {
 	padding: 0;
 	margin: 0;
 	font-weight: 500;
-	height: 100%;
 	scroll-snap-type: y mandatory;
 	scroll-behavior: smooth;
 	user-select: none;
