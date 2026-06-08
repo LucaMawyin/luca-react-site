@@ -168,7 +168,7 @@ export default function CreateProjectPage(props : {initialData? : any}) {
             setPreview(null);
             setError(null);
 
-            router.push("/#projects");
+            router.push("/projects");
             router.refresh();
         } 
 
