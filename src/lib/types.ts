@@ -16,6 +16,7 @@ export type Project= {
   languages : string | null;
   tools : string | null;
   created_at : string;
+  tag:string;
 };
 
 export type User = {

@@ -64,6 +64,8 @@ export async function POST(req: NextRequest) {
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
 
+    const tag = formData.get("tag") as string | null;
+
 
     const db = await getDB();
 
@@ -77,6 +79,7 @@ export async function POST(req: NextRequest) {
             link = ?,
             languages = ?,
             tools = ?,
+            tag = ?,
             image = CASE WHEN ? IS NOT NULL THEN ? ELSE image END,
             image_type = CASE WHEN ? IS NOT NULL THEN ? ELSE image_type END
           WHERE id = ?
@@ -88,6 +91,8 @@ export async function POST(req: NextRequest) {
 
           languages ? JSON.stringify(languages) : null,
           tools ? JSON.stringify(tools) : null,
+
+          tag,
 
           imageBuffer,
           imageBuffer,

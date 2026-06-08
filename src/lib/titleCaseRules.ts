@@ -101,4 +101,11 @@ export const specialWords: Record<string, string> = {
 	macos: "macOS",
 	ios: "iOS",
 	android: "Android",
+
+	opencv:"OpenCV",
+	youtube:"YouTube",
+	ipinfo:"IPInfo",
+	ipify:"ipify",
+	mediapipe:"MediaPipe",
+	cvat:"CVAT"
 };

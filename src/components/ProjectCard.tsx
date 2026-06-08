@@ -1,3 +1,4 @@
+import { getTagStyle } from "@/lib/tags";
 import { Project } from "@/lib/types";
 
 export default function ProjectCard( props : {
@@ -41,17 +42,54 @@ export default function ProjectCard( props : {
         >   
 
             {/* Tile title */}
-            <h1 className={`
-                text-2xl! 
-                text-center 
-                ${props.position === "end"
-                    ? "md:text-right"
-                    : "md:text-left"
-                }
-                border-b border-gray-200
+            <div className={`
+                flex 
+                flex-col
+                ${props.position === "start" ? "sm:flex-row" : "sm:flex-row-reverse"}
+                justify-between 
+                w-full 
+                border-b border-gray-200 
+                items-center sm:items-stretch 
+                md:gap-6 gap-4
+                sm:pb-6
+                pb-4
             `}>
-                {props.project.name}
-            </h1>
+                <h1
+                    className={`
+                        text-2xl!
+                        w-fit
+                        text-center
+                        ${props.position === "start" ? "sm:mr-auto" : "sm:ml-auto"}
+                    `}
+                >
+                    {props.project.name}
+                </h1>
+                
+                {props.project.tag && (
+                    <h2 className={`
+                        self-center sm:self-start
+                        text-xl
+                        min-w-fit
+                        w-fit
+                        inline-flex
+                        text-center
+                        justify-center
+                        px-3
+                        py-1
+                        mt-2
+                        sm:mt-0
+                        font-semibold
+                        rounded-full
+                        border
+                        leading-none
+                        animate-tag-pulse
+                        ${getTagStyle(props.project.tag)}
+                    `}>
+                        &#9675; {props.project.tag}
+                    </h2>
+                )}
+            </div>
+
 
             {/* Tile Content */}
             <div

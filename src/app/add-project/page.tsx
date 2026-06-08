@@ -11,6 +11,7 @@ import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { ensurePunctuation } from "@/lib/ensurePunctuation";
 import { useEffect } from "react";
 import { normalizeArray } from "@/lib/normalizeJSON";
+import { tagOptions } from "@/lib/tags";
 
 
 export default function CreateProjectPage(props : {initialData? : any}) {
@@ -27,6 +28,7 @@ export default function CreateProjectPage(props : {initialData? : any}) {
         link: props.initialData?.link ?? "",
         languages: props.initialData?.languages ? normalizeArray(props.initialData?.languages) : "",
         tools: props.initialData?.tools ? normalizeArray(props.initialData?.tools) : "",
+        tag : props.initialData?.tag ?? "",
     });
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -48,7 +50,9 @@ export default function CreateProjectPage(props : {initialData? : any}) {
 
     // Auto capitalize project name, tools and languages
     const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<
+            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >
     ) => {
         const { name, value } = e.target;
 
@@ -137,6 +141,7 @@ export default function CreateProjectPage(props : {initialData? : any}) {
         formData.append("link", form.link);
         formData.append("languages", form.languages);
         formData.append("tools", form.tools);
+        formData.append("tag", form.tag)
         if (imageFile){
             formData.append("image", imageFile);
             formData.append("imageType", imageFile.type);            
@@ -156,6 +161,7 @@ export default function CreateProjectPage(props : {initialData? : any}) {
                 link: "",
                 languages: "",
                 tools: "",
+                tag:"",
             });
 
             setImageFile(null);
@@ -259,6 +265,20 @@ export default function CreateProjectPage(props : {initialData? : any}) {
                             value={form.tools}
                             onChange={handleChange}
                         />
+
+                        <label htmlFor="tag">Tag</label>
+                        <select
+                            name="tag"
+                            value={form.tag}
+                            onChange={handleChange}
+                        >
+
+                            {tagOptions.map((tag) => (
+                                <option key={tag} value={tag}>
+                                    {tag === "" ? "No tag" : tag}
+                                </option>
+                            ))}
+                        </select>
 
                         {/* IMAGE INPUT */}
                         <div
