@@ -85,7 +85,7 @@ export default function ProjectCard( props : {
                         animate-tag-pulse
                         ${getTagStyle(props.project.tag)}
                     `}>
-                        &#9675; {props.project.tag}
+                        {props.project.tag}
                     </h2>
                 )}
             </div>
