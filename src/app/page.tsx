@@ -10,25 +10,24 @@ export default async function Home() {
 
     // Fetching recent projects
     const db = await getDB();
-    if (session){
-        const { results } = await db
-            .prepare(`
-                SELECT *
-                FROM projects
-                ORDER BY created_at DESC
-            `)
-            .all() as { results : Project[] }; 
-    }
-    else{
-        const { results } = await db
-            .prepare(`
-                SELECT *
-                FROM projects
-                ORDER BY created_at DESC
-                LIMIT 5
-            `)
-            .all() as { results : Project[] }; 
-    }
+
+    const query = session
+        ? `
+            SELECT *
+            FROM projects
+            ORDER BY created_at DESC
+          `
+        : `
+            SELECT *
+            FROM projects
+            ORDER BY created_at DESC
+            LIMIT 5
+          `;
+
+
+    const { results } = await db
+        .prepare(query)
+        .all() as { results : Project[] }; 
 
 
     // Convert image buffers to base64 strings
