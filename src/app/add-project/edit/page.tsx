@@ -1,5 +1,6 @@
 import { getDB } from "@/lib/db";
-import CreateProjectPage from "../page";
+import CreateProjectPage from "../CreateProjectPage";
+import { getTags } from "@/lib/tags";
 
 export default async function Page({
   searchParams,
@@ -24,6 +25,8 @@ export default async function Page({
       .first();
   }
 
+  const tags = await getTags();
+
   const data = draft;
 
   let imageUrl = null;
@@ -36,6 +39,7 @@ export default async function Page({
   return (
     <CreateProjectPage
       initialData={{ ...data, imageUrl }}
+      tags={tags}
     />
   );
 }

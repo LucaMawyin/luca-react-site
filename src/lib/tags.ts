@@ -1,3 +1,15 @@
+import { getDB } from "./db";
+
+export async function getTags() {
+    const db = await getDB();
+
+    const result = await db
+        .prepare("SELECT name FROM tags")
+        .all();
+
+    return result.results.map((row: any) => row.name);
+}
+
 export function getTagStyle(tag?: string) {
     switch (tag?.toLowerCase()) {
         case "live":
@@ -61,17 +73,3 @@ export function getTagStyle(tag?: string) {
             };
     }
 }
-
-
-export const tagOptions = [
-    "",
-    "Live",
-    "In Progress",
-    "Hackathon",
-    "Winner",
-    "Tool",
-    "Game",
-    "Fullstack",
-    "Web",
-    "AI",
-];
