@@ -1,9 +1,13 @@
+import { validateSession } from "@/lib/auth";
 import HomeClient from "./HomeClient";
-import getSessionAndProjects from "@/lib/getProjects";
+import getProjects from "@/lib/getProjects";
+import { Session } from "@/lib/types";
 
 export default async function Home() {
 
-    const { session, projects } = await getSessionAndProjects();
+    const session = await validateSession() as Session;
+    const projects = await getProjects(session);
+    
 
     return (
         <HomeClient 

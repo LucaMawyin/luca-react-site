@@ -1,11 +1,7 @@
-import { validateSession } from "@/lib/auth";
 import { getDB } from "@/lib/db";
-import { Project } from "@/lib/types";
+import { Project, Session } from "@/lib/types";
 
-export default async function getSessionAndProjects() {
-
-    // Validate user session
-    const session = await validateSession();
+export default async function getProjects(session : Session) {
 
     // Fetching recent projects
     const db = await getDB();
@@ -41,8 +37,5 @@ export default async function getSessionAndProjects() {
         };
     });
 
-    return {
-        session: !!session,
-        projects,
-    };
+    return projects;
 }
