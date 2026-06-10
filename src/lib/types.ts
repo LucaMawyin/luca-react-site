@@ -69,3 +69,8 @@ export type Page = {
   mobile?: boolean;
   newTab?: boolean;
 };
+
+export type Tag = {
+  id: number;
+  name: string;
+}

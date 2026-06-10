@@ -17,6 +17,8 @@ export default function ProjectCard( props : {
         : props.project.languages || []
     ) as string[];
 
+    const tagStyle = getTagStyle(props.project.tag);
+
     return (
         <a
             href={props.project.link}
@@ -66,25 +68,29 @@ export default function ProjectCard( props : {
                 </h1>
                 
                 {props.project.tag && (
-                    <h2 className={`
-                        self-center sm:self-start
-                        text-xl
-                        min-w-fit
-                        w-fit
-                        inline-flex
-                        text-center
-                        justify-center
-                        px-3
-                        py-1
-                        mt-2
-                        sm:mt-0
-                        font-semibold
-                        rounded-full
-                        border
-                        leading-none
-                        animate-tag-pulse
-                        ${getTagStyle(props.project.tag)}
-                    `}>
+                    <h2 
+                        style={{ "--glow": tagStyle.glow } as React.CSSProperties}
+
+                        className={`
+                            self-center sm:self-start
+                            text-xl
+                            min-w-fit
+                            w-fit
+                            inline-flex
+                            text-center
+                            justify-center
+                            px-3
+                            py-1
+                            mt-2
+                            sm:mt-0
+                            font-semibold
+                            rounded-full
+                            border
+                            leading-none
+                            animate-tag-pulse
+                            ${tagStyle.className}
+                        `}
+                    >
                         {props.project.tag}
                     </h2>
                 )}
