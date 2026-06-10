@@ -32,6 +32,7 @@ export default function Projects(props : {
             flex 
             w-full
             justify-center
+            p-4 sm:p-0
           ">
             <Button 
               text="Add Project"
