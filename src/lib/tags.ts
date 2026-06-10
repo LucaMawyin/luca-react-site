@@ -4,10 +4,10 @@ export async function getTags() {
     const db = await getDB();
 
     const result = await db
-        .prepare("SELECT name FROM tags")
+        .prepare("SELECT * FROM tags")
         .all();
 
-    return result.results.map((row: any) => row.name);
+    return result.results;
 }
 
 export function getTagStyle(tag?: string) {

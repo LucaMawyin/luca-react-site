@@ -40,5 +40,6 @@ CREATE TABLE login_verifications (
 );
 CREATE TABLE tags(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE
+    name TEXT NOT NULL UNIQUE,
+    builtin BOOLEAN DEFAULT FALSE
 );

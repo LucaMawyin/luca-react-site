@@ -31,8 +31,8 @@ export default function Button(props : {
 
     // Add disabled styles if the button is disabled
     const disabledStyle = props.disabled
-    ? "opacity-50 cursor-not-allowed"
-    : "";
+        ? "opacity-50 hover:bg-red-600! cursor-default!"
+        : "";
 
     return(
         <button 

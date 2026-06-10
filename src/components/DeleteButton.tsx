@@ -6,11 +6,15 @@ import Tile from "./Tile";
 import { createPortal } from "react-dom";
 
 export default function DeleteButton({
-  action,
-  className = "",
+    action,
+    className = "",
+    disabled= false,
+    text="",
 }: {
-  action: () => void;
-  className?: string;
+    action: () => void;
+    className?: string;
+    disabled?: boolean;
+    text?:string;
 }) {
     
     // Handle delete action with transition
@@ -40,6 +44,7 @@ export default function DeleteButton({
             <Button
                 text="Delete"
                 type="button"
+                disabled={disabled}
                 className={`bg-red-600 hover:bg-red-700 ${className}`}
                 onClick={() => setOpen(true)}
             />
@@ -54,7 +59,7 @@ export default function DeleteButton({
                         z-60
                 ">
                     <Tile 
-                        title="Delete project?" 
+                        title={`Delete ${text}?`} 
                         className="bg-white p-[5%] rounded shadow-md max-w-full sm:max-w-fit sm:p-[2%]"
                         disableHover={true}
                     >

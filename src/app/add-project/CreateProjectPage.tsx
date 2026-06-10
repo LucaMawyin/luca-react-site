@@ -6,15 +6,16 @@ import Tile from "@/components/Tile";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { LoginResponse, Project, Tag } from "@/lib/types";
+import { LoginResponse, Tag } from "@/lib/types";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { ensurePunctuation } from "@/lib/ensurePunctuation";
 import { useEffect } from "react";
 import { normalizeArray } from "@/lib/normalizeJSON";
+import DeleteButton from "@/components/DeleteButton";
 
 export default function CreateProjectPage(props : {
     initialData? : any;
-    tags : string[]
+    tags : Tag[]
 }) {
 
     // Max image size is 200KB
@@ -31,6 +32,9 @@ export default function CreateProjectPage(props : {
         tools: props.initialData?.tools ? normalizeArray(props.initialData?.tools) : "",
         tag : props.initialData?.tag ?? "",
     });
+
+    const [customTag, setCustomTag] = useState("");
+    const [useCustomTag, setUseCustomTag] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -251,7 +255,7 @@ export default function CreateProjectPage(props : {
                             required
                         />
 
-                        <label htmlFor="link">Languages Used</label>
+                        <label htmlFor="languages">Languages Used</label>
                         <input
                             name="languages"
                             placeholder="Languages (comma separated)"
@@ -267,19 +271,68 @@ export default function CreateProjectPage(props : {
                             onChange={handleChange}
                         />
 
+                        {/* PROJECT TAGS */}
                         <label htmlFor="tag">Tag</label>
+                        <div className="flex items-center justify-between gap-2">
                         <select
                             name="tag"
+                            className="flex-1"
                             value={form.tag}
-                            onChange={handleChange}
+                                onChange={(e) => {
+                                    if (e.target.value === "custom") {
+                                        setUseCustomTag(true);
+                                        setForm({ ...form, tag: "" });
+                                    } else {
+                                        setUseCustomTag(false);
+                                        setForm({ ...form, tag: e.target.value });
+                                    }
+                                }}
                         >
 
                             {props.tags.map((tag) => (
-                                <option key={tag} value={tag}>
-                                    {tag === "" ? "No tag" : tag}
+                                <option key={tag.id} value={tag.name}>
+                                    {tag.name === "" ? "No tag" : tag.name}
                                 </option>
                             ))}
+
+                            <option value="custom">Add new tag</option>
                         </select>
+                        <DeleteButton
+                            disabled={
+                                !form.tag ||
+                                useCustomTag || 
+                                props.tags.find(tag => tag.name === form.tag)?.builtin
+                            }
+                            text="Tag"
+                            className="flex py-2! px-4! min-h-fit"
+                            action={async () => {
+                                if (!form.tag) return;
+
+                                await fetch("/api/tags", {
+                                    method: "DELETE",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({ name: form.tag }),
+                                });
+
+                                setForm((prev) => ({ ...prev, tag: "" }));
+                                router.refresh();
+                            }}
+                        />
+                        </div>
+                        {useCustomTag && (
+                            <input
+                                placeholder="New tag"
+                                value={capitalizeNamesAndTitles(customTag)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setCustomTag(value);
+                                    setForm({ ...form, tag: value });
+                                }}
+                                required
+                            />
+                        )}
 
                         {/* IMAGE INPUT */}
                         <div

@@ -73,4 +73,5 @@ export type Page = {
 export type Tag = {
   id: number;
   name: string;
+  builtin: boolean;
 }

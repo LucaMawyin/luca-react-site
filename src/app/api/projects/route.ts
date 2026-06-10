@@ -1,4 +1,5 @@
 import { validateSession } from "@/lib/auth";
+import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getDB } from "@/lib/db";
 import { Project } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
@@ -64,10 +65,26 @@ export async function POST(req: NextRequest) {
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
 
-    const tag = formData.get("tag") as string | null;
-
+    // Project Tag
+    const rawTag = (formData.get("tag") as string) || null;
+    const tag = rawTag
+      ? capitalizeNamesAndTitles(rawTag.trim().toLowerCase())
+      : null;
 
     const db = await getDB();
+
+    // Add tag to db if it doesnt exist
+    if (tag) {
+      await db
+        .prepare(`
+          INSERT INTO tags (name)
+          VALUES (?)
+          ON CONFLICT(name) DO NOTHING
+        `)
+        .bind(tag)
+        .run();
+    }
+
 
     // UPDATE PROJECT
     if (id) {
@@ -114,8 +131,8 @@ export async function POST(req: NextRequest) {
     const result = await db
       .prepare(`
         INSERT INTO projects
-        (name, description, link, languages, tools, image, image_type)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        (name, description, link, languages, tools, image, image_type, tag)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `)
       .bind(
         name,
@@ -124,7 +141,8 @@ export async function POST(req: NextRequest) {
         JSON.stringify(languages),
         JSON.stringify(tools),
         imageBuffer,
-        imageType?.trim() || null
+        imageType?.trim() || null,
+        tag
       )
       .run();
 

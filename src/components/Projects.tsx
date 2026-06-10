@@ -72,6 +72,7 @@ export default function Projects(props : {
                         />
                         <DeleteButton
                           className="min-w-32"
+                          text="Project"
                           action={async () => {
                             await fetch("/api/projects", {
                               method: "DELETE",
