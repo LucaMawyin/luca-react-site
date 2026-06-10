@@ -41,7 +41,7 @@ export default function Login(props : {isLoggedIn : boolean}){
             return;
         }
 
-        // Push to verification page (TODO)
+        // Push to verification page
         if (data.status === "verification_required") {
 
             router.push(

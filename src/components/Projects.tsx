@@ -75,13 +75,18 @@ export default function Projects(props : {
                           className="min-w-32"
                           text="Project"
                           action={async () => {
-                            await fetch("/api/projects", {
+                            const res = await fetch("/api/projects", {
                               method: "DELETE",
                               headers: {
                                 "Content-Type": "application/json",
                               },
                               body: JSON.stringify({ id: project.id }),
                             });
+
+                            if (res.status === 401) {
+                              router.push("/login");
+                              return;
+                            }
                             
                             setProjects((prev) =>
                               prev.filter((p) => p.id !== project.id)

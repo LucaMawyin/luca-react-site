@@ -9,8 +9,6 @@ import { Resend } from "resend";
 export async function POST(request: Request) {
   try {
 
-    const sessionDurationDays = 1
-
     const { email, password } = (await request.json()) as LoginBody;
 
     // No email or password provided
