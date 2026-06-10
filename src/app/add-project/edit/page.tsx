@@ -1,6 +1,7 @@
 import { getDB } from "@/lib/db";
 import CreateProjectPage from "../CreateProjectPage";
 import { getTags } from "@/lib/tags";
+import { Tag } from "@/lib/types";
 
 export default async function Page({
   searchParams,
@@ -25,7 +26,7 @@ export default async function Page({
       .first();
   }
 
-  const tags = await getTags();
+  const tags = await getTags() as Tag[];
 
   const data = draft;
 

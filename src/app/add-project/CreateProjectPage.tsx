@@ -323,7 +323,7 @@ export default function CreateProjectPage(props : {
                         </div>
                         {useCustomTag && (
                             <input
-                                placeholder="New tag"
+                                placeholder="Add New Tag"
                                 value={capitalizeNamesAndTitles(customTag)}
                                 onChange={(e) => {
                                     const value = e.target.value;
