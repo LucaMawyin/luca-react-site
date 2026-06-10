@@ -72,6 +72,12 @@ export default function CreateProjectPage(props : {
                 ? capitalizeNamesAndTitles(value)
                 : value,
         });
+        
+        if (e.target instanceof HTMLTextAreaElement) {
+            const el = e.target;
+            el.style.height = "auto";
+            el.style.height = el.scrollHeight + "px";
+        }
     };
   
     // Image select
@@ -236,6 +242,11 @@ export default function CreateProjectPage(props : {
                             name="description"
                             placeholder="Description"
                             value={form.description}
+                            rows={1}
+                            style={{
+                                overflow: "hidden",
+                                resize: "none",
+                            }}
                             onChange={handleChange}
                             onBlur={(e) => {
                                 setForm({
