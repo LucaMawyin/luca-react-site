@@ -4,6 +4,7 @@ export default function Tile(props : {
     children?: React.ReactNode, 
     className?: string, 
     titleClassName?: string, 
+    childClassName?:string,
     disableHover?: boolean
 }){
     return (
@@ -34,7 +35,7 @@ export default function Tile(props : {
             </h1>
 
             {/* Tile content */}
-            <div className="mt-auto flex flex-col">
+            <div className={`mt-auto flex flex-col ${props.childClassName}`}>
                 {props.children}
             </div>
             

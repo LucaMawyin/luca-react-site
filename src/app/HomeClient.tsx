@@ -2,6 +2,7 @@
 
 import Footer from "@/components/Footer";
 import Projects from "@/components/Projects";
+import Tech from "@/components/Tech";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getHref } from "@/lib/getHref";
 import { icons, pages } from "@/lib/info"; 
@@ -233,6 +234,11 @@ export default function HomeClient(props :
                 </div>
 
             </section>	
+
+            {/* TECH I USE */}
+            <section id="tech" className="min-h-fit! mb-[10%]">
+                <Tech/>
+            </section>
 
             {/* Projects */}
             <section id="projects">
