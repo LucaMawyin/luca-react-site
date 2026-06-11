@@ -28,6 +28,10 @@ export async function POST(req: Request) {
     await db
         .prepare(`DELETE FROM tech`)
         .run();
+    
+    await db
+        .prepare("DELETE FROM sqlite_sequence WHERE name = 'tech'")
+        .run();
 
     await db.batch([
         ...languages.map(name => 
