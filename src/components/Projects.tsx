@@ -6,6 +6,7 @@ import ProjectCard from "./ProjectCard";
 import Button from "./Button";
 import { useRouter } from "next/navigation";
 import DeleteButton from "./DeleteButton";
+import FadeInOnView from "./FadeInOnView";
 
 export default function Projects(props : {
     isLoggedIn : boolean,
@@ -53,10 +54,15 @@ export default function Projects(props : {
         ">  
             {                
               projects.map((project,i) => (
-                  <div
+                  
+                  <FadeInOnView
                     key={project.id}
                     className="w-full flex flex-col items-center gap-8 justify-between"
                   >
+
+
+
+
                     <ProjectCard
                         key={project.id ?? i}
                         project={project}
@@ -97,7 +103,7 @@ export default function Projects(props : {
 
 
                     )}
-                </div>
+                  </FadeInOnView>
               ))
             }
 
