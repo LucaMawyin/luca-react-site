@@ -142,7 +142,7 @@ export default function ProjectCard( props : {
                             {(languages ?? []).map((lang, i) => (
                             <span
                                 key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-200"
+                                className="px-2 py-1 text-sm rounded-full bg-gray-100"
                             >
                                 {lang}
                             </span>
@@ -154,7 +154,7 @@ export default function ProjectCard( props : {
                             {(tools ?? []).map((tool, i) => (
                             <span
                                 key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-300"
+                                className="px-2 py-1 text-sm rounded-full bg-gray-200"
                             >
                                 {tool}
                             </span>
@@ -162,11 +162,11 @@ export default function ProjectCard( props : {
                         </div>
 
                         <div className="flex flex-wrap gap-2 mt-2">
-                            {(libraries ?? []).length > 0 && <b>libraries:</b>}
+                            {(libraries ?? []).length > 0 && <b>Libraries:</b>}
                             {(libraries ?? []).map((libraries, i) => (
                             <span
                                 key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-100"
+                                className="px-2 py-1 text-sm rounded-full bg-gray-300"
                             >
                                 {libraries}
                             </span>
