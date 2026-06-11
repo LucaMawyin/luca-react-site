@@ -142,7 +142,7 @@ export default function ProjectCard( props : {
                             {(languages ?? []).map((lang, i) => (
                             <span
                                 key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-100"
+                                className="px-2 py-1 text-sm rounded-full bg-gray-200"
                             >
                                 {lang}
                             </span>
@@ -154,7 +154,7 @@ export default function ProjectCard( props : {
                             {(tools ?? []).map((tool, i) => (
                             <span
                                 key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-200"
+                                className="px-2 py-1 text-sm rounded-full bg-gray-100"
                             >
                                 {tool}
                             </span>
