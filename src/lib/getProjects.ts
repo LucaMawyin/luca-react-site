@@ -115,9 +115,7 @@ export async function getTech(): Promise<Tech[]>{
         });
 
     });
-
-    console.log(techSet)
-
+    
     // merge everything
     return Array.from(techSet);
 
