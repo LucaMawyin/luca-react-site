@@ -7,6 +7,7 @@ CREATE TABLE projects(
     image_type TEXT,
     languages TEXT,
     tools TEXT,
+    libraries TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE users (
@@ -42,4 +43,11 @@ CREATE TABLE tags(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
     builtin BOOLEAN DEFAULT FALSE
+);
+CREATE TABLE tech(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    category TEXT NOT NULL CHECK (
+        category IN ('languages', 'libraries', 'tools')
+    )
 );

@@ -15,6 +15,7 @@ export type Project= {
   image_type : string | null;
   languages : string | null;
   tools : string | null;
+  libraries: string | null;
   created_at : string;
   tag:string;
 };
@@ -74,4 +75,10 @@ export type Tag = {
   id: number;
   name: string;
   builtin: boolean;
+}
+
+export type Tech = {
+  id: number; 
+  name: string;
+  category: "tools" | "libraries" | "languages";
 }

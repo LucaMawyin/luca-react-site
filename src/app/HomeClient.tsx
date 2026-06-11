@@ -2,18 +2,19 @@
 
 import Footer from "@/components/Footer";
 import Projects from "@/components/Projects";
-import Tech from "@/components/Tech";
+import TechStack from "@/components/Tech";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getHref } from "@/lib/getHref";
 import { icons, pages } from "@/lib/info"; 
-import { Project } from "@/lib/types";
+import { Project, Tech } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function HomeClient(props : 
     {
         isLoggedIn : boolean, 
-        projects : Project[]
+        projects : Project[],
+        tech : Tech[],
     }) {
 
     // Getting pages that are visible to user
@@ -237,7 +238,10 @@ export default function HomeClient(props :
 
             {/* TECH I USE */}
             <section id="tech" className="min-h-fit! mb-[10%]">
-                <Tech/>
+                <TechStack 
+                    isLoggedIn={props.isLoggedIn}
+                    tech={props.tech}
+                />
             </section>
 
             {/* Projects */}

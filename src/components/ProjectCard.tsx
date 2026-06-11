@@ -17,6 +17,12 @@ export default function ProjectCard( props : {
         : props.project.languages || []
     ) as string[];
 
+    const libraries = (
+    typeof props.project.libraries === "string"
+        ? JSON.parse(props.project.libraries || "[]")
+        : props.project.libraries || []
+    ) as string[];
+
     const tagStyle = getTagStyle(props.project.tag);
 
     return (
@@ -153,7 +159,19 @@ export default function ProjectCard( props : {
                                 {tool}
                             </span>
                             ))}
-                        </div>                        
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 mt-2">
+                            {(libraries ?? []).length > 0 && <b>libraries:</b>}
+                            {(libraries ?? []).map((libraries, i) => (
+                            <span
+                                key={i}
+                                className="px-2 py-1 text-sm rounded-full bg-gray-100"
+                            >
+                                {libraries}
+                            </span>
+                            ))}
+                        </div>
                     </div>
 
                 </div>

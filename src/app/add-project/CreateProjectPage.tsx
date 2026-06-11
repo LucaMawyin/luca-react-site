@@ -30,6 +30,7 @@ export default function CreateProjectPage(props : {
         link: props.initialData?.link ?? "",
         languages: props.initialData?.languages ? normalizeArray(props.initialData?.languages) : "",
         tools: props.initialData?.tools ? normalizeArray(props.initialData?.tools) : "",
+        libraries: props.initialData?.tools ? normalizeArray(props.initialData?.libraries) : "",
         tag : props.initialData?.tag ?? "",
     });
 
@@ -64,7 +65,8 @@ export default function CreateProjectPage(props : {
         const shouldCapitalize =
             name === "name" ||
             name === "tools" ||
-            name === "languages";
+            name === "languages" || 
+            name === "libraries";
 
         setForm({
             ...form,
@@ -152,6 +154,7 @@ export default function CreateProjectPage(props : {
         formData.append("link", form.link);
         formData.append("languages", form.languages);
         formData.append("tools", form.tools);
+        formData.append("libraries", form.libraries);
         formData.append("tag", form.tag)
         if (imageFile){
             formData.append("image", imageFile);
@@ -172,6 +175,7 @@ export default function CreateProjectPage(props : {
                 link: "",
                 languages: "",
                 tools: "",
+                libraries:"",
                 tag:"",
             });
 
@@ -279,6 +283,14 @@ export default function CreateProjectPage(props : {
                             name="tools"
                             placeholder="Tools (comma separated)"
                             value={form.tools}
+                            onChange={handleChange}
+                        />
+
+                        <label htmlFor="libraries">Libraries Used</label>
+                        <input
+                            name="libraries"
+                            placeholder="Libraries (comma separated)"
+                            value={form.libraries}
                             onChange={handleChange}
                         />
 

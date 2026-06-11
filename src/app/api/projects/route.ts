@@ -45,6 +45,14 @@ export async function POST(req: NextRequest) {
         .filter(Boolean)
       : null;
 
+    const librariesRaw = (formData.get("libraries") as string)?.trim();
+    const libraries = librariesRaw
+      ? librariesRaw
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean)
+      : null;
+
     
     // Image upload
     const image = formData.get("image") as File | null;
@@ -96,6 +104,7 @@ export async function POST(req: NextRequest) {
             link = ?,
             languages = ?,
             tools = ?,
+            libraries = ?,
             tag = ?,
             image = CASE WHEN ? IS NOT NULL THEN ? ELSE image END,
             image_type = CASE WHEN ? IS NOT NULL THEN ? ELSE image_type END
@@ -108,6 +117,7 @@ export async function POST(req: NextRequest) {
 
           languages ? JSON.stringify(languages) : null,
           tools ? JSON.stringify(tools) : null,
+          libraries ? JSON.stringify(libraries) : null,
 
           tag,
 
@@ -131,8 +141,8 @@ export async function POST(req: NextRequest) {
     const result = await db
       .prepare(`
         INSERT INTO projects
-        (name, description, link, languages, tools, image, image_type, tag)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (name, description, link, languages, tools, libraries, image, image_type, tag)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
       .bind(
         name,
@@ -140,6 +150,7 @@ export async function POST(req: NextRequest) {
         link,
         JSON.stringify(languages),
         JSON.stringify(tools),
+        JSON.stringify(libraries),
         imageBuffer,
         imageType?.trim() || null,
         tag
