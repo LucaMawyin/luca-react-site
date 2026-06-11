@@ -82,3 +82,9 @@ export type Tech = {
   name: string;
   category: "tools" | "libraries" | "languages";
 }
+
+export type TechBody = {
+  languages: string;
+  tools: string;
+  libraries: string;
+};

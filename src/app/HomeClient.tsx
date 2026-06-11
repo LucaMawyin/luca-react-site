@@ -137,7 +137,7 @@ export default function HomeClient(props :
                         text-2xl
                     ">
                         {visiblePages
-                            .filter((page) => !page.mobile)
+                            .filter((page) => (!page.mobile && page.show))
                             .map((page, index) => (
                                 <a
                                     key={page.title}

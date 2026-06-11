@@ -3,6 +3,8 @@
 import { Tech } from "@/lib/types";
 import FadeInOnView from "./FadeInOnView";
 import Tile from "./Tile";
+import Button from "./Button";
+import { useRouter } from "next/navigation";
 
 export default function TechStack(props : {
     isLoggedIn : boolean,
@@ -21,6 +23,8 @@ export default function TechStack(props : {
         { title: "Tools", items: grouped.tools || [] }
     ];
 
+    const router = useRouter();
+
     return (
         <div
             id="tech"
@@ -30,9 +34,10 @@ export default function TechStack(props : {
                 flex-1
                 items-center
                 text-center
+                gap-8
             "
         >
-            <h1 className="mb-8">Tech I Use</h1>
+            <h1>Tech I Use</h1>
 
             <div className="
                 px-[10%]
@@ -86,6 +91,17 @@ export default function TechStack(props : {
 
                 ))}
             </div>
+
+            {props.isLoggedIn && (
+                <FadeInOnView>
+                    <Button
+                        text="Edit"
+                        onClick={() => {router.push("/edit-tech")}}
+                    />                
+                </FadeInOnView>                   
+            )}
+
+
         </div>
     );
 }

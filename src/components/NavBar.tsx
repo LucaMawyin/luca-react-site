@@ -164,7 +164,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 </a>
                 <div className="flex gap-8">
                     {visiblePages
-                        .filter((page) => !page.mobile)
+                        .filter((page) => (!page.mobile && page.show))
                         .map((page) => (
                         <a
                             key={page.title}
@@ -242,24 +242,27 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     x
                 </a>
 
-                {visiblePages.map((page) => (
-                    <a
-                        key={page.title}
-                        href={getHref(page)}
-                        target={page.newTab ? "_blank" : undefined}
-                        className="
-                            text-xl
-                            transition-transform duration-(--transition-duration)
-                            hover:scale-(--link-scale) 
-                        "
-                        onClick={(e) => {
-                            setOpen(false);
-                            handleClick(e, page);
-                        }}
-                    >
-                        {capitalizeNamesAndTitles(page.title)}
-                    </a>
-                ))}
+                {visiblePages
+                    .filter((page) => page.show)
+                    .map((page) => (
+                        <a
+                            key={page.title}
+                            href={getHref(page)}
+                            target={page.newTab ? "_blank" : undefined}
+                            className="
+                                text-xl
+                                transition-transform duration-(--transition-duration)
+                                hover:scale-(--link-scale) 
+                            "
+                            onClick={(e) => {
+                                setOpen(false);
+                                handleClick(e, page);
+                            }}
+                        >
+                            {capitalizeNamesAndTitles(page.title)}
+                        </a>
+                    ))
+                }
             </div>
 
             {/* Logos hang in top right */}

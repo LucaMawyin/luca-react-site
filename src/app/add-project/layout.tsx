@@ -1,5 +1,4 @@
-import { cookies, headers } from "next/headers";
-import { getDB } from "@/lib/db";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { validateSession } from "@/lib/auth";
 

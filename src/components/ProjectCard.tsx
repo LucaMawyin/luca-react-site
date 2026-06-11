@@ -137,6 +137,8 @@ export default function ProjectCard( props : {
                 ">
                     {props.project.description}
                     <div>
+
+                        {/* LANGUAGES */}
                         <div className="flex flex-wrap gap-2 mt-2">
                             {(languages ?? []).length > 0 && <b>Languages:</b>}
                             {(languages ?? []).map((lang, i) => (
@@ -149,29 +151,33 @@ export default function ProjectCard( props : {
                             ))}
                         </div>
 
+                        {/* LIBRARIES */}
+                        <div className="flex flex-wrap gap-2 mt-2">
+                            {(libraries ?? []).length > 0 && <b>Libraries:</b>}
+                            {(libraries ?? []).map((libraries, i) => (
+                            <span
+                                key={i}
+                                className="px-2 py-1 text-sm rounded-full bg-gray-100"
+                            >
+                                {libraries}
+                            </span>
+                            ))}
+                        </div>
+
+                        {/* TOOLS */}
                         <div className="flex flex-wrap gap-2 mt-2">
                             {(tools ?? []).length > 0 && <b>Tools:</b>}
                             {(tools ?? []).map((tool, i) => (
                             <span
                                 key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-100"
+                                className="px-2 py-1 text-sm rounded-full bg-gray-300"
                             >
                                 {tool}
                             </span>
                             ))}
                         </div>
 
-                        <div className="flex flex-wrap gap-2 mt-2">
-                            {(libraries ?? []).length > 0 && <b>Libraries:</b>}
-                            {(libraries ?? []).map((libraries, i) => (
-                            <span
-                                key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-300"
-                            >
-                                {libraries}
-                            </span>
-                            ))}
-                        </div>
+
                     </div>
 
                 </div>
