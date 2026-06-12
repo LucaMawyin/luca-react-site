@@ -4,6 +4,7 @@ import { Project } from "@/lib/types";
 export default function ProjectCard( props : {
     project : Project;
     position : "start" | "end";
+    isLoggedIn : boolean;
 }){
     const tools = (
     typeof props.project.tools === "string"
@@ -39,7 +40,7 @@ export default function ProjectCard( props : {
                 md:w-[60%]
                 md:p-8
                 p-4
-                gap-8
+                
 
                 transition-all
                 duration-(--transition-duration)
@@ -102,6 +103,26 @@ export default function ProjectCard( props : {
                 )}
             </div>
 
+            {/* PROJECT PIN */}
+            <div className="min-h-8 flex items-center sm:justify-start justify-center">
+                {(props.project.pinned === 1) && props.isLoggedIn && (
+                    <div
+                        className="
+                            px-3
+                            py-1
+                            text-xs
+                            font-semibold
+                            rounded-full
+                            bg-yellow-400
+                            text-black
+                            shadow-md
+                        "
+                    >
+                        Pinned
+                    </div>
+                )}
+            </div>
+
 
             {/* Tile Content */}
             <div
@@ -114,6 +135,8 @@ export default function ProjectCard( props : {
                     gap-8
                 `}
             >
+
+                
                 {/* Image */}
                 <div className="flex-1 min-w-75 flex justify-center">
                     {props.project.image && 

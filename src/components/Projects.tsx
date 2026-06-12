@@ -66,6 +66,7 @@ export default function Projects(props : {
                     <ProjectCard
                         key={project.id ?? i}
                         project={project}
+                        isLoggedIn={props.isLoggedIn}
                         position={`${i % 2 === 0 ? "start" : "end"}`}
                     />
 

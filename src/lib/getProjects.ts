@@ -10,12 +10,12 @@ export default async function getProjects(session : Session) {
         ? `
             SELECT *
             FROM projects
-            ORDER BY created_at DESC
+            ORDER BY pinned DESC, created_at DESC
           `
         : `
             SELECT *
             FROM projects
-            ORDER BY created_at DESC
+            ORDER BY pinned DESC, created_at DESC
             LIMIT 5
           `;
 

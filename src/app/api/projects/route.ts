@@ -79,6 +79,8 @@ export async function POST(req: NextRequest) {
       ? capitalizeNamesAndTitles(rawTag.trim().toLowerCase())
       : null;
 
+    const pinned = formData.get("pinned") as string;
+    
     const db = await getDB();
 
     // Add tag to db if it doesnt exist
@@ -106,6 +108,7 @@ export async function POST(req: NextRequest) {
             tools = ?,
             libraries = ?,
             tag = ?,
+            pinned = ?,
             image = CASE WHEN ? IS NOT NULL THEN ? ELSE image END,
             image_type = CASE WHEN ? IS NOT NULL THEN ? ELSE image_type END
           WHERE id = ?
@@ -120,6 +123,7 @@ export async function POST(req: NextRequest) {
           libraries ? JSON.stringify(libraries) : null,
 
           tag,
+          pinned,
 
           imageBuffer,
           imageBuffer,
@@ -141,8 +145,8 @@ export async function POST(req: NextRequest) {
     const result = await db
       .prepare(`
         INSERT INTO projects
-        (name, description, link, languages, tools, libraries, image, image_type, tag)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (name, description, link, languages, tools, libraries, image, image_type, tag, pinned)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
       .bind(
         name,
@@ -153,7 +157,8 @@ export async function POST(req: NextRequest) {
         JSON.stringify(libraries),
         imageBuffer,
         imageType?.trim() || null,
-        tag
+        tag,
+        pinned
       )
       .run();
 

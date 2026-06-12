@@ -32,6 +32,7 @@ export default function CreateProjectPage(props : {
         tools: props.initialData?.tools ? normalizeArray(props.initialData?.tools) : "",
         libraries: props.initialData?.tools ? normalizeArray(props.initialData?.libraries) : "",
         tag : props.initialData?.tag ?? "",
+        pinned: props.initialData?.pinned ?? false,
     });
 
     const [customTag, setCustomTag] = useState("");
@@ -156,6 +157,7 @@ export default function CreateProjectPage(props : {
         formData.append("tools", form.tools);
         formData.append("libraries", form.libraries);
         formData.append("tag", form.tag)
+        formData.append("pinned", form.pinned ? "1" : "0")
         if (imageFile){
             formData.append("image", imageFile);
             formData.append("imageType", imageFile.type);            
@@ -177,6 +179,7 @@ export default function CreateProjectPage(props : {
                 tools: "",
                 libraries:"",
                 tag:"",
+                pinned:false,
             });
 
             setImageFile(null);
@@ -320,6 +323,7 @@ export default function CreateProjectPage(props : {
 
                             <option value="custom">Add new tag</option>
                         </select>
+
                         <DeleteButton
                             disabled={
                                 !form.tag ||
@@ -356,6 +360,23 @@ export default function CreateProjectPage(props : {
                                 required
                             />
                         )}
+
+                        <div className="flex gap-8">
+                            <label htmlFor="pinned">Pin Project</label>
+                            <input
+                                name="pinned"
+                                type="checkbox"
+                                checked={form.pinned}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            pinned: e.target.checked,
+                                        })
+                                    }
+                            />                            
+                        </div>
+
+
 
                         {/* IMAGE INPUT */}
                         <div
