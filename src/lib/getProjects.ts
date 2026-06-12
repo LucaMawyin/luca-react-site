@@ -16,7 +16,6 @@ export default async function getProjects(session : Session) {
             SELECT *
             FROM projects
             ORDER BY pinned DESC, created_at DESC
-            LIMIT 5
           `;
 
 
