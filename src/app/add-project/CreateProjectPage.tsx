@@ -23,16 +23,18 @@ export default function CreateProjectPage(props : {
 
     const router = useRouter();
 
+    const safeString = (v: any) => (v ?? "").toString();
+
     // Initial form data
     const [form, setForm] = useState({
-        name: props.initialData?.name ?? "",
-        description: props.initialData?.description ?? "",
-        link: props.initialData?.link ?? "",
-        languages: props.initialData?.languages ? normalizeArray(props.initialData?.languages) : "",
-        tools: props.initialData?.tools ? normalizeArray(props.initialData?.tools) : "",
-        libraries: props.initialData?.tools ? normalizeArray(props.initialData?.libraries) : "",
-        tag : props.initialData?.tag ?? "",
-        pinned: props.initialData?.pinned ?? false,
+        name: safeString(props.initialData?.name),
+        description: safeString(props.initialData?.description),
+        link: safeString(props.initialData?.link),
+        languages: safeString(normalizeArray(props.initialData?.languages)),
+        tools: safeString(normalizeArray(props.initialData?.tools)),
+        libraries: safeString(normalizeArray(props.initialData?.libraries)),
+        tag: safeString(props.initialData?.tag),
+        pinned: !!props.initialData?.pinned,
     });
 
     const [customTag, setCustomTag] = useState("");

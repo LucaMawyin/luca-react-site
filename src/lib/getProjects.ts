@@ -64,13 +64,13 @@ export async function getTech(): Promise<Tech[]>{
     });
 
     // Adding all languages and tools to techSet
-    projectRes.results.forEach((result) => {
+    (projectRes?.results ?? []).forEach((result) => {
         const toolArr: string[] = JSON.parse(result.tools || "[]");
         const languageArr: string[] = JSON.parse(result.languages || "[]");
         const libArr: string[] = JSON.parse(result.libraries || "[]");
 
         // Languages
-        languageArr.forEach((language) => {
+        (languageArr ?? []).forEach((language) => {
             largestId++;
 
             // Creating temp tech object
@@ -84,7 +84,7 @@ export async function getTech(): Promise<Tech[]>{
             if (!exists) techSet.add(temp);
         });
 
-        toolArr.forEach((tool) => {
+        (toolArr ?? []).forEach((tool) => {
             largestId++;
 
             // Creating temp tech object
@@ -99,7 +99,7 @@ export async function getTech(): Promise<Tech[]>{
         });
 
         // Libraries
-        libArr.forEach((lib) => {
+        (libArr ?? []).forEach((lib) => {
             largestId++;
 
             // Creating temp tech object
