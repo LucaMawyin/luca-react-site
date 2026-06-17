@@ -42,12 +42,25 @@ export default function SettingsClient(props : {user : User, about : string}){
     const [ about, setAbout ] = useState(props.about || "");
 
     useEffect(() => {
-        const textareas = document.querySelectorAll("textarea");
-            textareas.forEach((ta) => {
-                ta.style.height = "auto";
-                ta.style.height = ta.scrollHeight + "px";
-            }
-        );
+        const resizeTextAreas = () => {
+            const textareas = document.querySelectorAll("textarea");
+                textareas.forEach((ta) => {
+                    ta.style.height = "auto";
+                    ta.style.height = ta.scrollHeight + "px";
+                }
+            );
+        }
+
+        resizeTextAreas();
+
+        // run on resize
+        window.addEventListener("resize", resizeTextAreas);
+
+        // cleanup
+        return () => {
+            window.removeEventListener("resize", resizeTextAreas);
+        };
+
     }, []);
 
 
