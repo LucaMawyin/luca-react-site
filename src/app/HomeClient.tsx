@@ -9,6 +9,7 @@ import { icons, pages } from "@/lib/info";
 import { Project, Tech } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function HomeClient(props : 
     {
@@ -217,8 +218,11 @@ export default function HomeClient(props :
                         w-full lg:basis-1/2
                         text-center sm:text-left
                     ">
+
                         <h1 className="py-2">About Me</h1>
-                        <p className="mb-8 whitespace-pre-line">{props.about}</p>
+                        <div className="mb-8 whitespace-pre-line">
+                            <ReactMarkdown>{props.about}</ReactMarkdown>
+                        </div>
                     </div>
 
                     <div className="
