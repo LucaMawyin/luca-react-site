@@ -43,6 +43,13 @@
 			"database_id": "c8e273d5-8b98-4dfe-becb-1c71a9099898",
 			"remote": true
 		}
+	],
+	"r2_buckets": [
+		{
+			"bucket_name": "luca-bucket",
+			"binding": "luca_bucket",
+			"remote": true
+		}
 	]
 	/**
 	 * Smart Placement

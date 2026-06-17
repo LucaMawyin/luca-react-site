@@ -1,14 +1,40 @@
-import { NextResponse } from "next/server";
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
-export async function GET(req: Request) {
-    const url = new URL("/resume/resume.pdf", req.url);
+export async function GET() {
+    try {
+        const r2 = new S3Client({
+            region: "auto",
+            endpoint: `https://${process.env.CF_ID}.r2.cloudflarestorage.com`,
+            credentials: {
+                accessKeyId: process.env.CF_BUCKET_ACCESS_KEY!,
+                secretAccessKey: process.env.CF_BUCKET_SECRET_ACCESS_KEY!,
+            },
+        });
 
-    const res = await fetch(url);
-    const pdf = await res.arrayBuffer();
+        const key = `${process.env.CF_BUCKET_NAME}/resume.pdf`; 
+        const object = await r2.send(
+            new GetObjectCommand({
+                Bucket: `${process.env.CF_BUCKET_NAME}`,
+                Key: key,
+            })
+        );
 
-    return new NextResponse(pdf, {
-        headers: {
-            "Content-Type": "application/pdf",
-        },
-    });
+        // Not found
+        if (!object.Body) {
+            return new Response("Not found", { status: 404 });
+        }
+
+
+        // Get File
+        const stream = object.Body as ReadableStream;
+        return new Response(stream, {
+            headers: {
+                "Content-Type": "application/pdf",
+            },
+        });
+
+    } catch (err) {
+        console.error(err);
+        return new Response("Error fetching resume", { status: 500 });
+    }
 }

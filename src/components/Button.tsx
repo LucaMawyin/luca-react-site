@@ -3,7 +3,7 @@
 export default function Button(props : {
     text : string; 
     type?: "button" | "submit" | "reset";
-    variant?: "primary" | "secondary" | "red";
+    variant?: "primary" | "secondary" | "red" | "transparent";
     children?:React.ReactNode;
     className?:string;
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -23,10 +23,13 @@ export default function Button(props : {
     // Variant styles
     const styles = {
         primary:
-        "bg-(--contrast-light) text-white hover:bg-(--contrast-colour) hover:shadow-xl",
+            "bg-(--contrast-light) text-white hover:bg-(--contrast-colour) hover:shadow-xl",
         secondary:
-        "bg-gray-200 text-black hover:bg-gray-300 hover:shadow-md",
-        red : "bg-red-600 text-white hover:bg-red-700 hover:shadow-md",
+            "bg-gray-200 text-black hover:bg-gray-300 hover:shadow-md",
+        red : 
+            "bg-red-600 text-white hover:bg-red-700 hover:shadow-md",
+        transparent:
+            "bg-transparent text-black",
     };
 
     // Add disabled styles if the button is disabled
