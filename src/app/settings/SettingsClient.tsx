@@ -278,7 +278,7 @@ export default function SettingsClient(props : {user : User, about : string}){
                 <Tile 
                     title="Profile Settings"
                     disableHover={true}
-                    className="lg:max-w-[40vw] max-w-full gap-4 shadow-none"
+                    className="lg:max-w-[40vw] max-w-full justify-between shadow-none"
                     childClassName="mt-0!"
                     titleClassName="border-b"
                 >
@@ -373,7 +373,7 @@ export default function SettingsClient(props : {user : User, about : string}){
 
                 {/* RESUME & PASSWORD */}
                 <Tile
-                    className="lg:max-w-[40vw] max-w-full gap-4 shadow-none"
+                    className="lg:max-w-[40vw] max-w-full justify-between shadow-none"
                     disableHover={true}
                 >
 
