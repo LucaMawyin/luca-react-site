@@ -57,6 +57,16 @@ export default function CreateProjectPage(props : {
         
     }, [props.initialData]); 
 
+    // Auto resize text area on load
+    useEffect(() => {
+        const textareas = document.querySelectorAll("textarea");
+            textareas.forEach((ta) => {
+                ta.style.height = "auto";
+                ta.style.height = ta.scrollHeight + "px";
+            }
+        );
+    }, []);
+
     // Auto capitalize project name, tools and languages
     const handleChange = (
         e: React.ChangeEvent<
