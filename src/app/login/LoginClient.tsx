@@ -41,6 +41,13 @@ export default function Login(props : {isLoggedIn : boolean}){
             return;
         }
 
+        // Login error response
+        if (!response.ok) {
+            setError(data.error || "Login failed");
+            return;
+        }
+
+
         // Push to verification page
         if (data.status === "verification_required") {
 
@@ -49,19 +56,6 @@ export default function Login(props : {isLoggedIn : boolean}){
             );
             return;
         } 
-
-        // Redirect to next page on successful login
-        if (data.status === "success"){
-            router.push(next);
-            router.refresh();
-        }
-
-        // Show error message on failure
-        if (data.status === "error") {
-            setError(data.error || "Login failed");
-            return;
-        }
-
     }
 
     // Show message if user is already logged in
