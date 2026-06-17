@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 
         const buffer = Buffer.from(await file.arrayBuffer());
 
-        const key = `${process.env.CF_BUCKET_NAME}/resume.pdf`;
+        const key = `resume.pdf`;
 
         await r2.send(
             new PutObjectCommand({

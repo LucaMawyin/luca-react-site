@@ -11,7 +11,7 @@ export async function GET() {
             },
         });
 
-        const key = `${process.env.CF_BUCKET_NAME}/resume.pdf`; 
+        const key = `resume.pdf`; 
         const object = await r2.send(
             new GetObjectCommand({
                 Bucket: `${process.env.CF_BUCKET_NAME}`,
