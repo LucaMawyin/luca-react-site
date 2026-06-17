@@ -25,14 +25,17 @@ export default function Tile(props : {
             ${props.className??""}`}>
 
             {/* Title */ }
-            <h1 
-                className={`
-                    ${props.titleClassName?.includes("text-") ? "" : "text-[3em]!" } 
-                    ${props.titleClassName}`
-                }
-            >
-                {props.title}
-            </h1>
+            {props.title && 
+                <h1 
+                    className={`
+                        ${props.titleClassName?.includes("text-") ? "" : "text-[3em]!" } 
+                        ${props.titleClassName}`
+                    }
+                >
+                    {props.title}
+                </h1>                
+            }
+
 
             {/* Tile content */}
             <div className={`mt-auto flex flex-col ${props.childClassName}`}>
