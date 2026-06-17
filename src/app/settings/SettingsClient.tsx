@@ -222,6 +222,21 @@ export default function SettingsClient(props : {user : User, about : string}){
 
     // Updating about me
     async function handleAboutSubmit() {
+
+        if (!about.length){
+            setMessage({
+                type:"about",
+                status: "error",
+                text: "Please enter a bio",
+            });
+            setVisible(true);
+                setTimeout(() => {
+                setVisible(false);
+                setTimeout(() => setMessage(null), 300);
+            }, 3000);
+            return;
+        }
+
         const res = await fetch("/api/update-about", {
             method: "POST",
             headers: {
