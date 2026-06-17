@@ -1,6 +1,18 @@
+import { validateSession } from "@/lib/auth";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+
+    const session = await validateSession();
+
+    // Authenticate before proceeding
+    if (!session) {
+        return NextResponse.json(
+            { error: "Unauthorized" },
+            { status: 401 }
+        );
+    }
 
     try {
 
