@@ -166,6 +166,10 @@ export default function SettingsClient(props : {user : User}){
                 className="lg:max-w-[40vw] max-w-full gap-4"
             >
                 <div className="space-y-4 pb-6">
+                    <h2 className="text-xl">
+                        User Information
+                    </h2>
+                    
                     <div className="flex flex-col">
                         <span className="text-gray-500">First Name</span>
                         <span>
@@ -203,36 +207,37 @@ export default function SettingsClient(props : {user : User}){
                         className="flex flex-col gap-4"
                         onSubmit={handleResumeSubmit}
                     >
-                        <h2 className="text-lg">
+                        <h2 className="text-xl">
                             Upload New Resume
                         </h2>
                         <label htmlFor="resume" className="text-gray-500">Drag & drop resume here, or click to select</label>
-                        <input
-                            name="resume"
-                            type="file"
-                            ref={fileInputRef}
-                            accept="application/pdf"
-                            onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
+                        <div className="space-y-2">
+                            <input
+                                name="resume"
+                                type="file"
+                                ref={fileInputRef}
+                                accept="application/pdf"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (!file) return;
 
-                                setResumeFile(file);
-                                setResumeName(file.name);
-                            }}
-                            className="hidden"
-                        />
-                        <Button 
-                            text="Select PDF" 
-                            variant="secondary" 
-                            className="w-full self-center"
-                            onClick={() => fileInputRef.current?.click()}
-                        />
-                        {resumeName && (
-                            <p className="text-sm text-gray-500">
-                                Selected: {resumeName}
-                            </p>
-                        )}
-                        {
+                                    setResumeFile(file);
+                                    setResumeName(file.name);
+                                }}
+                                className="hidden"
+                            />
+                            <Button 
+                                text="Select PDF" 
+                                variant="secondary" 
+                                className="w-full self-center"
+                                onClick={() => fileInputRef.current?.click()}
+                            />
+                            {resumeName && (
+                                <p className="text-sm text-gray-500">
+                                    Selected: {resumeName}
+                                </p>
+                            )}
+                            
                             <p   
                                 className={`
                                     text-sm text-center min-h-5
@@ -248,110 +253,111 @@ export default function SettingsClient(props : {user : User}){
                                     ""
                                 )}
                             </p>
-                        }
-                        <Button
-                            text="Submit Resume"
-                            type="submit"
-                            className="w-full sm:w-fit"
-                        />                        
+                            
+                            <Button
+                                text="Submit Resume"
+                                type="submit"
+                                className="w-full sm:w-fit"
+                            />                            
+                        </div>
+                        
                     </form>
 
                 </div>
 
                 {/* Change password section */}
                 <div className="border-t pt-6 space-y-4">
-                        <h2 className="text-lg">
-                            Change Password
-                        </h2>
+                    <h2 className="text-xl">
+                        Change Password
+                    </h2>
 
-                        <div className="flex flex-col gap-1">
-                            <label
-                                htmlFor="current-password"
-                                className="text-gray-500"
-                            >
-                                Current Password
-                            </label>
-                            <div className="flex gap-2 w-full">
-                                <input
-                                    id="current-password"
-                                    type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    className="flex-1"
-                                    value={currentPassword}
-                                    onChange={(e) => setCurrentPassword(e.target.value)}
-                                    required
-                                />
-
-                                <button
-                                    type="button"
-                                    className="flex-0 hover:cursor-pointer"
-                                    onClick={() => setShowPassword((p) => !p)}
-                                >
-                                    {showPassword ? "Hide" : "Show"}
-                                </button>
-                            </div>
-                            <label
-                                htmlFor="new-password"
-                                className="text-gray-500"
-                            >
-                                New Password
-                            </label>
-                            <div className="flex gap-2 w-full">
-                                <input
-                                    id="new-password"
-                                    type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    className="flex-1"
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <label
-                                htmlFor="confirm-new-password"
-                                className="text-gray-500"
-                            >
-                                Confirm New Password
-                            </label>
-                            <div className="flex gap-2 w-full">
-                                <input
-                                    id="confirm-new-password"
-                                    type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    className="flex-1"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        {/* Message area */}
-                        <p   
-                            className={`
-                                text-sm text-center min-h-5
-                                transition-opacity duration-300
-                                ${visible ? "opacity-100" : "opacity-0"}
-                            `}
+                    <div className="flex flex-col gap-2">
+                        <label
+                            htmlFor="current-password"
+                            className="text-gray-500"
                         >
-                            {error ? (
-                                <span className="text-red-500">{error}</span>
-                            ) : success ? (
-                                <span className="text-green-500">{success}</span>
-                            ):(
-                                ""
-                            )}
-                        </p>
+                            Current Password
+                        </label>
+                        <div className="flex gap-2 w-full">
+                            <input
+                                id="current-password"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                className="flex-1"
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                required
+                            />
 
-                        <Button 
-                            text="Change Password" 
-                            type="submit"
-                            className="self-center w-full sm:w-fit"
-                            onClick={handlePasswordChange}
-                        />
+                            <button
+                                type="button"
+                                className="flex-0 hover:cursor-pointer"
+                                onClick={() => setShowPassword((p) => !p)}
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
+                        <label
+                            htmlFor="new-password"
+                            className="text-gray-500"
+                        >
+                            New Password
+                        </label>
+                        <div className="flex w-full">
+                            <input
+                                id="new-password"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                className="flex-1"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <label
+                            htmlFor="confirm-new-password"
+                            className="text-gray-500"
+                        >
+                            Confirm New Password
+                        </label>
+                        <div className="flex w-full">
+                            <input
+                                id="confirm-new-password"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                className="flex-1"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        {/* Message area */}
+                        <div className="space-y-2">
+                            <p   
+                                className={`
+                                    text-sm text-center min-h-5
+                                    transition-opacity duration-300
+                                    ${visible ? "opacity-100" : "opacity-0"}
+                                `}
+                            >
+                                {error ? (
+                                    <span className="text-red-500">{error}</span>
+                                ) : success ? (
+                                    <span className="text-green-500">{success}</span>
+                                ):(
+                                    ""
+                                )}
+                            </p>
+
+                            <Button 
+                                text="Change Password" 
+                                type="submit"
+                                className="self-center w-full sm:w-fit"
+                                onClick={handlePasswordChange}
+                            />                            
+                        </div>                            
                     </div>
-
-                
+                </div>
             </Tile>
         </div>
     );
