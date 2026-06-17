@@ -51,3 +51,7 @@ CREATE TABLE tech(
         category IN ('languages', 'libraries', 'tools')
     )
 );
+CREATE TABLE site_content (
+    id INTEGER PRIMARY KEY autoincrement,
+    about TEXT
+);

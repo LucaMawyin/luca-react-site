@@ -3,16 +3,30 @@
 import Button from "@/components/Button";
 import Tile from "@/components/Tile";
 import { ChangePasswordResponse, User } from "@/lib/types";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
-export default function SettingsClient(props : {user : User}){
+type Message = {
+    text: string;
+    status: "error" | "success";
+    type : "about" | "password" | "resume";
+} | null;
+
+function getMessageClass(message?: Message) {
+    if (!message) return "";
+
+    if (message.status === "error") return "text-red-500";
+    if (message.status === "success") return "text-green-500";
+
+    return "";
+}
+
+export default function SettingsClient(props : {user : User, about : string}){
 
     // Resume file input stuff
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [resumeName, setResumeName] = useState<string | null>(null);
-    const [resumeFile, setResumeFile] = useState<File | null>(null);
-    const [resumeError, setResumeError] = useState<string | null>(null);
-    const [ resumeSuccess, setResumeSuccess ] = useState<string | null>(null);
+    const [ resumeName, setResumeName] = useState<string | null>(null);
+    const [ resumeFile, setResumeFile] = useState<File | null>(null);
+
 
     // Password states
     const [showPassword, setShowPassword] = useState(false);
@@ -21,9 +35,21 @@ export default function SettingsClient(props : {user : User}){
     const [confirmPassword, setConfirmPassword] = useState("");
 
     // Success / error states
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
+    const [message, setMessage] = useState<Message>(null);
     const [visible, setVisible] = useState(true);
+
+    // About me
+    const [ about, setAbout ] = useState(props.about || "");
+
+    useEffect(() => {
+        const textareas = document.querySelectorAll("textarea");
+            textareas.forEach((ta) => {
+                ta.style.height = "auto";
+                ta.style.height = ta.scrollHeight + "px";
+            }
+        );
+    }, []);
+
 
     // Handling password change
     async function handlePasswordChange(
@@ -31,12 +57,15 @@ export default function SettingsClient(props : {user : User}){
     ){
         e.preventDefault();
 
-        setError(null);
-        setSuccess(null);
+        setMessage(null);
 
         // Simple password check
         if (newPassword !== confirmPassword){
-            setError("Passwords do not match");
+            setMessage({
+                type:"password",
+                status: "error",
+                text: "Passwords do not match",
+            });
             return;
         }
 
@@ -56,21 +85,29 @@ export default function SettingsClient(props : {user : User}){
 
         // Showing success or error message for 300ms
         if (response.ok){
-            setSuccess("Password updated");
+            setMessage({
+                type:"password",
+                status: "success",
+                text: "Password updated",
+            });
             setCurrentPassword("");
             setNewPassword("");
             setConfirmPassword("");
             setVisible(true);
             setTimeout(() => {
                 setVisible(false);
-                setTimeout(() => setSuccess(null), 300);
+                setTimeout(() => setMessage(null), 300);
             }, 3000);
         } else {
-            setError(data.error || "Failed to update password");
+            setMessage({
+                type:"password",
+                status: "error",
+                text: data.error || "Failed to update password",
+            });
             setVisible(true);
                 setTimeout(() => {
                 setVisible(false);
-                setTimeout(() => setError(null), 300);
+                setTimeout(() => setMessage(null), 300);
             }, 3000);
         }
     }
@@ -86,16 +123,20 @@ export default function SettingsClient(props : {user : User}){
 
         // Only PDF
         if (file.type !== "application/pdf") {
-            setResumeError("Only PDF files are allowed");
+            setMessage({
+                type:"resume",
+                status: "error",
+                text: "Only PDF files are allowed",
+            });
             setVisible(true);
                 setTimeout(() => {
                 setVisible(false);
-                setTimeout(() => setResumeError(null), 300);
+                setTimeout(() => setMessage(null), 300);
             }, 3000);
             return;
         }
 
-        setResumeError(null);
+        setMessage(null);
 
         setResumeFile(file);
         setResumeName(file.name);
@@ -107,11 +148,15 @@ export default function SettingsClient(props : {user : User}){
 
         // No resume file
         if (!resumeFile) {
-            setResumeError("Please select a resume first");
+            setMessage({
+                type:"resume",
+                status: "error",
+                text: "Please select a resume first",
+            });
             setVisible(true);
                 setTimeout(() => {
                 setVisible(false);
-                setTimeout(() => setResumeError(null), 300);
+                setTimeout(() => setMessage(null), 300);
             }, 3000);
             return;
         }
@@ -128,11 +173,15 @@ export default function SettingsClient(props : {user : User}){
 
         // Error
         if (!res.ok) {
-            setResumeError(data.error || "Upload failed");
+            setMessage({
+                type:"resume",
+                status: "error",
+                text: data.error || "Upload failed",
+            });
             setVisible(true);
                 setTimeout(() => {
                 setVisible(false);
-                setTimeout(() => setResumeError(null), 300);
+                setTimeout(() => setMessage(null), 300);
             }, 3000);
             return;
         }
@@ -146,13 +195,56 @@ export default function SettingsClient(props : {user : User}){
         }
 
         // Success message
-        setResumeSuccess("Successfully Uploaded Resume");
+        setMessage({
+            type:"resume",
+            status: "success",
+            text: "Successfully Uploaded Resume",
+        });
         setVisible(true);
             setTimeout(() => {
             setVisible(false);
-            setTimeout(() => setResumeSuccess(null), 300);
+            setTimeout(() => setMessage(null), 300);
         }, 3000);
     };
+
+    // Updating about me
+    async function handleAboutSubmit() {
+        const res = await fetch("/api/update-about", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ about }),
+        });
+
+        const data = await res.json() as any;
+
+        if (!res.ok) {
+            setMessage({
+                type:"about", 
+                status:"error",
+                text: data.error || "Failed to update about"
+            });
+            setVisible(true);
+                setTimeout(() => {
+                setVisible(false);
+                setTimeout(() => setMessage(null), 300);
+            }, 3000);
+            return;
+        }
+
+        // Success message
+        setMessage({
+            type:"about",
+            status: "success",
+            text: "Successfully changed about me",
+        });
+        setVisible(true);
+            setTimeout(() => {
+            setVisible(false);
+            setTimeout(() => setMessage(null), 300);
+        }, 3000);
+    }
 
     return (
         <div className="
@@ -177,7 +269,9 @@ export default function SettingsClient(props : {user : User}){
                     childClassName="mt-0!"
                     titleClassName="border-b"
                 >
-                    <div className="space-y-4 pb-6 border-b sm:border-b-0">
+
+                    {/* INFO */}
+                    <div className="space-y-4 pb-6 border-b">
                         <h2 className="text-xl">
                             User Information
                         </h2>
@@ -206,6 +300,61 @@ export default function SettingsClient(props : {user : User}){
                         </div>
                     </div>
 
+                    {/* ABOUT ME */}
+                    <div className="space-y-4 pt-6">
+                        <h2 className="text-xl">
+                            About Me
+                        </h2>
+                        <div className="flex flex-col gap-2">
+                            <textarea
+                                value={about}
+                                className="
+                                    w-full
+                                    min-h-28
+                                    rounded-md
+                                    border
+                                    text-sm
+                                    text-gray-700
+                                    bg-gray-50
+                                "
+                                rows={1}
+                                style={{
+                                    overflow: "hidden",
+                                    resize: "none",
+                                }}
+                                onChange={(e) => {
+                                    setAbout(e.target.value)
+                                    if (e.target instanceof HTMLTextAreaElement) {
+                                        const el = e.target;
+                                        el.style.height = "auto";
+                                        el.style.height = el.scrollHeight + "px";
+                                    }
+                                }}
+                            />
+
+                            <p   
+                                className={`
+                                    text-sm text-center min-h-5
+                                    transition-opacity duration-300
+                                    ${visible ? "opacity-100" : "opacity-0"}
+                                `}
+                            >
+                                {message?.type === "about" && (
+                                    <span className={getMessageClass(message)}>
+                                        {message.text}
+                                    </span>
+                                )}
+                            </p>
+
+                            <Button
+                                text="Change About"
+                                className="w-full sm:w-56"
+                                onClick={handleAboutSubmit}
+                            />                            
+                        </div>
+
+
+                    </div>
 
                 </Tile>
 
@@ -267,12 +416,10 @@ export default function SettingsClient(props : {user : User}){
                                         ${visible ? "opacity-100" : "opacity-0"}
                                     `}
                                 >
-                                    {resumeError ? (
-                                        <span className="text-red-500">{resumeError}</span>
-                                    ) : resumeSuccess ? (
-                                        <span className="text-green-500">{resumeSuccess}</span>
-                                    ):(
-                                        ""
+                                    {message?.type === "resume" && (
+                                        <span className={getMessageClass(message)}>
+                                            {message.text}
+                                        </span>
                                     )}
                                 </p>
                                 
@@ -362,12 +509,10 @@ export default function SettingsClient(props : {user : User}){
                                         ${visible ? "opacity-100" : "opacity-0"}
                                     `}
                                 >
-                                    {error ? (
-                                        <span className="text-red-500">{error}</span>
-                                    ) : success ? (
-                                        <span className="text-green-500">{success}</span>
-                                    ):(
-                                        ""
+                                    {message?.type === "password" && (
+                                        <span className={getMessageClass(message)}>
+                                            {message.text}
+                                        </span>
                                     )}
                                 </p>
 

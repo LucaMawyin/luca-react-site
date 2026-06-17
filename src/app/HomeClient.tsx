@@ -15,6 +15,7 @@ export default function HomeClient(props :
         isLoggedIn : boolean, 
         projects : Project[],
         tech : Tech[],
+        about : string,
     }) {
 
     // Getting pages that are visible to user
@@ -217,8 +218,7 @@ export default function HomeClient(props :
                         text-center sm:text-left
                     ">
                         <h1 className="py-2">About Me</h1>
-                        <p className="mb-8">Hi, my name is Luca Mawyin. I am currently a second year Computer Science student at McMaster University. I enjoy creating full stack web applications, with a focus on clean responsive UI, and seamless backend integration. Other areas of interest include algorithm design and machine learning.</p>
-                        <p>I am interested in sports, especially hockey, listening to and writing music, and researching and learning about human anatomy and physiology. I love meeting new people and trying to make a meaningful positive impact on the world.</p>
+                        <p className="mb-8 whitespace-pre-line">{props.about}</p>
                     </div>
 
                     <div className="
