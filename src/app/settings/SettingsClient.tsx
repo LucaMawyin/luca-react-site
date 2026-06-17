@@ -284,7 +284,7 @@ export default function SettingsClient(props : {user : User, about : string}){
                 >
 
                     {/* INFO */}
-                    <div className="space-y-4 pb-6 border-b">
+                    <div className="space-y-4 py-6 border-b">
                         <h2 className="text-xl">
                             User Information
                         </h2>
