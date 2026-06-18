@@ -129,14 +129,14 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                 </div>
                             )}
                             
-                            <div className="text-sm text-neutral-500 mt-2">
+                            <div className="text-sm mt-2">
                                 <ReactMarkdown
                                     components={{
                                         ul: ({ ...props }) => (
-                                        <ul className="list-disc pl-5 space-y-1" {...props} />
+                                            <ul className="list-disc pl-5 space-y-1" {...props} />
                                         ),
                                         li: ({ ...props }) => (
-                                        <li className="text-neutral-500" {...props} />
+                                            <li {...props} />
                                         ),
                                     }}
                                     >
