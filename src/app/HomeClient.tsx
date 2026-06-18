@@ -205,7 +205,7 @@ export default function HomeClient(props :
             </section>
 
             {/* About me */}
-            <section id="about" >
+            <section id="about" className="min-h-[75vh]!">
                 <div className="
                     w-full
                     flex flex-wrap-reverse
