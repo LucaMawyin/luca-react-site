@@ -27,6 +27,18 @@ export async function POST(req: Request) {
 
         const db = await getDB();
 
+        // Add tag to db if it doesnt exist
+        if (tag) {
+          await db
+            .prepare(`
+              INSERT OR IGNORE INTO tags (name,category)
+              VALUES (?,?)
+            `)
+            .bind(tag,"experience")
+            .run();
+        }
+
+
         // UPDATE if id exists
         if (id) {
             await db                

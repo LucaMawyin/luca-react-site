@@ -45,7 +45,8 @@ CREATE TABLE tags(
     builtin BOOLEAN DEFAULT FALSE,
     category TEXT NOT NULL CHECK (
         category IN ('project', 'experience')
-    )
+    ),
+    UNIQUE(name, category)
 );
 CREATE TABLE tech(
     id INTEGER PRIMARY KEY AUTOINCREMENT,

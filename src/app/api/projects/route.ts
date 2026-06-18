@@ -87,11 +87,10 @@ export async function POST(req: NextRequest) {
     if (tag) {
       await db
         .prepare(`
-          INSERT INTO tags (name)
-          VALUES (?)
-          ON CONFLICT(name) DO NOTHING
+          INSERT OR IGNORE INTO tags (name,category)
+          VALUES (?,?)
         `)
-        .bind(tag)
+        .bind(tag,"project")
         .run();
     }
 
