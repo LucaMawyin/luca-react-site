@@ -33,7 +33,11 @@ export default function CreateExperiencePage(props : {
         end_date: safeString(props.initialData?.end_date),
     });
 
-    const startDate = form.start_date || "";
+    const currentDate = new Date();
+    const currentYear = String(currentDate.getFullYear());
+    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
+
+    const startDate = form.start_date || `${currentYear}${currentMonth}`;
     const startYear =
         startDate.length >= 4 ? startDate.slice(0, 4) : new Date().getFullYear().toString();
     const startMonth =
