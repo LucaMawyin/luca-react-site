@@ -225,7 +225,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 bg-(--primary-colour)
 
                 flex flex-col items-center justify-center
-                gap-12
+                gap-[5%]
 
                 z-50
                 
