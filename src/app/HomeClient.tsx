@@ -1,6 +1,7 @@
 "use client";
 
 import ExperienceClient from "@/components/Experience";
+import FadeInOnView from "@/components/FadeInOnView";
 import Footer from "@/components/Footer";
 import Projects from "@/components/Projects";
 import TechStack from "@/components/Tech";
@@ -214,7 +215,7 @@ export default function HomeClient(props :
                     my-auto
                     md:py-0
                     p-[5%]
-                ">
+                ">  
                     <div className="
                         basis-full
                         w-full lg:basis-1/2
@@ -222,9 +223,9 @@ export default function HomeClient(props :
                     ">
 
                         <h1 className="py-2">About Me</h1>
-                        <div className="mb-8 whitespace-pre-line">
+                        <FadeInOnView className="mb-8 whitespace-pre-line">
                             <ReactMarkdown>{props.about}</ReactMarkdown>
-                        </div>
+                        </FadeInOnView>
                     </div>
 
                     <div className="

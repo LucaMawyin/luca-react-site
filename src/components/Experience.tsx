@@ -25,21 +25,21 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
             {/* Add Experience button if logged in */}
             {props.isLoggedIn && 
                 <div className="
-                flex 
-                w-full
-                justify-center
-                p-4 sm:p-0
+                    flex 
+                    w-full
+                    justify-center
+                    p-4 sm:p-0 sm:pt-4
                 ">
-                <Button 
-                    text="Add Experience"
-                    onClick={() => (router.push("/add-experience"))}
-                />            
+                    <Button 
+                        text="Add Experience"
+                        onClick={() => (router.push("/add-experience"))}
+                    />            
                 </div>
     
             }
 
             {/* CARDS */}
-            <div className="
+            <div className={`
                 md:w-[50vw]
                 w-full
                 grid
@@ -47,10 +47,10 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                 auto-rows-fr
                 
                 p-[5%]
-                sm:gap-16
+                sm:gap-${props.isLoggedIn ? "6" : "16"}
                 gap-8
                 relative
-            ">
+            `}>
 
                 {/* VERTICAL LINE */}
                 <div className="
