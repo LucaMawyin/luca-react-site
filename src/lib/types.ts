@@ -76,6 +76,7 @@ export type Tag = {
   id: number;
   name: string;
   builtin: boolean;
+  category: "projects" | "experience"
 }
 
 export type Tech = {
@@ -89,3 +90,15 @@ export type TechBody = {
   tools: string;
   libraries: string;
 };
+
+export type Experience = {
+  id:number;
+  title:string;
+  description:string;
+  tag:string;
+  city:string;
+  region:string;
+  start_date:string;
+  end_date?:string;
+  company:string;
+}

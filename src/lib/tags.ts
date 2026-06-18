@@ -1,10 +1,11 @@
 import { getDB } from "./db";
 
-export async function getTags() {
+export async function getTags(type:string) {
     const db = await getDB();
 
     const result = await db
-        .prepare("SELECT * FROM tags")
+        .prepare(`SELECT * FROM tags where category = ?`)
+        .bind(type)
         .all();
 
     return result.results;

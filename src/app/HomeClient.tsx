@@ -1,12 +1,13 @@
 "use client";
 
+import ExperienceClient from "@/components/Experience";
 import Footer from "@/components/Footer";
 import Projects from "@/components/Projects";
 import TechStack from "@/components/Tech";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getHref } from "@/lib/getHref";
 import { icons, pages } from "@/lib/info"; 
-import { Project, Tech } from "@/lib/types";
+import { Experience, Project, Tech } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -17,6 +18,7 @@ export default function HomeClient(props :
         projects : Project[],
         tech : Tech[],
         about : string,
+        experience : Experience[],
     }) {
 
     // Getting pages that are visible to user
@@ -239,6 +241,14 @@ export default function HomeClient(props :
                 </div>
 
             </section>	
+
+            {/* EXPERIENCE */}
+            <section id="experience">
+                <ExperienceClient
+                    experienceList={props.experience}
+                    isLoggedIn={props.isLoggedIn}
+                />
+            </section>
 
             {/* TECH I USE */}
             <section id="tech" className="min-h-fit! mb-[10%]">

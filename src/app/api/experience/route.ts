@@ -1,0 +1,113 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getDB } from "@/lib/db";
+import { validateSession } from "@/lib/auth";
+import { Experience } from "@/lib/types";
+
+export async function POST(req: Request) {
+    try {
+        const formData = await req.formData();
+
+        const id = formData.get("id")?.toString();
+        const title = formData.get("title")?.toString();
+        const company = formData.get("company")?.toString();
+        const description = formData.get("description")?.toString();
+        const tag = formData.get("tag")?.toString();
+        const city = formData.get("city")?.toString();
+        const region = formData.get("region")?.toString();
+        const start_date = formData.get("start_date")?.toString();
+        const end_date = formData.get("end_date")?.toString() || null;
+
+        // basic validation
+        if (!title || !company || !description) {
+            return NextResponse.json(
+                { error: "Missing required fields" },
+                { status: 400 }
+            );
+        }
+
+        const db = await getDB();
+
+        // UPDATE if id exists
+        if (id) {
+            await db                
+                .prepare(
+                    `
+                    UPDATE experience
+                    SET title = ?, company = ?, description = ?, tag = ?, city = ?, region = ?, start_date = ?, end_date = ?
+                    WHERE id = ?
+                    `
+                )
+                .bind(title, company, description, tag, city, region, start_date, end_date, id)
+                .run();
+
+            return NextResponse.json({ success: true, updated: true });
+        }
+
+        // INSERT new experience
+        await db
+            .prepare(
+                `
+                INSERT INTO experience (title, company, description, tag, city, region, start_date, end_date)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                `
+            )
+            .bind(title, company, description, tag, city, region, start_date,end_date)
+            .run();
+
+        return NextResponse.json({ success: true, created: true });
+    } catch (err: any) {
+        console.error(err);
+
+        return NextResponse.json(
+            { error: "Server error" },
+            { status: 500 }
+        );
+    }
+}
+
+// Delete project
+export async function DELETE(req: NextRequest) {
+
+  // Authenticate before proceeding
+  const session = await validateSession();
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
+  try {
+
+    const db = await getDB();
+    const { id } = await req.json() as Experience;
+
+    // No project id provided
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing experience id" },
+        { status: 400 }
+      );
+    }
+
+    await db
+      .prepare("DELETE FROM experience WHERE id = ?")
+      .bind(id)
+      .run();
+
+    return NextResponse.json({
+      success: true,
+    });
+
+  } 
+  
+  // Delete failed
+  catch (err) {
+    console.error(err);
+
+    return NextResponse.json(
+      { error: "Failed to delete experience" },
+      { status: 500 }
+    );
+  }
+}

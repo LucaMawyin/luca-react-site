@@ -1,5 +1,5 @@
 import { getDB } from "@/lib/db";
-import CreateProjectPage from "../CreateProjectPage";
+import CreateExperiencePage from "../CreateExperiencePage";
 import { getTags } from "@/lib/tags";
 import { Tag } from "@/lib/types";
 
@@ -19,27 +19,21 @@ export default async function Page({
   if (id) {
     draft = await db
       .prepare(`
-        SELECT * FROM projects
+        SELECT * FROM experience
         WHERE id = ?
       `)
       .bind(id)
       .first();
   }
 
-  const tags = await getTags("project") as Tag[];
+  const tags = await getTags("experience") as Tag[];
 
   const data = draft;
 
-  let imageUrl = null;
-
-  if (data?.image) {
-    const base64 = Buffer.from(data.image as any).toString("base64");
-    imageUrl = `data:${data.image_type};base64,${base64}`;
-  }
 
   return (
-    <CreateProjectPage
-      initialData={{ ...data, imageUrl }}
+    <CreateExperiencePage
+      initialData={{ ...data }}
       tags={tags}
     />
   );

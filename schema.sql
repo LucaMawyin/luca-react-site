@@ -42,7 +42,10 @@ CREATE TABLE login_verifications (
 CREATE TABLE tags(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
-    builtin BOOLEAN DEFAULT FALSE
+    builtin BOOLEAN DEFAULT FALSE,
+    category TEXT NOT NULL CHECK (
+        category IN ('project', 'experience')
+    )
 );
 CREATE TABLE tech(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,6 +55,20 @@ CREATE TABLE tech(
     )
 );
 CREATE TABLE site_content (
-    id INTEGER PRIMARY KEY autoincrement,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     about TEXT
+);
+CREATE TABLE experience (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    company TEXT NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    tag TEXT,
+    city TEXT NOT NULL,
+    region TEXT NOT NULL,
+    start_date INTEGER NOT NULL,
+    end_date INTEGER,
+    category TEXT NOT NULL CHECK (
+        category IN ('project', 'experience')
+    )
 );
