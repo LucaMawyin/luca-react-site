@@ -18,10 +18,10 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
     return (
         <div
             className="
-                flex w-full flex-col items-center py-16 px-4
+                flex w-full flex-col items-center py-4 sm:py-16 px-4
             "
         >
-            <h1 className="text-3xl font-bold mb-12">Experience</h1>
+            <h1 className="text-3xl font-bold">Experience</h1>
             {/* Add Experience button if logged in */}
             {props.isLoggedIn && 
                 <div className="
