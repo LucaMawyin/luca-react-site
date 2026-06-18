@@ -47,7 +47,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                 auto-rows-fr
                 
                 p-[5%]
-                sm:gap-${props.isLoggedIn ? "6" : "16"}
+                ${props.isLoggedIn ? "" : "sm:gap-16"}
                 gap-8
                 relative
             `}>
