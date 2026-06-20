@@ -1,14 +1,14 @@
 import { validateSession } from "@/lib/auth";
 import HomeClient from "../HomeClient";
-import getProjects, { getTech } from "@/lib/getProjects";
+import { getProjects, getTech } from "@/lib/getProjects";
 import { Session } from "@/lib/types";
-import getContent from "@/lib/getContent";
+import { getContent } from "@/lib/getContent";
 import getExperience from "@/lib/getExperience";
 
 export default async function Home() {
 
     const session = await validateSession() as Session;
-    const projects = await getProjects(session);
+    const projects = await getProjects();
     const tech = await getTech();
     const about = await getContent();
     const experience = await getExperience();

@@ -1,7 +1,7 @@
 import { requireSession } from "@/lib/auth";
 import { getUserById } from "@/lib/user";
 import SettingsClient from "./SettingsClient";
-import getContent from "@/lib/getContent";
+import { getContent } from "@/lib/getContent";
 
 export default async function DashboardPage() {
     const session = await requireSession();

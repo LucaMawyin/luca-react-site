@@ -54,12 +54,13 @@ export async function POST(request: Request) {
 
         const res = NextResponse.json({ success: true });
 
+        const sessionDurationDays = Number(process.env.SESSION_DURATION_DAYS);
         res.cookies.set("session", sessionToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
             path: "/",
-            maxAge: 60 * 60 * 24,
+            maxAge: 60 * 60 * 24 * sessionDurationDays,
         });
 
         return res;

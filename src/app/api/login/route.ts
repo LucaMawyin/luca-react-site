@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import crypto from "crypto";
 import { getDB } from "@/lib/db";
 import { User, LoginBody } from "@/lib/types";
 import { Resend } from "resend";

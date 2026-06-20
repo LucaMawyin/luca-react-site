@@ -3,6 +3,7 @@
 import Button from "@/components/Button";
 import Tile from "@/components/Tile";
 import { ChangePasswordResponse, User } from "@/lib/types";
+import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
 type Message = {
@@ -21,6 +22,8 @@ function getMessageClass(message?: Message) {
 }
 
 export default function SettingsClient(props : {user : User, about : string}){
+
+    const router = useRouter();
 
     // Resume file input stuff
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -258,6 +261,8 @@ export default function SettingsClient(props : {user : User, about : string}){
                 setVisible(false);
                 setTimeout(() => setMessage(null), 300);
             }, 3000);
+
+            router.refresh();
             return;
         }
 

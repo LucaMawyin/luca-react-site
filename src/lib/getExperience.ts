@@ -1,5 +1,5 @@
 import { getDB } from "@/lib/db";
-import { Experience, Project, Session, Tech } from "@/lib/types";
+import { Experience } from "@/lib/types";
 
 export default async function getExperience(){
     const db = await getDB();

@@ -1,15 +1,24 @@
+import { unstable_cache } from "next/cache";
 import { getDB } from "./db";
 
-export async function getTags(type:string) {
-    const db = await getDB();
+export const getTags = (type:string) => unstable_cache(
+    async () => {
+        const db = await getDB();
 
-    const result = await db
-        .prepare(`SELECT * FROM tags where category = ?`)
-        .bind(type)
-        .all();
+        const result = await db
+            .prepare(`SELECT * FROM tags where category = ?`)
+            .bind(type)
+            .all();
 
-    return result.results;
-}
+        return result.results;
+    },
+    [`tags:${type}`],
+    {
+        revalidate: false,
+        tags: [`tags:${type}`],
+    }
+)();
+
 
 export function getTagStyle(tag?: string) {
     switch (tag?.toLowerCase()) {

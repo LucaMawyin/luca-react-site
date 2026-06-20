@@ -1,5 +1,6 @@
 import { validateSession } from "@/lib/auth";
 import { getDB } from "@/lib/db";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -30,6 +31,8 @@ export async function POST(req: Request) {
             .prepare("UPDATE site_content SET about = ? WHERE id = 1")
             .bind(about)
             .run();
+        
+        revalidateTag("site-content","default");
 
         return Response.json({ success: true });
     } 

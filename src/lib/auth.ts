@@ -2,9 +2,10 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { getDB } from "@/lib/db";
 import { Session } from "@/lib/types";
+import { cache } from "react";
 
 
-export async function validateSession() {
+export const validateSession = cache(async () => {
 
     const db = await getDB();
 
@@ -29,7 +30,7 @@ export async function validateSession() {
     if (!session) return null;
 
     return session;
-}
+});
 
 
 export async function requireSession() {
