@@ -1,6 +1,7 @@
 import { validateSession } from "@/lib/auth";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getDB } from "@/lib/db";
+import { uploadToR2 } from "@/lib/r2";
 import { Project } from "@/lib/types";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
@@ -59,14 +60,14 @@ export async function POST(req: NextRequest) {
         const image = formData.get("image") as File | null;
 
         const imageType =
-        (formData.get("imageType") as string) ||
-        (image ? image.type : null);
+            (formData.get("imageType") as string) ||
+            (image ? image.type : null);
 
         let imageBuffer: Buffer | null = null;
 
         if (image) {
-        const arrayBuffer = await image.arrayBuffer();
-        imageBuffer = Buffer.from(arrayBuffer);
+            const arrayBuffer = await image.arrayBuffer();
+            imageBuffer = Buffer.from(arrayBuffer);
         }
 
         // Project name, description and id (for updates)
@@ -77,8 +78,8 @@ export async function POST(req: NextRequest) {
         // Project Tag
         const rawTag = (formData.get("tag") as string) || null;
         const tag = rawTag
-        ? capitalizeNamesAndTitles(rawTag.trim().toLowerCase())
-        : null;
+            ? capitalizeNamesAndTitles(rawTag.trim().toLowerCase())
+            : null;
 
         const pinned = formData.get("pinned") as string;
 
@@ -140,6 +141,10 @@ export async function POST(req: NextRequest) {
 
             revalidateTag("projects","default");
 
+            if (image){
+                const imageKey = uploadToR2(image,"projects",id);
+            }
+
             return NextResponse.json({
                 success: true,
                 id,
@@ -170,6 +175,10 @@ export async function POST(req: NextRequest) {
         revalidateTag("projects","default");
 
         const newId = result.meta?.last_row_id;
+
+        if (image){
+            const imageKey = uploadToR2(image,"projects",`${newId}`);
+        }
 
         return NextResponse.json({
             success: true,

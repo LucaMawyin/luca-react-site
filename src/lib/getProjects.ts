@@ -1,5 +1,5 @@
 import { getDB } from "@/lib/db";
-import { Project, Session, Tech } from "@/lib/types";
+import { Project, Tech } from "@/lib/types";
 import { unstable_cache } from "next/cache";
 
 export const getProjects = unstable_cache (
@@ -32,8 +32,7 @@ export const getProjects = unstable_cache (
     },
     ["projects"],
     {
-        revalidate:false,
-        tags:["projects"]
+        tags:["projects"],
     }
 );
 
@@ -122,7 +121,6 @@ export const getTech = unstable_cache(
     },
     ["tech"],
     {
-        revalidate:false,
-        tags: ["tech"]
+        tags: ["tech"],
     }
 );

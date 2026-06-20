@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/db";
 import { validateSession } from "@/lib/auth";
 import { Experience } from "@/lib/types";
+import { revalidateTag } from "next/cache";
 
 export async function POST(req: Request) {
     try {
@@ -66,8 +67,12 @@ export async function POST(req: Request) {
             .bind(title, company, description, tag, city, region, start_date,end_date)
             .run();
 
+        revalidateTag("experience","default");
+
         return NextResponse.json({ success: true, created: true });
-    } catch (err: any) {
+    } 
+    
+    catch (err: any) {
         console.error(err);
 
         return NextResponse.json(
@@ -80,46 +85,46 @@ export async function POST(req: Request) {
 // Delete project
 export async function DELETE(req: NextRequest) {
 
-  // Authenticate before proceeding
-  const session = await validateSession();
-  if (!session) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
-    );
-  }
-
-  try {
-
-    const db = await getDB();
-    const { id } = await req.json() as Experience;
-
-    // No project id provided
-    if (!id) {
-      return NextResponse.json(
-        { error: "Missing experience id" },
-        { status: 400 }
-      );
+    // Authenticate before proceeding
+    const session = await validateSession();
+    if (!session) {
+        return NextResponse.json(
+            { error: "Unauthorized" },
+            { status: 401 }
+        );
     }
 
-    await db
-      .prepare("DELETE FROM experience WHERE id = ?")
-      .bind(id)
-      .run();
+    try {
 
-    return NextResponse.json({
-      success: true,
-    });
+        const db = await getDB();
+        const { id } = await req.json() as Experience;
 
-  } 
-  
-  // Delete failed
-  catch (err) {
-    console.error(err);
+        // No project id provided
+        if (!id) {
+            return NextResponse.json(
+                { error: "Missing experience id" },
+                { status: 400 }
+            );
+        }
 
-    return NextResponse.json(
-      { error: "Failed to delete experience" },
-      { status: 500 }
-    );
-  }
+        await db
+            .prepare("DELETE FROM experience WHERE id = ?")
+            .bind(id)
+            .run();
+
+        revalidateTag("experience","default");
+
+        return NextResponse.json({
+            success: true,
+        });
+
+    } 
+    
+    // Delete failed
+    catch (err) {
+        return NextResponse.json(
+            { error: "Failed to delete experience" },
+            { status: 500 }
+        );
+    }
 }

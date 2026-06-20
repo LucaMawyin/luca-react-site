@@ -1,5 +1,6 @@
 import { validateSession } from "@/lib/auth";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { r2 } from "@/lib/r2";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -28,16 +29,6 @@ export async function POST(req: Request) {
         if (file.type !== "application/pdf") {
             return Response.json({ error: "Only PDFs allowed" }, { status: 400 });
         }
-
-        // Bucket for resume PDF
-        const r2 = new S3Client({
-            region: "auto",
-            endpoint: `https://${process.env.CF_ID}.r2.cloudflarestorage.com`,
-            credentials: {
-                accessKeyId: process.env.CF_BUCKET_ACCESS_KEY!,
-                secretAccessKey: process.env.CF_BUCKET_SECRET_ACCESS_KEY!,
-            },
-        });
 
         const buffer = Buffer.from(await file.arrayBuffer());
 

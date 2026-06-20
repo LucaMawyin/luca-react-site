@@ -14,7 +14,6 @@ export const getTags = (type:string) => unstable_cache(
     },
     [`tags:${type}`],
     {
-        revalidate: false,
         tags: [`tags:${type}`],
     }
 )();
