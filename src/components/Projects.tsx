@@ -22,7 +22,7 @@ export default function Projects(props : {
     <>
         <h1 className={`
           text-center
-          ${props.isLoggedIn ? "pb-[1%]" : "pb-0"}
+          ${props.isLoggedIn ? "pb-0" : "pb-8"}
         `}>
           Most Recent Projects
         </h1>
