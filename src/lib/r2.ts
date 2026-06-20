@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 export const r2 = new S3Client({
     region: "auto",
@@ -9,9 +9,9 @@ export const r2 = new S3Client({
     },
 });
 
-export async function uploadToR2(file:File, path:string, name:string){
+export async function uploadToR2(file:File, filePath:string, fileName:string){
     const buffer = Buffer.from(await file.arrayBuffer());
-    const key = `${path}/${name}`;
+    const key = `${filePath}/${fileName}`;
 
 
     await r2.send(
@@ -24,4 +24,13 @@ export async function uploadToR2(file:File, path:string, name:string){
     );
 
     return key;
+}
+
+export async function deleteFromR2(filePath:string,fileName:string){
+    await r2.send(
+        new DeleteObjectCommand({
+            Bucket : process.env.CF_BUCKET_NAME,
+            Key: `${filePath}/${fileName}`
+        })
+    );
 }

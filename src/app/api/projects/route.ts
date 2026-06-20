@@ -1,7 +1,7 @@
 import { validateSession } from "@/lib/auth";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getDB } from "@/lib/db";
-import { uploadToR2 } from "@/lib/r2";
+import { deleteFromR2, r2, uploadToR2 } from "@/lib/r2";
 import { Project } from "@/lib/types";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
@@ -113,8 +113,6 @@ export async function POST(req: NextRequest) {
                     libraries = ?,
                     tag = ?,
                     pinned = ?,
-                    image = CASE WHEN ? IS NOT NULL THEN ? ELSE image END,
-                    image_type = CASE WHEN ? IS NOT NULL THEN ? ELSE image_type END
                 WHERE id = ?
                 `)
                 .bind(
@@ -129,12 +127,6 @@ export async function POST(req: NextRequest) {
                     tag,
                     pinned,
 
-                    imageBuffer,
-                    imageBuffer,
-
-                    imageType,
-                    imageType,
-
                     id
                 )
                 .run();
@@ -142,7 +134,8 @@ export async function POST(req: NextRequest) {
             revalidateTag("projects","default");
 
             if (image){
-                const imageKey = uploadToR2(image,"projects",id);
+                
+                await uploadToR2(image,"projects",id);
             }
 
             return NextResponse.json({
@@ -155,8 +148,8 @@ export async function POST(req: NextRequest) {
         const result = await db
             .prepare(`
                 INSERT INTO projects
-                (name, description, link, languages, tools, libraries, image, image_type, tag, pinned)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (name, description, link, languages, tools, libraries, image_type, tag, pinned)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             `)
             .bind(
                 name,
@@ -165,7 +158,6 @@ export async function POST(req: NextRequest) {
                 JSON.stringify(languages),
                 JSON.stringify(tools),
                 JSON.stringify(libraries),
-                imageBuffer,
                 imageType?.trim() || null,
                 tag,
                 pinned
@@ -177,7 +169,7 @@ export async function POST(req: NextRequest) {
         const newId = result.meta?.last_row_id;
 
         if (image){
-            const imageKey = uploadToR2(image,"projects",`${newId}`);
+            await uploadToR2(image,"projects",`${newId}`);
         }
 
         return NextResponse.json({
@@ -189,6 +181,8 @@ export async function POST(req: NextRequest) {
   
     // Create/update failed
     catch (err) {
+
+        console.log(err);
 
         return NextResponse.json(
             { error: "Failed to create project" },
@@ -226,6 +220,8 @@ export async function DELETE(req: NextRequest) {
             .prepare("DELETE FROM projects WHERE id = ?")
             .bind(id)
             .run();
+        
+        deleteFromR2("projects",`${id}`)
 
         revalidateTag("projects","default");
 

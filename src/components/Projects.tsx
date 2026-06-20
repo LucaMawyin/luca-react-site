@@ -54,20 +54,17 @@ export default function Projects(props : {
         ">  
             {                
               projects.map((project,i) => (
-                  
                   <FadeInOnView
                     key={project.id}
                     className="w-full flex flex-col items-center gap-8 justify-between"
                   >
-
-
-
 
                     <ProjectCard
                         key={project.id ?? i}
                         project={project}
                         isLoggedIn={props.isLoggedIn}
                         position={`${i % 2 === 0 ? "start" : "end"}`}
+                        imageUrl={`api/image/${project.id}`}
                     />
 
                     {/* Delete button if logged in */}

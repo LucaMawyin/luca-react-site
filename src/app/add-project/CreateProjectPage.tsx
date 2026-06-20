@@ -51,9 +51,7 @@ export default function CreateProjectPage(props : {
     useEffect(() => {
         if (!props.initialData) return;
 
-        if (props.initialData.imageUrl) {
-            setPreview(props.initialData.imageUrl);
-        }
+        setPreview(`/api/image/${props.initialData.id}`);
         
     }, [props.initialData]); 
 
