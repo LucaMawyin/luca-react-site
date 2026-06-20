@@ -211,10 +211,10 @@ export default function HomeClient(props :
                     flex flex-wrap-reverse
                     px-[15%]
                     sm:px-[10%]
+                    md:py-0
+                    py-[5%]
                     justify-between
                     my-auto
-                    md:py-0
-                    p-[5%]
                 ">  
                     <div className="
                         basis-full
@@ -222,8 +222,14 @@ export default function HomeClient(props :
                         text-center sm:text-left
                     ">
 
-                        <h1 className="py-2">About Me</h1>
-                        <FadeInOnView className="mb-8 whitespace-pre-line">
+                        <h1 className="py-4">About Me</h1>
+                        <FadeInOnView className="
+                            mb-8 
+                            whitespace-pre-line 
+                            prose 
+                            leading-normal
+                            prose-a:text-blue-500 prose-a:underline hover:prose-a:text-blue-700
+                        ">
                             <ReactMarkdown>{props.about}</ReactMarkdown>
                         </FadeInOnView>
                     </div>
