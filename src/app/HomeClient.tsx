@@ -230,7 +230,19 @@ export default function HomeClient(props :
                             leading-normal
                             prose-a:text-blue-500 prose-a:underline hover:prose-a:text-blue-700
                         ">
-                            <ReactMarkdown>{props.about}</ReactMarkdown>
+                            <ReactMarkdown
+                                components={{
+                                    a:({node, ...props}) => (
+                                        <a
+                                            {...props}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        />
+                                    ),
+                                }}
+                            >
+                                {props.about}
+                            </ReactMarkdown>
                         </FadeInOnView>
                     </div>
 
