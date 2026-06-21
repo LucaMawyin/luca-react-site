@@ -8,9 +8,7 @@ export async function GET(
 ) {
 
     const { id } = await context.params;
-
-
-
+    
     const res = await r2.send(
         new GetObjectCommand({
             Bucket: process.env.CF_BUCKET_NAME!,
@@ -23,11 +21,6 @@ export async function GET(
     }
 
     const stream = res.Body as any;
-
-    console.log("R2 RESPONSE:");
-    console.log("ContentType:", res.ContentType);
-    console.log("ContentLength:", res.ContentLength);
-    console.log("Body exists:", !!res.Body);
     
     return new Response(stream, {
         headers: {

@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
                     tools = ?,
                     libraries = ?,
                     tag = ?,
-                    pinned = ?,
+                    pinned = ?
                 WHERE id = ?
                 `)
                 .bind(
@@ -181,8 +181,6 @@ export async function POST(req: NextRequest) {
   
     // Create/update failed
     catch (err) {
-
-        console.log(err);
 
         return NextResponse.json(
             { error: "Failed to create project" },
