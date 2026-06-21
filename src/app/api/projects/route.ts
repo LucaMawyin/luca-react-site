@@ -140,8 +140,8 @@ export async function POST(req: NextRequest) {
         const result = await db
             .prepare(`
                 INSERT INTO projects
-                (name, description, link, languages, tools, libraries, image_type, tag, pinned)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (name, description, link, languages, tools, libraries, tag, pinned)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             `)
             .bind(
                 name,
@@ -150,7 +150,6 @@ export async function POST(req: NextRequest) {
                 JSON.stringify(languages),
                 JSON.stringify(tools),
                 JSON.stringify(libraries),
-                imageType?.trim() || null,
                 tag,
                 pinned
             )

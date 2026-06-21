@@ -3,12 +3,12 @@ CREATE TABLE projects(
     name TEXT,
     description TEXT,
     link TEXT,
-    image BLOB,
-    image_type TEXT,
     languages TEXT,
     tools TEXT,
     libraries TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    tag TEXT,
+    pinned BOOLEAN DEFAULT 0
 );
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
