@@ -102,8 +102,6 @@ export async function POST(request: Request) {
   } 
   
   catch (err) {
-    console.error("LOGIN ERROR:", err);
-
     return NextResponse.json(
       { 
           error: "Server Error",

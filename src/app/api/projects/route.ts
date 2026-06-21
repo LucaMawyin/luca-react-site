@@ -222,8 +222,6 @@ export async function DELETE(req: NextRequest) {
     
     // Delete failed
     catch (err) {
-        console.error(err);
-
         return NextResponse.json(
             { error: "Failed to delete project" },
             { status: 500 }

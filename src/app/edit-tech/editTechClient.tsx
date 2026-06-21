@@ -60,8 +60,6 @@ export default function EditTechClient(props : {tech : Tech[]}) {
             router.push("/tech");
             router.refresh();
         }
-
-        else console.error(await res.text());
     };
 
     const router = useRouter();

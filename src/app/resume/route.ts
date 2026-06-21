@@ -26,7 +26,6 @@ export async function GET() {
         });
 
     } catch (err) {
-        console.error(err);
         return new Response("Error fetching resume", { status: 500 });
     }
 }
