@@ -64,7 +64,6 @@ export default function Projects(props : {
                         project={project}
                         isLoggedIn={props.isLoggedIn}
                         position={`${i % 2 === 0 ? "start" : "end"}`}
-                        imageUrl={`api/image/${project.id}`}
                     />
 
                     {/* Delete button if logged in */}

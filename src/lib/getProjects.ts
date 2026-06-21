@@ -1,6 +1,7 @@
 import { getDB } from "@/lib/db";
 import { Project, Tech } from "@/lib/types";
 import { unstable_cache } from "next/cache";
+import { getImageDataUrl } from "./r2";
 
 export const getProjects = unstable_cache (
     async (): Promise<Project[]> => {
@@ -15,18 +16,17 @@ export const getProjects = unstable_cache (
             `)
             .all() as { results : Project[] }; 
 
+        const projects = await Promise.all(
+            results.map(async (p) => {
+                const image = await getImageDataUrl(String(p.id));
 
-        // Convert image buffers to base64 strings
-        const projects = results.map((p) => {
-            if (!p.image) return p;
+                return {
+                    ...p,
+                    image,
+                };
+            })
+        );
 
-            const buffer = Buffer.from(p.image as unknown as number[]);
-
-            return {
-                ...p,
-                image: `data:${p.image_type};base64,${buffer.toString("base64")}`,
-            };
-        });
 
         return projects;
     },

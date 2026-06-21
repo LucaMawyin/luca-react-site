@@ -30,12 +30,9 @@ export default async function Page({
 
   const data = draft;
 
-  let imageUrl = null;
-
-  if (data?.image) {
-    const base64 = Buffer.from(data.image as any).toString("base64");
-    imageUrl = `data:${data.image_type};base64,${base64}`;
-  }
+    const imageUrl = data?.id
+        ? `/api/image/${data.id}`
+        : null;
 
   return (
     <CreateProjectPage

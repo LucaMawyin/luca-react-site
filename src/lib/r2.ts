@@ -1,4 +1,4 @@
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 export const r2 = new S3Client({
     region: "auto",
@@ -33,4 +33,19 @@ export async function deleteFromR2(filePath:string,fileName:string){
             Key: `${filePath}/${fileName}`
         })
     );
+}
+
+export async function getImageDataUrl(id: string) {
+    const res = await r2.send(
+        new GetObjectCommand({
+            Bucket: process.env.CF_BUCKET_NAME!,
+            Key: `projects/${id}`,
+        })
+    );
+
+    if (!res.Body) return null;
+
+    const bytes = await res.Body.transformToByteArray();
+
+    return `data:${res.ContentType || "image/jpeg"};base64,${Buffer.from(bytes).toString("base64")}`;
 }

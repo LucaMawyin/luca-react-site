@@ -5,7 +5,6 @@ export default function ProjectCard( props : {
     project : Project;
     position : "start" | "end";
     isLoggedIn : boolean;
-    imageUrl : string;
 }){
     const tools = (
     typeof props.project.tools === "string"
@@ -140,10 +139,10 @@ export default function ProjectCard( props : {
                 
                 {/* Image */}
                 <div className="flex-1 min-w-75 flex justify-center">
-                    {props.imageUrl && 
+                    {props.project.image && 
                         <div className="flex items-center">
                             <img
-                                src={props.imageUrl}
+                                src={props.project.image}
                                 alt={`Project ${props.project.id}`}
                                 className="w-full h-auto rounded-xl"
                             />                                   

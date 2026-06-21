@@ -63,13 +63,6 @@ export async function POST(req: NextRequest) {
             (formData.get("imageType") as string) ||
             (image ? image.type : null);
 
-        let imageBuffer: Buffer | null = null;
-
-        if (image) {
-            const arrayBuffer = await image.arrayBuffer();
-            imageBuffer = Buffer.from(arrayBuffer);
-        }
-
         // Project name, description and id (for updates)
         const id = formData.get("id") as string | null;
         const name = formData.get("name") as string;
@@ -134,7 +127,6 @@ export async function POST(req: NextRequest) {
             revalidateTag("projects","default");
 
             if (image){
-                
                 await uploadToR2(image,"projects",id);
             }
 
