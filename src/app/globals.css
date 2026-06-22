@@ -60,6 +60,15 @@ p:not(footer p){
 	color: #000000;
 }
 
+footer a {
+  transition: color 200ms ease, transform 200ms ease;
+}
+
+footer a:hover {
+  color: #111827;
+  transform: scale(var(--link-scale));
+}
+
 input,
 textarea,
 select {
