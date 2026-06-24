@@ -107,5 +107,6 @@ export const specialWords: Record<string, string> = {
 	ipinfo:"IPInfo",
 	ipify:"ipify",
 	mediapipe:"MediaPipe",
-	cvat:"CVAT"
+	cvat:"CVAT",
+    ai:"AI",
 };
