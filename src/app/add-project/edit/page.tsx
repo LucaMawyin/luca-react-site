@@ -2,6 +2,7 @@ import { getDB } from "@/lib/db";
 import CreateProjectPage from "../CreateProjectPage";
 import { getTags } from "@/lib/tags";
 import { Tag } from "@/lib/types";
+import { getImageDataUrl } from "@/lib/r2";
 
 export default async function Page({
   searchParams,
@@ -31,7 +32,7 @@ export default async function Page({
   const data = draft;
 
     const imageUrl = data?.id
-        ? `/api/image/${data.id}`
+        ? await getImageDataUrl(String(data.id))
         : null;
 
   return (

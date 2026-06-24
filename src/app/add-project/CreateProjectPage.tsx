@@ -50,8 +50,8 @@ export default function CreateProjectPage(props : {
     // Setting data if loading a draft that exists
     useEffect(() => {
         if (!props.initialData) return;
-
-        setPreview(`/api/image/${props.initialData.id}`);
+        
+        setPreview(props.initialData.imageUrl ?? null);
         
     }, [props.initialData]); 
 
