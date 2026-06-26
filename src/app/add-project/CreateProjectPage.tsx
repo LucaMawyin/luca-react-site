@@ -169,7 +169,7 @@ export default function CreateProjectPage(props : {
         formData.append("libraries", form.libraries);
         formData.append("tag", form.tag)
         formData.append("pinned", form.pinned ? "1" : "0")
-        formData.append("hidden", form.pinned ? "1" : "0")
+        formData.append("hidden", form.hidden ? "1" : "0")
         if (imageFile){
             formData.append("image", imageFile);
             formData.append("imageType", imageFile.type);            
