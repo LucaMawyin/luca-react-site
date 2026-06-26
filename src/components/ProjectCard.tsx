@@ -103,8 +103,17 @@ export default function ProjectCard( props : {
                 )}
             </div>
 
-            {/* PROJECT PIN */}
-            <div className="min-h-8 flex items-center sm:justify-start justify-center">
+            {/* PROJECT PIN & HIDDEN */}
+            <div className="
+                min-h-8 
+                flex 
+                items-center 
+                sm:justify-start 
+                justify-center
+                gap-4
+            ">
+
+                {/* PIN */}
                 {(props.project.pinned === 1) && props.isLoggedIn && (
                     <div
                         className="
@@ -119,6 +128,24 @@ export default function ProjectCard( props : {
                         "
                     >
                         Pinned
+                    </div>
+                )}
+
+                {/* HIDDEN */}
+                {(props.project.hidden === 1) && props.isLoggedIn && (
+                    <div
+                        className="
+                            px-3
+                            py-1
+                            text-xs
+                            font-semibold
+                            rounded-full
+                            bg-red-400
+                            text-black
+                            shadow-md
+                        "
+                    >
+                        Hidden
                     </div>
                 )}
             </div>

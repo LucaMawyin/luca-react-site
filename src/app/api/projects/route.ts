@@ -75,6 +75,7 @@ export async function POST(req: NextRequest) {
             : null;
 
         const pinned = formData.get("pinned") as string;
+        const hidden = formData.get("hidden") as string;
 
         const db = await getDB();
 
@@ -105,7 +106,8 @@ export async function POST(req: NextRequest) {
                     tools = ?,
                     libraries = ?,
                     tag = ?,
-                    pinned = ?
+                    pinned = ?,
+                    hidden = ?
                 WHERE id = ?
                 `)
                 .bind(
@@ -119,6 +121,7 @@ export async function POST(req: NextRequest) {
 
                     tag,
                     pinned,
+                    hidden,
 
                     id
                 )
@@ -140,8 +143,8 @@ export async function POST(req: NextRequest) {
         const result = await db
             .prepare(`
                 INSERT INTO projects
-                (name, description, link, languages, tools, libraries, tag, pinned)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                (name, description, link, languages, tools, libraries, tag, pinned, hidden)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             `)
             .bind(
                 name,
@@ -151,7 +154,8 @@ export async function POST(req: NextRequest) {
                 JSON.stringify(tools),
                 JSON.stringify(libraries),
                 tag,
-                pinned
+                pinned,
+                hidden
             )
             .run();
 

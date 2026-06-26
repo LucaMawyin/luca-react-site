@@ -1,40 +1,42 @@
 import { getDB } from "@/lib/db";
-import { Project, Tech } from "@/lib/types";
+import { Project, Session, Tech } from "@/lib/types";
 import { unstable_cache } from "next/cache";
 import { getImageDataUrl } from "./r2";
 
-export const getProjects = unstable_cache (
-    async (): Promise<Project[]> => {
-        // Fetching recent projects
-        const db = await getDB();
+export const getProjects = (session : Session) => 
+    unstable_cache (
+        async (): Promise<Project[]> => {
+            // Fetching recent projects
+            const db = await getDB();
 
-        const { results } = await db
-            .prepare(`
-                SELECT *
-                FROM projects
-                ORDER BY pinned DESC, created_at DESC
-            `)
-            .all() as { results : Project[] }; 
+            const { results } = await db
+                .prepare(`
+                    SELECT *
+                    FROM projects
+                    ${session ? "" : "WHERE hidden = FALSE"}
+                    ORDER BY pinned DESC, created_at DESC
+                `)
+                .all() as { results : Project[] }; 
 
-        const projects = await Promise.all(
-            results.map(async (p) => {
-                const image = await getImageDataUrl(String(p.id));
+            const projects = await Promise.all(
+                results.map(async (p) => {
+                    const image = await getImageDataUrl(String(p.id));
 
-                return {
-                    ...p,
-                    image,
-                };
-            })
-        );
+                    return {
+                        ...p,
+                        image,
+                    };
+                })
+            );
 
 
-        return projects;
-    },
-    ["projects"],
-    {
-        tags:["projects"],
-    }
-);
+            return projects;
+        },
+        ["projects"],
+        {
+            tags:["projects"],
+        }
+    )();
 
 
 export const getTech = unstable_cache( 

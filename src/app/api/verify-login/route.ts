@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getDB } from "@/lib/db";
 import { VerifyLoginBody } from "@/lib/types";
 import crypto from "crypto";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: Request) {
     try {
@@ -51,6 +52,8 @@ export async function POST(request: Request) {
             DELETE FROM login_verifications
             WHERE token = ?
         `).bind(code).run();
+
+        revalidateTag("projects","default");
 
         const res = NextResponse.json({ success: true });
 

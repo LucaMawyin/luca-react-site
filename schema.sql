@@ -8,7 +8,8 @@ CREATE TABLE projects(
     libraries TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     tag TEXT,
-    pinned BOOLEAN DEFAULT 0
+    pinned BOOLEAN DEFAULT 0,
+    hidden BOOLEAN DEFAULT 0
 );
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

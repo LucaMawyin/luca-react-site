@@ -35,6 +35,7 @@ export default function CreateProjectPage(props : {
         libraries: safeString(normalizeArray(props.initialData?.libraries)),
         tag: safeString(props.initialData?.tag),
         pinned: !!props.initialData?.pinned,
+        hidden: !!props.initialData?.hidden,
     });
 
     const [customTag, setCustomTag] = useState("");
@@ -168,6 +169,7 @@ export default function CreateProjectPage(props : {
         formData.append("libraries", form.libraries);
         formData.append("tag", form.tag)
         formData.append("pinned", form.pinned ? "1" : "0")
+        formData.append("hidden", form.pinned ? "1" : "0")
         if (imageFile){
             formData.append("image", imageFile);
             formData.append("imageType", imageFile.type);            
@@ -190,6 +192,7 @@ export default function CreateProjectPage(props : {
                 libraries:"",
                 tag:"",
                 pinned:false,
+                hidden:false,
             });
 
             setImageFile(null);
@@ -371,21 +374,37 @@ export default function CreateProjectPage(props : {
                             />
                         )}
 
-                        <div className="flex gap-8">
-                            <label htmlFor="pinned">Pin Project</label>
-                            <input
-                                name="pinned"
-                                type="checkbox"
-                                checked={form.pinned}
-                                    onChange={(e) =>
-                                        setForm({
-                                            ...form,
-                                            pinned: e.target.checked,
-                                        })
-                                    }
-                            />                            
+                        <div className="flex flex-wrap justify-evenly">
+                            <div className="flex gap-2">
+                                <label htmlFor="pinned">Pin Project</label>
+                                <input
+                                    name="pinned"
+                                    type="checkbox"
+                                    checked={form.pinned}
+                                        onChange={(e) =>
+                                            setForm({
+                                                ...form,
+                                                pinned: e.target.checked,
+                                            })
+                                        }
+                                />                            
+                            </div>
+                            
+                            <div className="flex gap-2">
+                                <label htmlFor="hidden">Hide Project</label>
+                                <input
+                                    name="hidden"
+                                    type="checkbox"
+                                    checked={form.hidden}
+                                        onChange={(e) =>
+                                            setForm({
+                                                ...form,
+                                                hidden: e.target.checked,
+                                            })
+                                        }
+                                />                            
+                            </div>
                         </div>
-
 
 
                         {/* IMAGE INPUT */}

@@ -8,7 +8,7 @@ import { getExperience } from "@/lib/getExperience";
 export default async function Home() {
 
     const session = await validateSession() as Session;
-    const projects = await getProjects();
+    const projects = await getProjects(session);
     const tech = await getTech();
     const about = await getContent();
     const experience = await getExperience();    
