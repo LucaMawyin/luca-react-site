@@ -17,6 +17,7 @@ export type Project= {
     tools : string | null;
     libraries: string | null;
     created_at : string;
+    updated_at:string;
     tag:string;
     pinned: 1 | 0;
     hidden: 1 | 0;

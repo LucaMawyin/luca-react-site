@@ -107,7 +107,8 @@ export async function POST(req: NextRequest) {
                     libraries = ?,
                     tag = ?,
                     pinned = ?,
-                    hidden = ?
+                    hidden = ?,
+                    updated_at = CURRENT_TIMESTAMP
                 WHERE id = ?
                 `)
                 .bind(

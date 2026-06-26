@@ -14,8 +14,11 @@ export const getProjects = (session : Session) =>
                     SELECT *
                     FROM projects
                     ${session ? "" : "WHERE hidden = FALSE"}
-                    ORDER BY pinned DESC, created_at DESC
-                `)
+                    ORDER BY 
+                        pinned DESC,
+                        CASE WHEN pinned = 1 THEN updated_at
+                        ELSE created_at END DESC
+                    `)
                 .all() as { results : Project[] }; 
 
             const projects = await Promise.all(
