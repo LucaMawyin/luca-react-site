@@ -374,6 +374,7 @@ export default function CreateProjectPage(props : {
                             />
                         )}
 
+                        {/* PIN & HIDE */}
                         <div className="flex flex-wrap justify-evenly">
                             <div className="flex gap-2">
                                 <label htmlFor="pinned">Pin Project</label>
