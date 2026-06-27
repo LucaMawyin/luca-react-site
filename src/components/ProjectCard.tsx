@@ -1,5 +1,7 @@
 import { getTagStyle } from "@/lib/tags";
 import { Project } from "@/lib/types";
+import ReactMarkdown from "react-markdown";
+
 
 export default function ProjectCard( props : {
     project : Project;
@@ -185,7 +187,7 @@ export default function ProjectCard( props : {
                     min-w-75
                     justify-evenly
                 ">
-                    {props.project.description}
+                    <ReactMarkdown>{props.project.description}</ReactMarkdown> 
                     <div>
 
                         {/* LANGUAGES */}
