@@ -56,7 +56,7 @@ h1{
 	font-weight: 650;
 }
 
-p:not(footer p){
+#about p{
 	color: #000000;
 }
 
