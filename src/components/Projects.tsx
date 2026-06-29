@@ -150,27 +150,83 @@ export default function Projects(props : {
                 }
             </div>    
 
-            <h3 className={`
-                text-center
-            `}>
-                Other Projects
-            </h3>
-            <FadeInOnView className="relative overflow-hidden w-full">
-                {/* Left button */}
-                <button
-                    onClick={goPrev}
-                    className="hidden md:flex absolute left-[5%] top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white px-3 py-2 rounded-full cursor-pointer"
+            <div className="
+                flex 
+                items-center 
+                justify-center
+                px-[5%]
+            ">
+                <div
+                    className="flex w-full sm:w-[60vw] justify-between"
                 >
-                    &lt;
-                </button>
+                    <h3>
+                        Other Projects
+                    </h3>
 
-                {/* Right button */}
-                <button
-                    onClick={goNext}
-                    className="hidden md:flex absolute right-[5%] top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white px-3 py-2 rounded-full cursor-pointer"
-                >
-                    &gt;
-                </button>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={goPrev}
+                            className="
+                                cursor-pointer
+                                w-10 
+                                h-10 
+                                p-4
+
+                                flex 
+                                items-center 
+                                justify-center
+
+                                rounded-xl
+                                transition-all
+                                duration-(--transition-duration)
+                                shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                hover:scale-(--subtle-scale)
+                            "
+                        >
+                            🡸
+                        </button>
+
+                        <button
+                            onClick={goNext}
+                            className="
+                                cursor-pointer
+                                w-10 
+                                h-10 
+                                p-4
+
+                                flex 
+                                items-center 
+                                justify-center
+
+                                rounded-xl
+                                transition-all
+                                duration-(--transition-duration)
+                                shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                hover:scale-(--subtle-scale)
+                            "
+                        >
+                            🡺
+                        </button>
+                    </div>                    
+                </div>
+
+            </div>
+
+            <FadeInOnView className="relative overflow-hidden w-full">
+                <div className="flex justify-center gap-2 mt-4">
+                    {otherProjects.map((_, i) => (
+                        <button
+                            key={i}
+                            onClick={() => setIndex(i)}
+                            className={`h-2 w-2 rounded-full transition-all ${
+                                index === i ? "bg-black w-4" : "bg-black/30"
+                            }`}
+                            aria-label={`Go to slide ${i + 1}`}
+                        />
+                    ))}
+                </div>   
                 <div 
                     className="flex transition-transform duration-700 ease-in-out"
                     style={{
@@ -182,7 +238,7 @@ export default function Projects(props : {
                     {otherProjects.map((project) => (
                         <div
                             key={project.id}
-                            className="w-full shrink-0 flex justify-center p-[5%]"
+                            className="w-full shrink-0 flex justify-center p-[5%] md:pt-[2.5%]"
                         >
                             <div
                                 className="flex flex-col justify-center items-center gap-8"
@@ -230,18 +286,7 @@ export default function Projects(props : {
                         </div>
                     ))}
                 </div>       
-                <div className="flex justify-center gap-2 mt-4 md:hidden">
-                    {otherProjects.map((_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setIndex(i)}
-                            className={`h-2 w-2 rounded-full transition-all ${
-                                index === i ? "bg-black w-4" : "bg-black/30"
-                            }`}
-                            aria-label={`Go to slide ${i + 1}`}
-                        />
-                    ))}
-                </div>         
+      
             </FadeInOnView>
 
             
