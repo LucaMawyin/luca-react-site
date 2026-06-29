@@ -56,6 +56,11 @@ h1{
 	font-weight: 650;
 }
 
+h3{
+	font-size: clamp(3rem,5vw,4rem);
+	font-weight: 650;
+}
+
 #about p{
 	color: #000000;
 }

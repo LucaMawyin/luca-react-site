@@ -7,6 +7,7 @@ export default function ProjectCard( props : {
     project : Project;
     position : "start" | "end";
     isLoggedIn : boolean;
+    className?:string;
 }){
     const tools = (
     typeof props.project.tools === "string"
@@ -49,6 +50,7 @@ export default function ProjectCard( props : {
                 hover:scale-(--subtle-scale)
                 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
                 justify-evenly
+                ${props.className}
             `}
         >   
 
