@@ -180,7 +180,7 @@ export default function Projects(props : {
                                         cursor-pointer
                                         w-10 
                                         h-10 
-                                        p-4
+                                        p-3
 
                                         flex 
                                         items-center 
@@ -194,7 +194,9 @@ export default function Projects(props : {
                                         hover:scale-(--subtle-scale)
                                     "
                                 >
-                                    🡸
+                                    <img
+                                        src="/arrow-left.svg"
+                                    />
                                 </button>
 
                                 <button
@@ -203,7 +205,7 @@ export default function Projects(props : {
                                         cursor-pointer
                                         w-10 
                                         h-10 
-                                        p-4
+                                        p-3
 
                                         flex 
                                         items-center 
@@ -217,7 +219,10 @@ export default function Projects(props : {
                                         hover:scale-(--subtle-scale)
                                     "
                                 >
-                                    🡺
+
+                                    <img
+                                        src="/arrow-right.svg"
+                                    />
                                 </button>
                             </div>                    
                         </div>
