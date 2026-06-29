@@ -155,7 +155,7 @@ export default function Projects(props : {
             `}>
                 Other Projects
             </h3>
-            <div className="relative overflow-hidden w-full">
+            <FadeInOnView className="relative overflow-hidden w-full">
                 {/* Left button */}
                 <button
                     onClick={goPrev}
@@ -242,7 +242,7 @@ export default function Projects(props : {
                         />
                     ))}
                 </div>         
-            </div>
+            </FadeInOnView>
 
             
         </>
