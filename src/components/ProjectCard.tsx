@@ -8,6 +8,8 @@ export default function ProjectCard( props : {
     position : "start" | "end";
     isLoggedIn : boolean;
     className?:string;
+    onHoverStart?: () => void;
+    onHoverEnd?: () => void;
 }){
     const tools = (
     typeof props.project.tools === "string"
@@ -52,6 +54,10 @@ export default function ProjectCard( props : {
                 justify-evenly
                 ${props.className}
             `}
+            onMouseEnter={props.onHoverStart}
+            onMouseLeave={props.onHoverEnd}
+            onTouchStart={props.onHoverStart}
+            onTouchEnd={props.onHoverEnd}
         >   
 
             {/* Tile title */}

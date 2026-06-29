@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Project } from "@/lib/types";
 import ProjectCard from "./ProjectCard";
 import Button from "./Button";
@@ -21,27 +21,35 @@ export default function Projects(props : {
     const otherProjects = projects.slice(5);
 
     const [index, setIndex] = useState(0);
-    const total = otherProjects.length;
 
     const goPrev = () => {
-        setIndex((prev) => (prev - 1 + total) % total);
+        setIndex((prev) => (prev - 1 + otherProjects.length) % otherProjects.length);
     };
 
     const goNext = () => {
-        setIndex((prev) => (prev + 1) % total);
+        setIndex((prev) => (prev + 1) % otherProjects.length);
     };
+
+    const [paused, setPaused] = useState(false);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if (otherProjects.length === 0) return;
 
-        const interval = setInterval(() => {
-            setIndex((prev) => (prev + 1) % otherProjects.length)
-        }, 4000);
+        if (paused) {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            return;
+        }
 
-        return () => clearInterval(interval);
+        intervalRef.current = setInterval(() => {
+            setIndex((prev) => (prev + 1) % otherProjects.length);
+        }, 5000);
 
-    }, [otherProjects.length])
-
+        return () => {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+        };
+    }, [paused, otherProjects.length]);
 
     const [startX, setStartX] = useState<number | null>(null);
 
@@ -150,146 +158,150 @@ export default function Projects(props : {
                 }
             </div>    
 
-            <div className="
-                flex 
-                items-center 
-                justify-center
-                px-[5%]
-            ">
-                <div
-                    className="flex w-full sm:w-[60vw] justify-between"
-                >
-                    <h3>
-                        Other Projects
-                    </h3>
-
-                    <div className="flex items-center gap-4">
-                        <button
-                            onClick={goPrev}
-                            className="
-                                cursor-pointer
-                                w-10 
-                                h-10 
-                                p-4
-
-                                flex 
-                                items-center 
-                                justify-center
-
-                                rounded-xl
-                                transition-all
-                                duration-(--transition-duration)
-                                shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
-                                hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
-                                hover:scale-(--subtle-scale)
-                            "
-                        >
-                            🡸
-                        </button>
-
-                        <button
-                            onClick={goNext}
-                            className="
-                                cursor-pointer
-                                w-10 
-                                h-10 
-                                p-4
-
-                                flex 
-                                items-center 
-                                justify-center
-
-                                rounded-xl
-                                transition-all
-                                duration-(--transition-duration)
-                                shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
-                                hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
-                                hover:scale-(--subtle-scale)
-                            "
-                        >
-                            🡺
-                        </button>
-                    </div>                    
-                </div>
-
-            </div>
-
-            <FadeInOnView className="relative overflow-hidden w-full">
-                <div className="flex justify-center gap-2 mt-4">
-                    {otherProjects.map((_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setIndex(i)}
-                            className={`h-2 w-2 rounded-full transition-all ${
-                                index === i ? "bg-black w-4" : "bg-black/30"
-                            }`}
-                            aria-label={`Go to slide ${i + 1}`}
-                        />
-                    ))}
-                </div>   
-                <div 
-                    className="flex transition-transform duration-700 ease-in-out"
-                    style={{
-                        transform: `translateX(-${index*100}%)`
-                    }}
-                    onTouchStart={onTouchStart}
-                    onTouchEnd={onTouchEnd}
-                >
-                    {otherProjects.map((project) => (
+            {otherProjects.length && (
+                <>
+                    <div className="
+                        flex 
+                        items-center 
+                        justify-center
+                        px-[5%]
+                    ">
                         <div
-                            key={project.id}
-                            className="w-full shrink-0 flex justify-center p-[5%] md:pt-[2.5%]"
+                            className="flex w-full sm:w-[60vw] justify-between"
                         >
-                            <div
-                                className="flex flex-col justify-center items-center gap-8"
-                            >
-                                <ProjectCard
-                                    project={project}
-                                    position="start"
-                                    isLoggedIn={props.isLoggedIn}
-                                />
-                                {/* Delete button if logged in */}
-                                {props.isLoggedIn && (
-                                    <div className="w-full md:w-[60%] flex justify-between">
-                                        <Button
-                                            text="Edit"
-                                            className="min-w-32"
-                                            onClick={() => {router.push(`add-project/edit?id=${project.id}`)}}
-                                        />
-                                        <DeleteButton
-                                            className="min-w-32"
-                                            text="Project"
-                                            action={async () => {
-                                                const res = await fetch("/api/projects", {
-                                                    method: "DELETE",
-                                                    headers: {
-                                                        "Content-Type": "application/json",
-                                                    },
-                                                    body: JSON.stringify({ id: project.id }),
-                                                });
+                            <h3>
+                                Other Projects
+                            </h3>
 
-                                                if (res.status === 401) {
-                                                    router.push("/login");
-                                                    return;
-                                                }
-                                                
-                                                setProjects((prev) =>
-                                                    prev.filter((p) => p.id !== project.id)
-                                                );
-                                            }}
-                                        />                        
-                                    </div>
-                                )}                                
-                            </div>
-        
+                            <div className="flex items-center gap-4">
+                                <button
+                                    onClick={goPrev}
+                                    className="
+                                        cursor-pointer
+                                        w-10 
+                                        h-10 
+                                        p-4
 
+                                        flex 
+                                        items-center 
+                                        justify-center
+
+                                        rounded-xl
+                                        transition-all
+                                        duration-(--transition-duration)
+                                        shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                        hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                        hover:scale-(--subtle-scale)
+                                    "
+                                >
+                                    🡸
+                                </button>
+
+                                <button
+                                    onClick={goNext}
+                                    className="
+                                        cursor-pointer
+                                        w-10 
+                                        h-10 
+                                        p-4
+
+                                        flex 
+                                        items-center 
+                                        justify-center
+
+                                        rounded-xl
+                                        transition-all
+                                        duration-(--transition-duration)
+                                        shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                        hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                        hover:scale-(--subtle-scale)
+                                    "
+                                >
+                                    🡺
+                                </button>
+                            </div>                    
                         </div>
-                    ))}
-                </div>       
-      
-            </FadeInOnView>
 
+                    </div>
+                    
+                    <FadeInOnView className="relative overflow-hidden w-full">
+                        <div className="flex justify-center gap-2 mt-4">
+                            {otherProjects.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setIndex(i)}
+                                    className={`h-2 w-2 rounded-full transition-all ${
+                                        index === i ? "bg-black w-4" : "bg-black/30"
+                                    }`}
+                                    aria-label={`Go to slide ${i + 1}`}
+                                />
+                            ))}
+                        </div>   
+                        <div 
+                            className="flex transition-transform duration-700 ease-in-out"
+                            style={{
+                                transform: `translateX(-${index*100}%)`
+                            }}
+                            onTouchStart={onTouchStart}
+                            onTouchEnd={onTouchEnd}
+                        >
+                            {otherProjects.map((project) => (
+                                <div
+                                    key={project.id}
+                                    className="w-full shrink-0 flex justify-center p-[5%] md:pt-[2.5%]"
+                                >
+                                    <div
+                                        className="flex flex-col justify-center items-center gap-8"
+                                    >
+                                        <ProjectCard
+                                            project={project}
+                                            position="start"
+                                            isLoggedIn={props.isLoggedIn}
+                                            onHoverStart={() => setPaused(true)}
+                                            onHoverEnd={() => setPaused(false)}
+                                        />
+                                        {/* Delete button if logged in */}
+                                        {props.isLoggedIn && (
+                                            <div className="w-full md:w-[60%] flex justify-between">
+                                                <Button
+                                                    text="Edit"
+                                                    className="min-w-32"
+                                                    onClick={() => {router.push(`add-project/edit?id=${project.id}`)}}
+                                                />
+                                                <DeleteButton
+                                                    className="min-w-32"
+                                                    text="Project"
+                                                    action={async () => {
+                                                        const res = await fetch("/api/projects", {
+                                                            method: "DELETE",
+                                                            headers: {
+                                                                "Content-Type": "application/json",
+                                                            },
+                                                            body: JSON.stringify({ id: project.id }),
+                                                        });
+
+                                                        if (res.status === 401) {
+                                                            router.push("/login");
+                                                            return;
+                                                        }
+                                                        
+                                                        setProjects((prev) =>
+                                                            prev.filter((p) => p.id !== project.id)
+                                                        );
+                                                    }}
+                                                />                        
+                                            </div>
+                                        )}                                
+                                    </div>
+                
+
+                                </div>
+                            ))}
+                        </div>       
             
+                    </FadeInOnView>    
+                </>            
+            )}
         </>
 
     );
