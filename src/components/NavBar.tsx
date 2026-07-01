@@ -149,7 +149,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 w-full
                 m-8
                 hidden
-                md:flex
+                lg:flex
                 justify-between
                 text-lg
             ">  
@@ -189,7 +189,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
             {/* Mobile navbar */}
             <div className="
                 flex
-                md:hidden
+                lg:hidden
                 justify-between
                 items-center
                 pl-4 pr-4
@@ -206,7 +206,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 </a>
                 <button 
                     className="
-                        flex md:hidden
+                        flex lg:hidden
                         flex-col gap-1
                         hover:cursor-pointer
                     " 
@@ -219,7 +219,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
             </div>
 
             <div className={`
-                md:hidden
+                lg:hidden
                 fixed inset-0
                 w-full h-screen
                 bg-(--primary-colour)
@@ -267,7 +267,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
 
             {/* Logos hang in top right */}
             <div className="
-                fixed right-0 top-[10vh] z-40
+                fixed right-0 top-[10vh] z-40 space-y-4 m-2
             ">
                 {icons.map((icon) => (
                     <a
@@ -276,14 +276,13 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                         target="_blank"
                         className="
                             block w-fit 
-                            sm:p-3 p-2
                             transition-all duration-(--transition-duration) ease-out
                             hover:scale-(--link-scale)
                         "
                     >
                         <img 
                             src={`/icons/${icon.title}.svg`}
-                            className="sm:w-[4vh] w-[5vh]"
+                            className="w-[clamp(2em,2vw,5em)]"
                         />
                     </a>
                 ))}

@@ -33,6 +33,7 @@ export default function Projects(props : {
     const [paused, setPaused] = useState(false);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+    // Auto flipping through cards
     useEffect(() => {
         if (otherProjects.length === 0) return;
 
@@ -51,6 +52,8 @@ export default function Projects(props : {
         };
     }, [paused, otherProjects.length]);
 
+
+    // Swipe through cards on mobile
     const [startX, setStartX] = useState<number | null>(null);
 
     const onTouchStart = (e: React.TouchEvent) => {
@@ -76,6 +79,8 @@ export default function Projects(props : {
 
     return(
         <>
+
+            {/* FEATURED PROJECTS */}
             <h1 className={`
                 text-center
                 ${props.isLoggedIn ? "pb-0" : "pb-8"}
@@ -125,9 +130,9 @@ export default function Projects(props : {
                             {props.isLoggedIn && (
                                 <div className="w-full md:w-[60%] flex justify-between">
                                     <Button
-                                    text="Edit"
-                                    className="min-w-32"
-                                    onClick={() => {router.push(`add-project/edit?id=${project.id}`)}}
+                                        text="Edit"
+                                        className="min-w-32"
+                                        onClick={() => {router.push(`add-project/edit?id=${project.id}`)}}
                                     />
                                     <DeleteButton
                                         className="min-w-32"
@@ -158,6 +163,7 @@ export default function Projects(props : {
                 }
             </div>    
 
+            {/* OTHER PROJECTS */}
             {otherProjects.length && (
                 <>
                     <div className="
@@ -166,8 +172,10 @@ export default function Projects(props : {
                         justify-center
                         px-[5%]
                     ">
+
+                        {/* TITLE + BUTTONS */}
                         <div
-                            className="flex w-full sm:w-[60vw] justify-between"
+                            className="flex w-full sm:w-[60vw] h-fit justify-between"
                         >
                             <h3>
                                 Other Projects
@@ -253,7 +261,7 @@ export default function Projects(props : {
                             {otherProjects.map((project) => (
                                 <div
                                     key={project.id}
-                                    className="w-full shrink-0 flex justify-center p-[5%] md:pt-[2.5%]"
+                                    className="w-full shrink-0 flex justify-center p-[5%] md:pt-[2.5%] md:pb-[2.5%]"
                                 >
                                     <div
                                         className="flex flex-col justify-center items-center gap-8"

@@ -91,6 +91,7 @@ export default function HomeClient(props :
             <section 
                 id="hero"
                 className="
+                    relative
                     min-h-screen
                     w-full
                     flex justify-center items-center
