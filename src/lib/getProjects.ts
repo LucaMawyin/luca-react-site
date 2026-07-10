@@ -3,23 +3,22 @@ import { Project, Session, Tech } from "@/lib/types";
 import { unstable_cache } from "next/cache";
 import { getImageDataUrl } from "./r2";
 
-export const getProjects = (session : Session) => 
-    unstable_cache (
+const getCachedProjects = (isLoggedIn: boolean) =>
+    unstable_cache(
         async (): Promise<Project[]> => {
-            // Fetching recent projects
             const db = await getDB();
 
             const { results } = await db
                 .prepare(`
                     SELECT *
                     FROM projects
-                    ${session ? "" : "WHERE hidden = FALSE"}
+                    ${isLoggedIn ? "" : "WHERE hidden = FALSE"}
                     ORDER BY 
                         pinned DESC,
                         CASE WHEN pinned = 1 THEN updated_at
                         ELSE created_at END DESC
-                    `)
-                .all() as { results : Project[] }; 
+                `)
+                .all() as { results: Project[] };
 
             const projects = await Promise.all(
                 results.map(async (p) => {
@@ -32,14 +31,18 @@ export const getProjects = (session : Session) =>
                 })
             );
 
-
             return projects;
         },
-        ["projects"],
+        [`projects-${isLoggedIn ? "private" : "public"}`],
         {
-            tags:["projects"],
+            tags: ["projects"],
         }
     )();
+
+
+export function getProjects(session: Session) {
+    return getCachedProjects(!!session);
+}
 
 
 export const getTech = unstable_cache( 
