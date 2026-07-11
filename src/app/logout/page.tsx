@@ -27,8 +27,9 @@ export default function Logout() {
 
   return (
     <div className="
-        h-[90vh] 
         flex flex-col 
+        flex-1
+        mt-[10vh]
         gap-8 
         justify-center items-center"
     >
