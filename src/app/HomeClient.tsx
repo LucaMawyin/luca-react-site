@@ -288,8 +288,6 @@ export default function HomeClient(props :
                     projects={props.projects}
                 />
             </section>		
-
-            <Footer/>
         </>
 
     );

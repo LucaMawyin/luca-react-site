@@ -2,6 +2,7 @@ import { validateSession } from "@/lib/auth";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { Metadata } from "next";
+import Footer from "@/components/Footer";
 
 export const dynamic = "force-dynamic";
 
@@ -86,9 +87,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-screen flex flex-col justify-between">
         <NavBar isLoggedIn={!!session} />
         {children}
+        <Footer/>
       </body>
     </html>
   );

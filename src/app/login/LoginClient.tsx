@@ -80,11 +80,11 @@ export default function Login(props : {isLoggedIn : boolean}){
 
 
     return (
-        <div className="flex justify-center items-center min-h-[90vh]">
+        <div className="flex flex-1 justify-center items-center mt-[10vh]">
             <Tile 
-            title="Login"
-            disableHover={true}
-            className="md:max-w-[30vw] max-w-full"
+                title="Login"
+                disableHover={true}
+                className="md:max-w-[30vw] max-w-full"
             >
                 <form 
                     autoComplete="on"

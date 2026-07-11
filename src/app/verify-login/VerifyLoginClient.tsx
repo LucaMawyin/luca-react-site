@@ -93,7 +93,7 @@ export default function VerifyLoginClient() {
     }, [code]);
 
     return (
-        <div className="flex justify-center items-center min-h-[90vh]">
+        <div className="flex flex-1 justify-center items-center mt-[10vh]">
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-center">
                 
                 <h2 className="text-3xl font-semibold">Enter verification code</h2>
