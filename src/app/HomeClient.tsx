@@ -223,7 +223,7 @@ export default function HomeClient(props :
                         text-center sm:text-left
                     ">
 
-                        <h1 className="py-4">About Me</h1>
+                        <h1 className="pt-6">About Me</h1>
                         <FadeInOnView className="
                             mb-8 
                             whitespace-pre-line 
@@ -231,19 +231,22 @@ export default function HomeClient(props :
                             leading-normal
                             prose-a:text-blue-500 prose-a:underline hover:prose-a:text-blue-700
                         ">
-                            <ReactMarkdown
-                                components={{
-                                    a:({node, ...props}) => (
-                                        <a
-                                            {...props}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        />
-                                    ),
-                                }}
-                            >
-                                {props.about}
-                            </ReactMarkdown>
+                            <div className="**:mb-0">
+                                <ReactMarkdown
+                                    components={{
+                                        a:({node, ...props}) => (
+                                            <a
+                                                {...props}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            />
+                                        ),
+                                    }}
+                                >
+                                    {props.about}
+                                </ReactMarkdown>                                
+                            </div>
+
                         </FadeInOnView>
                     </div>
 
