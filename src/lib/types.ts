@@ -49,7 +49,7 @@ export type Session = {
 export type LoginResponse =
     | { status: "success" ; error : "" }
     | { status: "error"; error: string }
-    | { status : "verification_required"; error : "" };
+    | { status : "verification_required"; attemptId: number; error : "" };
 
 export type ChangePasswordBody = {
     currentPassword: string;

@@ -52,7 +52,7 @@ export default function Login(props : {isLoggedIn : boolean}){
         if (data.status === "verification_required") {
 
             router.push(
-            `/verify-login?email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`
+                `/verify-login?attempt=${data.attemptId}&next=${encodeURIComponent(next)}`
             );
             return;
         } 
