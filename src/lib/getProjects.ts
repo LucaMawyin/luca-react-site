@@ -3,47 +3,53 @@ import { Project, Session, Tech } from "@/lib/types";
 import { unstable_cache } from "next/cache";
 import { getImageDataUrl } from "./r2";
 
-const getCachedProjects = (isLoggedIn: boolean) =>
-    unstable_cache(
-        async (): Promise<Project[]> => {
-            const db = await getDB();
+const getProjectsPublic = unstable_cache(
+    async (): Promise<Project[]> => {
+        return fetchProjects(false);
+    },
+    ["projects-public"],
+    {
+        tags: ["projects"],
+    }
+);
 
-            const { results } = await db
-                .prepare(`
-                    SELECT *
-                    FROM projects
-                    ${isLoggedIn ? "" : "WHERE hidden = FALSE"}
-                    ORDER BY 
-                        pinned DESC,
-                        CASE WHEN pinned = 1 THEN updated_at
-                        ELSE created_at END DESC
-                `)
-                .all() as { results: Project[] };
+const getProjectsPrivate = unstable_cache(
+    async (): Promise<Project[]> => {
+        return fetchProjects(true);
+    },
+    ["projects-private"],
+    {
+        tags: ["projects"],
+    }
+);
 
-            const projects = await Promise.all(
-                results.map(async (p) => {
-                    const image = await getImageDataUrl(String(p.id));
+async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
+    const db = await getDB();
 
-                    return {
-                        ...p,
-                        image,
-                    };
-                })
-            );
+    const { results } = await db
+        .prepare(`
+            SELECT *
+            FROM projects
+            ${isLoggedIn ? "" : "WHERE hidden = FALSE"}
+            ORDER BY 
+                pinned DESC,
+                CASE WHEN pinned = 1 THEN updated_at
+                ELSE created_at END DESC
+        `)
+        .all() as { results: Project[] };
 
-            return projects;
-        },
-        [`projects-${isLoggedIn ? "private" : "public"}`],
-        {
-            tags: ["projects"],
-        }
-    )();
+    return Promise.all(
+        results.map(async (p) => ({
+            ...p,
+            image: await getImageDataUrl(String(p.id)),
+        }))
+    );
+}
 
 
 export function getProjects(session: Session) {
-    return getCachedProjects(!!session);
+    return session ? getProjectsPrivate() : getProjectsPublic();
 }
-
 
 export const getTech = unstable_cache( 
         
