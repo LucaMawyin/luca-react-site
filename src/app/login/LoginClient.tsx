@@ -62,7 +62,8 @@ export default function Login(props : {isLoggedIn : boolean}){
     if (props.isLoggedIn){
         return (
             <div className="
-                h-[90vh] 
+                flex-1
+                mt-[10vh]
                 flex flex-col 
                 gap-8 
                 justify-center items-center"
