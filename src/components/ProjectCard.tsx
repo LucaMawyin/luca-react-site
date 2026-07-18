@@ -61,11 +61,11 @@ export default function ProjectCard( props : {
             onMouseEnter={props.onHoverStart}
             onMouseLeave={props.onHoverEnd}
             onTouchStart={() => {
-                props.onHoverStart;
+                props.onHoverStart?.();
                 setIsPressed(true)
             }}
             onTouchEnd={() => {
-                props.onHoverEnd;
+                props.onHoverEnd?.();
                 setIsPressed(false);
             }}
         >   
