@@ -1,5 +1,6 @@
 import { getTagStyle } from "@/lib/tags";
 import { Project } from "@/lib/types";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 
 
@@ -31,6 +32,8 @@ export default function ProjectCard( props : {
 
     const tagStyle = getTagStyle(props.project.tag);
 
+    const [isPressed, setIsPressed] = React.useState(false);
+
     return (
         <a
             href={props.project.link}
@@ -49,6 +52,7 @@ export default function ProjectCard( props : {
 
                 transition-all
                 duration-(--transition-duration)
+                ${isPressed ? "scale-(--subtle-scale) shadow-[0_8px_20px_rgba(0,0,0,0.12)]" : ""}
                 hover:scale-(--subtle-scale)
                 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
                 justify-evenly
@@ -56,8 +60,14 @@ export default function ProjectCard( props : {
             `}
             onMouseEnter={props.onHoverStart}
             onMouseLeave={props.onHoverEnd}
-            onTouchStart={props.onHoverStart}
-            onTouchEnd={props.onHoverEnd}
+            onTouchStart={() => {
+                props.onHoverStart;
+                setIsPressed(true)
+            }}
+            onTouchEnd={() => {
+                props.onHoverEnd;
+                setIsPressed(false);
+            }}
         >   
 
             {/* Tile title */}
