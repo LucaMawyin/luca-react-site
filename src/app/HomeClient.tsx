@@ -265,6 +265,22 @@ export default function HomeClient(props :
 
             </section>	
 
+            {/* Projects */}
+            <section id="projects">
+                <Projects 
+                    isLoggedIn={props.isLoggedIn}
+                    projects={props.projects}
+                />
+            </section>
+
+            {/* TECH I USE */}
+            <section id="tech" className="min-h-fit! my-[5%]">
+                <TechStack 
+                    isLoggedIn={props.isLoggedIn}
+                    tech={props.tech}
+                />
+            </section>
+
             {/* EXPERIENCE */}
             <section id="experience">
                 <ExperienceClient
@@ -272,22 +288,6 @@ export default function HomeClient(props :
                     isLoggedIn={props.isLoggedIn}
                 />
             </section>
-
-            {/* TECH I USE */}
-            <section id="tech" className="min-h-fit! mb-[10%]">
-                <TechStack 
-                    isLoggedIn={props.isLoggedIn}
-                    tech={props.tech}
-                />
-            </section>
-
-            {/* Projects */}
-            <section id="projects">
-                <Projects 
-                    isLoggedIn={props.isLoggedIn}
-                    projects={props.projects}
-                />
-            </section>		
         </>
 
     );

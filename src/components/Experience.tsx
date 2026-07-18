@@ -24,6 +24,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
             <h1 className={`
                 text-3xl 
                 font-bold
+                pt-4 sm:pt-0
                 ${props.isLoggedIn ? "" : "pb-8 sm:pb-0"}
             `}>
                 Experience
