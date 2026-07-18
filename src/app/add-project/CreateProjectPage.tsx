@@ -376,8 +376,8 @@ export default function CreateProjectPage(props : {
 
                         {/* PIN & HIDE */}
                         <div className="flex flex-wrap justify-evenly">
-                            <div className="flex gap-2">
-                                <label htmlFor="pinned">Pin Project</label>
+                            <label className="flex gap-2 items-center cursor-pointer">
+                                <span>Pin Project</span>
                                 <input
                                     name="pinned"
                                     type="checkbox"
@@ -389,10 +389,10 @@ export default function CreateProjectPage(props : {
                                             })
                                         }
                                 />                            
-                            </div>
+                            </label>
                             
-                            <div className="flex gap-2">
-                                <label htmlFor="hidden">Hide Project</label>
+                            <label className="flex gap-2 items-center cursor-pointer">
+                                <span>Hide Project</span>
                                 <input
                                     name="hidden"
                                     type="checkbox"
@@ -404,7 +404,7 @@ export default function CreateProjectPage(props : {
                                             })
                                         }
                                 />                            
-                            </div>
+                            </label>
                         </div>
 
 
@@ -414,7 +414,7 @@ export default function CreateProjectPage(props : {
                             onDrop={handleDrop}
                             className="flex flex-col gap-3"
                         >
-                            <label htmlFor="thumbnail">Drag & drop an image here, or click to select</label>
+                            <label>Drag & drop an image here, or click to select</label>
                             <input 
                                 id="thumbnail"
                                 type="file" 
