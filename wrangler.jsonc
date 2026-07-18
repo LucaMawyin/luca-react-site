@@ -11,6 +11,7 @@
 	"name": "luca-react-site",
 	"main": ".open-next/worker.js",
 	"compatibility_date": "2026-05-14",
+    "workers_dev": false,
 	"compatibility_flags": [
 		"nodejs_compat",
 		"global_fetch_strictly_public"
