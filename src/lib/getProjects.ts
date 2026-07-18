@@ -33,8 +33,8 @@ async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
             ${isLoggedIn ? "" : "WHERE hidden = FALSE"}
             ORDER BY 
                 pinned DESC,
-                CASE WHEN pinned = 1 THEN updated_at
-                ELSE created_at END DESC
+                CASE WHEN pinned = 1 THEN updated_at END ASC,
+                CASE WHEN pinned = 0 THEN created_at END DESC
         `)
         .all() as { results: Project[] };
 
