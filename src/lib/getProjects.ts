@@ -28,13 +28,14 @@ async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
 
     const { results } = await db
         .prepare(`
-            SELECT *
-            FROM projects
-            ${isLoggedIn ? "" : "WHERE hidden = FALSE"}
+            SELECT p.*, t.name AS tag, t.colour AS tag_colour
+            FROM projects p
+            LEFT JOIN tags t ON p.tag = t.name
+            ${isLoggedIn ? "" : "WHERE p.hidden = FALSE"}
             ORDER BY 
-                pinned DESC,
-                CASE WHEN pinned = 1 THEN updated_at END ASC,
-                CASE WHEN pinned = 0 THEN created_at END DESC
+                p.pinned DESC,
+                CASE WHEN p.pinned = 1 THEN p.updated_at END ASC,
+                CASE WHEN p.pinned = 0 THEN p.created_at END DESC
         `)
         .all() as { results: Project[] };
 

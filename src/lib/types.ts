@@ -19,6 +19,7 @@ export type Project= {
     created_at : string;
     updated_at:string;
     tag:string;
+    tag_colour: string | null;
     pinned: 1 | 0;
     hidden: 1 | 0;
 };
