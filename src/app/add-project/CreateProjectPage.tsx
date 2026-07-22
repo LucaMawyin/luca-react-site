@@ -172,7 +172,6 @@ export default function CreateProjectPage(props : {
         formData.append("pinned", form.pinned ? "1" : "0");
         formData.append("hidden", form.hidden ? "1" : "0");
         formData.append("colour", form.colour);
-        console.log(form)
         if (imageFile){
             formData.append("image", imageFile);
             formData.append("imageType", imageFile.type);            
@@ -185,8 +184,6 @@ export default function CreateProjectPage(props : {
 
         // Reset form
         if (res.ok) {
-
-            console.log(form.colour)
 
             setForm({
                 name: "",
@@ -324,13 +321,23 @@ export default function CreateProjectPage(props : {
                                 className="flex-1"
                                 value={form.tag}
                                     onChange={(e) => {
+                                        const selectedTag = props.tags.find(tag => tag.name === e.target.value);
                                         if (e.target.value === "custom") {
                                             setUseCustomTag(true);
-                                            setForm({ ...form, tag: "" });
+                                            setForm({ 
+                                                ...form, 
+                                                tag: "",
+                                                colour: "#FAE8FF"
+                                            });
                                         } else {
                                             setUseCustomTag(false);
-                                            setForm({ ...form, tag: e.target.value });
+                                            setForm({ 
+                                                ...form, 
+                                                tag: e.target.value,
+                                                colour: selectedTag?.colour || form.colour
+                                            });
                                         }
+                                        
                                     }}
                             >
 

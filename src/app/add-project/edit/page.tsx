@@ -22,7 +22,7 @@ export default async function Page({
         .prepare(`
             SELECT p.*, t.colour
             FROM projects p
-            JOIN tags t ON t.name = p.tag AND t.category = 'project'
+            LEFT JOIN tags t ON t.name = p.tag AND t.category = 'project'
             WHERE p.id = ?
         `)
         .bind(id)

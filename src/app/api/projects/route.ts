@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
         const hidden = formData.get("hidden") as string;
         let tagColour = formData.get("colour") as string | null;
         if (tagColour === "#000000") {
-            tagColour = null;
+            tagColour = "#FAE8FF";
         }
                 
         const db = await getDB();

@@ -1,4 +1,4 @@
-import { getTagStyle } from "@/lib/tags";
+import { shadow } from "@/lib/tags";
 import { Project } from "@/lib/types";
 import React from "react";
 import ReactMarkdown from "react-markdown";
@@ -30,7 +30,8 @@ export default function ProjectCard( props : {
         : props.project.libraries || []
     ) as string[];
 
-    const tagStyle = getTagStyle(props.project.tag);
+    
+    const { glowColour, glowRGB, borderColour } = shadow(props.project.colour);
 
     const [isPressed, setIsPressed] = React.useState(false);
 
@@ -95,8 +96,14 @@ export default function ProjectCard( props : {
                 </h1>
                 
                 {props.project.tag && (
+                    
                     <h2 
-                        style={{ "--glow": tagStyle.glow } as React.CSSProperties}
+                        style={{ 
+                            "--glow": glowRGB,
+                            backgroundColor: props.project.colour,
+                            color: glowColour,
+                            borderColor: borderColour,
+                        } as React.CSSProperties}
 
                         className={`
                             self-center sm:self-start
@@ -115,7 +122,6 @@ export default function ProjectCard( props : {
                             border
                             leading-none
                             animate-tag-pulse
-                            ${tagStyle.className}
                         `}
                     >
                         {props.project.tag}

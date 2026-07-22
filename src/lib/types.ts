@@ -19,7 +19,7 @@ export type Project= {
     created_at : string;
     updated_at:string;
     tag:string;
-    tag_colour: string | null;
+    colour: string;
     pinned: 1 | 0;
     hidden: 1 | 0;
 };
@@ -80,6 +80,7 @@ export type Tag = {
     name: string;
     builtin: boolean;
     category: "projects" | "experience"
+    colour: string;
 }
 
 export type Tech = {

@@ -28,7 +28,7 @@ async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
 
     const { results } = await db
         .prepare(`
-            SELECT p.*, t.name AS tag, t.colour AS tag_colour
+            SELECT p.*, t.name AS tag, t.colour AS colour
             FROM projects p
             LEFT JOIN tags t ON p.tag = t.name
             ${isLoggedIn ? "" : "WHERE p.hidden = FALSE"}
