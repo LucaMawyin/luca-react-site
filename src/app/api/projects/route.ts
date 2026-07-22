@@ -76,17 +76,22 @@ export async function POST(req: NextRequest) {
 
         const pinned = formData.get("pinned") as string;
         const hidden = formData.get("hidden") as string;
-
+        let tagColour = formData.get("colour") as string | null;
+        if (tagColour === "#000000") {
+            tagColour = null;
+        }
+                
         const db = await getDB();
 
-        // Add tag to db if it doesnt exist
+        // Add or update tag in db
         if (tag) {
             await db
                 .prepare(`
-                INSERT OR IGNORE INTO tags (name,category)
-                VALUES (?,?)
+                    INSERT INTO tags (name,category,colour)
+                    VALUES (?, ?, ?)
+                    ON CONFLICT(name, category) DO UPDATE SET colour = EXCLUDED.colour
                 `)
-                .bind(tag,"project")
+                .bind(tag, "project", tagColour)
                 .run();
 
             revalidateTag("tags:project","default");

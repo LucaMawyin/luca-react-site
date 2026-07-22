@@ -36,6 +36,7 @@ export default function CreateProjectPage(props : {
         tag: safeString(props.initialData?.tag),
         pinned: !!props.initialData?.pinned,
         hidden: !!props.initialData?.hidden,
+        colour: safeString(props.initialData?.colour),
     });
 
     const [customTag, setCustomTag] = useState("");
@@ -167,9 +168,11 @@ export default function CreateProjectPage(props : {
         formData.append("languages", form.languages);
         formData.append("tools", form.tools);
         formData.append("libraries", form.libraries);
-        formData.append("tag", form.tag)
-        formData.append("pinned", form.pinned ? "1" : "0")
-        formData.append("hidden", form.hidden ? "1" : "0")
+        formData.append("tag", form.tag);
+        formData.append("pinned", form.pinned ? "1" : "0");
+        formData.append("hidden", form.hidden ? "1" : "0");
+        formData.append("colour", form.colour);
+        console.log(form)
         if (imageFile){
             formData.append("image", imageFile);
             formData.append("imageType", imageFile.type);            
@@ -183,6 +186,8 @@ export default function CreateProjectPage(props : {
         // Reset form
         if (res.ok) {
 
+            console.log(form.colour)
+
             setForm({
                 name: "",
                 description: "",
@@ -193,6 +198,7 @@ export default function CreateProjectPage(props : {
                 tag:"",
                 pinned:false,
                 hidden:false,
+                colour:"",
             });
 
             setImageFile(null);
@@ -313,65 +319,83 @@ export default function CreateProjectPage(props : {
                         {/* PROJECT TAGS */}
                         <label htmlFor="tag">Tag</label>
                         <div className="flex items-center justify-between gap-2">
-                        <select
-                            name="tag"
-                            className="flex-1"
-                            value={form.tag}
-                                onChange={(e) => {
-                                    if (e.target.value === "custom") {
-                                        setUseCustomTag(true);
-                                        setForm({ ...form, tag: "" });
-                                    } else {
-                                        setUseCustomTag(false);
-                                        setForm({ ...form, tag: e.target.value });
-                                    }
+                            <select
+                                name="tag"
+                                className="flex-1"
+                                value={form.tag}
+                                    onChange={(e) => {
+                                        if (e.target.value === "custom") {
+                                            setUseCustomTag(true);
+                                            setForm({ ...form, tag: "" });
+                                        } else {
+                                            setUseCustomTag(false);
+                                            setForm({ ...form, tag: e.target.value });
+                                        }
+                                    }}
+                            >
+
+                                {props.tags.map((tag) => (
+                                    <option key={tag.id} value={tag.name}>
+                                        {tag.name === "" ? "No tag" : tag.name}
+                                    </option>
+                                ))}
+
+                                <option value="custom">Add new tag</option>
+                            </select>
+
+                            <DeleteButton
+                                disabled={
+                                    !form.tag ||
+                                    useCustomTag || 
+                                    props.tags.find(tag => tag.name === form.tag)?.builtin
+                                }
+                                text="Tag"
+                                className="flex py-0! px-2! min-h-fit"
+                                action={async () => {
+                                    if (!form.tag) return;
+
+                                    await fetch("/api/tags", {
+                                        method: "DELETE",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify({ name: form.tag }),
+                                    });
+
+                                    setForm((prev) => ({ ...prev, tag: "" }));
+                                    router.refresh();
                                 }}
-                        >
-
-                            {props.tags.map((tag) => (
-                                <option key={tag.id} value={tag.name}>
-                                    {tag.name === "" ? "No tag" : tag.name}
-                                </option>
-                            ))}
-
-                            <option value="custom">Add new tag</option>
-                        </select>
-
-                        <DeleteButton
-                            disabled={
-                                !form.tag ||
-                                useCustomTag || 
-                                props.tags.find(tag => tag.name === form.tag)?.builtin
-                            }
-                            text="Tag"
-                            className="flex py-2! px-4! min-h-fit"
-                            action={async () => {
-                                if (!form.tag) return;
-
-                                await fetch("/api/tags", {
-                                    method: "DELETE",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify({ name: form.tag }),
-                                });
-
-                                setForm((prev) => ({ ...prev, tag: "" }));
-                                router.refresh();
-                            }}
-                        />
+                            />
                         </div>
                         {useCustomTag && (
-                            <input
-                                placeholder="Add New Tag"
-                                value={capitalizeNamesAndTitles(customTag)}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    setCustomTag(value);
-                                    setForm({ ...form, tag: value });
-                                }}
-                                required
-                            />
+                            <>
+                                <input
+                                    placeholder="Add New Tag"
+                                    value={capitalizeNamesAndTitles(customTag)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setCustomTag(value);
+                                        setForm({ ...form, tag: value });
+                                    }}
+                                    required
+                                />
+                            </>
+                        )}
+                        {props.tags.find(tag => tag.name === form.tag)?.builtin ? null : (
+                            <>
+                                <label htmlFor="colour">Color</label>
+                                <input
+                                    name="colour"
+                                    type="color"
+                                    placeholder="Colour"
+                                    value={form.colour}
+                                    onChange={(e) => {
+                                        setForm({ ...form, colour: e.target.value });
+                                        console.log(form.colour);
+                                    }}
+                                    required
+                                />
+                            </>
                         )}
 
                         {/* PIN & HIDE */}

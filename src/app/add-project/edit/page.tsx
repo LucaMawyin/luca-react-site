@@ -9,36 +9,38 @@ export default async function Page({
 }: {
   searchParams: Promise<{ id?: string }>
 }) {
-  const sp = await searchParams;
+    const sp = await searchParams;
 
-  const id = sp?.id ? Number(sp.id) : null;
+    const id = sp?.id ? Number(sp.id) : null;
 
-  let draft = null;
+    let draft = null;
 
-  const db = await getDB();
+    const db = await getDB();
 
-  if (id) {
-    draft = await db
-      .prepare(`
-        SELECT * FROM projects
-        WHERE id = ?
-      `)
-      .bind(id)
-      .first();
-  }
+    if (id) {
+        draft = await db
+        .prepare(`
+            SELECT p.*, t.colour
+            FROM projects p
+            JOIN tags t ON t.name = p.tag AND t.category = 'project'
+            WHERE p.id = ?
+        `)
+        .bind(id)
+        .first();
+    }
 
-  const tags = await getTags("project") as Tag[];
+    const tags = await getTags("project") as Tag[];
 
-  const data = draft;
+    const data = draft;
 
-    const imageUrl = data?.id
-        ? await getImageDataUrl(String(data.id))
-        : null;
+        const imageUrl = data?.id
+            ? await getImageDataUrl(String(data.id))
+            : null;
 
-  return (
-    <CreateProjectPage
-      initialData={{ ...data, imageUrl }}
-      tags={tags}
-    />
-  );
+    return (
+        <CreateProjectPage
+        initialData={{ ...data, imageUrl }}
+        tags={tags}
+        />
+    );
 }
