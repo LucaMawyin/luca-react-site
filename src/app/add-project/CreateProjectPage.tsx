@@ -398,7 +398,6 @@ export default function CreateProjectPage(props : {
                                     value={form.colour}
                                     onChange={(e) => {
                                         setForm({ ...form, colour: e.target.value });
-                                        console.log(form.colour);
                                     }}
                                     required
                                 />
