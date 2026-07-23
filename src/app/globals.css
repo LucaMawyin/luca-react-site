@@ -117,7 +117,7 @@ select:focus {
 @keyframes tagPulse {
 	0% {
 		opacity: 1;
-		box-shadow: 0 0 0 rgba(0,0,0,0);
+		box-shadow: 0 0 3px rgba(var(--glow),0.05);
 	}
 	50% {
 		opacity: 0.7;
@@ -125,7 +125,7 @@ select:focus {
 	}
 	100% {
 		opacity: 1;
-		box-shadow: 0 0 0 rgba(0,0,0,0);
+		box-shadow: 0 0 3px rgba(var(--glow),0.05);
 	}
 }
 
