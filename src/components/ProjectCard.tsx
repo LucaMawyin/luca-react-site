@@ -31,13 +31,7 @@ export default function ProjectCard( props : {
     ) as string[];
 
     
-    const { glowColour, glowRGB, borderColour } = !!props.project.tag
-    ? shadow(props.project.colour) 
-    : {
-        glowColour: "rgb(0,0,0)",
-        glowRGB: "0,0,0",
-        borderColour: "#000000"
-    };
+    const { glowColour, glowRGB, borderColour } = shadow(props.project.colour);
 
     const [isPressed, setIsPressed] = React.useState(false);
 

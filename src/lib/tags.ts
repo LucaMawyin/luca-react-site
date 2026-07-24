@@ -23,7 +23,7 @@ export function shadow(hex: string): {
     glowRGB: string;
     borderColour: string;
 } {
-    if (hex === "#000000") {
+    if (!hex) {
         return {
             glowColour: "",
             glowRGB: "#000000",
