@@ -224,8 +224,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                 w-full h-screen
                 bg-(--primary-colour)
 
-                flex flex-col items-center justify-center
-                gap-[5%]
+                flex flex-col items-center justify-evenly
 
                 z-50
                 
@@ -235,6 +234,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     : "-translate-y-full"
                 }
             `}>
+                <div className="h-[5%]"/>
                 <a
                     className="hover:cursor-pointer text-xl"
                     onClick={() => setOpen(false)}
@@ -263,7 +263,9 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                         </a>
                     ))
                 }
+                <div className="h-[5%]"/>
             </div>
+            
 
             {/* Logos hang in top right */}
             <div className="

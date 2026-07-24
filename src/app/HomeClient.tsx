@@ -96,7 +96,10 @@ export default function HomeClient(props :
                     w-full
                     flex justify-center items-center
             ">
-                <div className="w-fit">
+                <div className="
+                    w-fit
+                    m-4
+                ">
 
                     {/* Icon Row on hero */}
                     <div className="flex flex-row gap-6">
@@ -141,6 +144,7 @@ export default function HomeClient(props :
                         flex flex-col
                         w-fit
                         text-2xl
+                        gap-[clamp(1rem,5vh,2.5rem)]
                     ">
                         {visiblePages
                             .filter((page) => (!page.mobile && page.show))
@@ -151,10 +155,6 @@ export default function HomeClient(props :
                                     target={page.newTab ? "_blank" : undefined}
                                     className={`
                                         relative w-fit
-                                        ml-0
-                                        m-4
-                                        sm:m-4
-                                        sm:ml-0
 
                                         after:content-['']
                                         after:absolute after:left-0 after:bottom-0
