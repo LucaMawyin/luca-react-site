@@ -686,7 +686,7 @@ export default function SettingsClient(props : {
                                         </p>
                                         <p>
                                             <span>Created: </span>
-                                            {new Date(session.created_at).toLocaleString("en-US", {
+                                            {new Date(session.created_at.replace(" ", "T") + "Z").toLocaleString("en-US", {
                                                 year: "numeric",
                                                 month: "short",
                                                 day: "numeric",
@@ -696,7 +696,7 @@ export default function SettingsClient(props : {
                                         </p>
                                         <p>
                                             <span>Expires: </span>
-                                            {new Date(session.expires_at).toLocaleString("en-US", {
+                                            {new Date(session.expires_at.replace(" ", "T") + "Z").toLocaleString("en-US", {
                                                 year: "numeric",
                                                 month: "short",
                                                 day: "numeric",

@@ -37,7 +37,7 @@ export async function POST(request: Request) {
         await db.prepare(`
             INSERT INTO sessions
             (token, user_id, expires_at, ip_address, geo, user_agent)
-            VALUES (?, ?, datetime('now', '+1 days'), ?, ?, ?)
+            VALUES (?, ?, datetime('now', '+${process.env.SESSION_DURATION_DAYS} days'), ?, ?, ?)
         `)
         .bind(
             sessionToken,
