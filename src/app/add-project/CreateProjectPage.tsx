@@ -253,15 +253,18 @@ export default function CreateProjectPage(props : {
                         {/* Name, description, link, languages, tools */}
                         <label htmlFor="name">Project Name</label>
                         <input
+                            id="name"
                             name="name"
                             placeholder="Name"
                             value={form.name}
                             onChange={handleChange}
+                            autoComplete="name"
                             required
                         />
                         
                         <label htmlFor="description">Project Description</label>
                         <textarea
+                            id="description"
                             name="description"
                             placeholder="Description"
                             value={form.description}
@@ -282,6 +285,7 @@ export default function CreateProjectPage(props : {
 
                         <label htmlFor="link">Project Link</label>
                         <input
+                            id="link"
                             name="link"
                             placeholder="Link"
                             value={form.link}
@@ -291,6 +295,7 @@ export default function CreateProjectPage(props : {
 
                         <label htmlFor="languages">Languages Used</label>
                         <input
+                            id="languages"
                             name="languages"
                             placeholder="Languages (comma separated)"
                             value={form.languages}
@@ -299,6 +304,7 @@ export default function CreateProjectPage(props : {
 
                         <label htmlFor="tools">Tools Used</label>
                         <input
+                            id="tools"
                             name="tools"
                             placeholder="Tools (comma separated)"
                             value={form.tools}
@@ -307,6 +313,7 @@ export default function CreateProjectPage(props : {
 
                         <label htmlFor="libraries">Libraries Used</label>
                         <input
+                            id="libraries"
                             name="libraries"
                             placeholder="Libraries (comma separated)"
                             value={form.libraries}
@@ -317,6 +324,7 @@ export default function CreateProjectPage(props : {
                         <label htmlFor="tag">Tag</label>
                         <div className="flex items-center justify-between gap-2">
                             <select
+                                id="tag"
                                 name="tag"
                                 className="flex-1"
                                 value={form.tag}
@@ -377,6 +385,7 @@ export default function CreateProjectPage(props : {
                         {useCustomTag && (
                             <>
                                 <input
+                                    id="tag"
                                     placeholder="Add New Tag"
                                     value={capitalizeNamesAndTitles(customTag)}
                                     onChange={(e) => {
@@ -392,6 +401,7 @@ export default function CreateProjectPage(props : {
                             <>
                                 <label htmlFor="colour">Color</label>
                                 <input
+                                    id="colour"
                                     name="colour"
                                     type="color"
                                     placeholder="Colour"
@@ -444,7 +454,7 @@ export default function CreateProjectPage(props : {
                             onDrop={handleDrop}
                             className="flex flex-col gap-3"
                         >
-                            <label>Drag & drop an image here, or click to select</label>
+                            <label htmlFor="thumbnail">Drag & drop an image here, or click to select</label>
                             <input 
                                 id="thumbnail"
                                 type="file" 
