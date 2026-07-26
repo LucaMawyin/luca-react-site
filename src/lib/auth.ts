@@ -4,7 +4,6 @@ import { getDB } from "@/lib/db";
 import { Session } from "@/lib/types";
 import { cache } from "react";
 
-
 export const validateSession = cache(async () => {
 
     const db = await getDB();
@@ -41,4 +40,25 @@ export async function requireSession() {
     }
 
     return session;
+}
+
+export async function getActiveSessions(){
+    const session = await requireSession();
+
+    // Authenticate before proceeding
+    if (!session) {
+        redirect("/login");
+    }
+
+    const db = await getDB();
+
+    const activeSessions = await db.prepare(`
+        SELECT * FROM sessions;
+    `)
+    .run() as { results : Session[]};
+
+    return {
+        currentSession: session,
+        activeSessions: activeSessions.results,
+    };
 }

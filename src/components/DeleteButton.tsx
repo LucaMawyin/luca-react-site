@@ -10,11 +10,15 @@ export default function DeleteButton({
     className = "",
     disabled= false,
     text="",
+    customText="",
+    customDescription="",
 }: {
     action: () => void;
     className?: string;
     disabled?: boolean;
     text?:string;
+    customText?:string;
+    customDescription?:string;
 }) {
     
     // Handle delete action with transition
@@ -42,7 +46,7 @@ export default function DeleteButton({
     return (
         <>
             <Button
-                text="Delete"
+                text={customText ? `${customText} ${customDescription ? customDescription : ""}` : `Delete`}
                 type="button"
                 disabled={disabled}
                 className={`bg-red-600 hover:bg-red-700 ${className}`}
@@ -59,7 +63,7 @@ export default function DeleteButton({
                         z-60
                 ">
                     <Tile 
-                        title={`Delete ${text}?`} 
+                        title={customText ? `${customText} ${customDescription}?` : `Delete ${customText ? customText : text}?`} 
                         className="bg-white p-[5%] rounded shadow-md max-w-full sm:max-w-fit sm:p-[2%]"
                         disableHover={true}
                     >
@@ -80,7 +84,7 @@ export default function DeleteButton({
                                 
                             </Button>
                             <Button
-                                text="Delete"
+                                text={customText ? customText : "Delete"}
                                 className="bg-red-600 hover:bg-red-700"
                                 onClick={() => {
                                     setOpen(false);

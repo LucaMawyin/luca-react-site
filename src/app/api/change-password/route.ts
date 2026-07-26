@@ -61,6 +61,13 @@ export async function POST(request: Request){
             .bind(hashedPassword, session.user_id)
             .run();
 
+        // Remove all sessions
+        await db
+            .prepare(
+                "DELETE * FROM sessions;"
+            )
+            .run();
+
         return NextResponse.json({
             success: true
         });

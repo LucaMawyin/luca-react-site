@@ -41,10 +41,13 @@ export type LoginBody = {
 
 export type Session = {
     id: number;
-    user_id: number;
     token: string;
-    created_at: string;
+    user_id: number;
+    created_at : string;
     expires_at: string;
+    ip_address : string;
+    geo : string;
+    user_agent : string;
 };
 
 export type LoginResponse =
