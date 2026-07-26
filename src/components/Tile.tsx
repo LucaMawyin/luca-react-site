@@ -5,24 +5,28 @@ export default function Tile(props : {
     className?: string, 
     titleClassName?: string, 
     childClassName?:string,
-    disableHover?: boolean
+    disableHover?: boolean,
+    onClick?:(e: React.MouseEvent<HTMLDivElement>) => void,
 }){
     return (
         <div 
             className={`
-            flex
-            ${props.className?.includes("flex-0")? "" : "flex-1"}
-            flex-col
-            
-            ${props.className?.includes("max-w")? "" : "max-w-[40vw]"} 
-            ${props.className?.includes("min-w")? "" : "min-w-87.5"}
-            rounded-xl 
-            shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
-            p-[2%]
-            
-            transition-all duration-(--transition-time) ease-out
-            ${props.disableHover? "" : "hover:shadow-2xl hover:-translate-y-2"}
-            ${props.className??""}`}>
+                flex
+                ${props.className?.includes("flex-0")? "" : "flex-1"}
+                flex-col
+                
+                ${props.className?.includes("max-w")? "" : "max-w-[40vw]"} 
+                ${props.className?.includes("min-w")? "" : "min-w-87.5"}
+                rounded-xl 
+                shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                p-[2%]
+                
+                transition-all duration-(--transition-time) ease-out
+                ${props.disableHover? "" : "hover:shadow-2xl hover:-translate-y-2"}
+                ${props.className??""}
+            `}
+            onClick={props.onClick}
+        >
 
             {/* Title */ }
             {props.title && 

@@ -61,11 +61,15 @@ export default function DeleteButton({
                         bg-black/50
                         flex items-center justify-center
                         z-60
-                ">
+                    "
+                    onClick={() => setOpen(false)}
+                >
+                    
                     <Tile 
                         title={customText ? `${customText} ${customDescription}?` : `Delete ${customText ? customText : text}?`} 
                         className="bg-white p-[5%] rounded shadow-md max-w-full sm:max-w-fit sm:p-[2%]"
                         disableHover={true}
+                        onClick={(e) => e.stopPropagation()}
                     >
 
                         <p className="text-sm text-gray-600 mb-6 mt-4">
