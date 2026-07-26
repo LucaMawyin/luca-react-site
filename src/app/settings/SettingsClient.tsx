@@ -287,6 +287,7 @@ export default function SettingsClient(props : {
         }, 3000);
     }
 
+    // Clearing all active sessions
     async function handleClearSessions(){
         const res = await fetch("/api/clear-sessions", {
             method: "POST",
@@ -322,7 +323,49 @@ export default function SettingsClient(props : {
             setVisible(false);
             setTimeout(() => setMessage(null), 300);
         }, 3000);
+    }
 
+    // Removing individual session
+    async function handleRemoveSession(id: number) {
+        const res = await fetch("/api/remove-session", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id }),
+        });
+
+        const data = await res.json() as any;
+
+        if (!res.ok) {
+            setMessage({
+                type: "sessions",
+                status: "error",
+                text: data.error || "Failed to remove session",
+            });
+            setVisible(true);
+
+            setTimeout(() => {
+                setVisible(false);
+                setTimeout(() => setMessage(null), 300);
+            }, 3000);
+
+            return;
+        }
+
+        await router.refresh();
+
+        setMessage({
+            type: "sessions",
+            status: "success",
+            text: "Successfully removed session",
+        });
+        setVisible(true);
+
+        setTimeout(() => {
+            setVisible(false);
+            setTimeout(() => setMessage(null), 300);
+        }, 3000);
     }
 
     return (
@@ -660,8 +703,18 @@ export default function SettingsClient(props : {
                                                 hour: "numeric",
                                                 minute: "2-digit",
                                             })}
-                                        </p>                                    
+                                        </p>       
+                                        {props.currentSession.id !== session.id && (
+                                            <DeleteButton
+                                                customText="Remove"
+                                                customDescription=" Session"
+                                                className="flex justify-center py-0! px-2! min-h-fit w-full sm:w-fit"
+                                                action={() => handleRemoveSession(session.id)}
+                                            />
+                                        )}                              
                                     </div>
+                                    
+     
 
                                 </details>
                             ))}
