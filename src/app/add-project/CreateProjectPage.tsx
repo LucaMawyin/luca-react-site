@@ -303,21 +303,21 @@ export default function CreateProjectPage(props : {
                             onChange={handleChange}
                         />
 
-                        <label htmlFor="tools">Tools Used</label>
-                        <input
-                            id="tools"
-                            name="tools"
-                            placeholder="Tools (comma separated)"
-                            value={form.tools}
-                            onChange={handleChange}
-                        />
-
                         <label htmlFor="libraries">Libraries Used</label>
                         <input
                             id="libraries"
                             name="libraries"
                             placeholder="Libraries (comma separated)"
                             value={form.libraries}
+                            onChange={handleChange}
+                        />
+
+                        <label htmlFor="tools">Tools Used</label>
+                        <input
+                            id="tools"
+                            name="tools"
+                            placeholder="Tools (comma separated)"
+                            value={form.tools}
                             onChange={handleChange}
                         />
 

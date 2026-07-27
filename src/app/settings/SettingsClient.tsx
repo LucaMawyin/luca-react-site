@@ -912,16 +912,16 @@ export default function SettingsClient(props : {
                                                 {JSON.parse(project.languages).join(", ")}
                                             </p>                                            
                                         )}
-                                        {project.tools && (
-                                            <p>
-                                                <span>Tools: </span>
-                                                {JSON.parse(project.tools).join(", ")}
-                                            </p>                                            
-                                        )}
                                         {project.libraries && (
                                             <p>
                                                 <span>Libraries: </span>
                                                 {JSON.parse(project.libraries).join(", ")}
+                                            </p>                                            
+                                        )}
+                                        {project.tools && (
+                                            <p>
+                                                <span>Tools: </span>
+                                                {JSON.parse(project.tools).join(", ")}
                                             </p>                                            
                                         )}
 
