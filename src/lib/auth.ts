@@ -8,27 +8,23 @@ export const validateSession = cache(async () => {
 
     const db = await getDB();
 
-    // Delete all sessions that are older than current date
-    await db.prepare(`
-        DELETE FROM sessions
-        WHERE expires_at < ?
-    `)
-    .bind(new Date().toISOString())
-    .run();
-    
     const cookieStore = await cookies();
     const token = cookieStore.get("session")?.value;
 
+    // No token
     if (!token) return null;
 
-    // Now check for active token
+    // Check for active token
     const session = await db.prepare(`
-        SELECT * FROM sessions WHERE token = ?
-    `).bind(token).first<Session>();
+        SELECT * 
+        FROM sessions 
+        WHERE token = ?
+        AND expires_at > DATETIME('now')
+    `)
+    .bind(token)
+    .first<Session>();
 
-    if (!session) return null;
-
-    return session;
+    return session ?? null;
 });
 
 
