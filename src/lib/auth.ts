@@ -49,7 +49,9 @@ export async function getActiveSessions(){
     const db = await getDB();
 
     const activeSessions = await db.prepare(`
-        SELECT * FROM sessions;
+        SELECT * 
+        FROM sessions
+        WHERE expires_at > DATETIME('now')
     `)
     .run() as { results : Session[]};
 
