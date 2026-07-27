@@ -104,13 +104,13 @@ export default function EditTechClient(props : {tech : Tech[]}) {
                                 onChange={handleChange}
                             />                        
                         </div>
-
+                        
                         <div className="flex flex-col">
-                            <label htmlFor="tools">Tools</label>
+                            <label htmlFor="libraries">Libraries</label>
                             <textarea
-                                name="tools"
-                                placeholder="Tools"
-                                value={form.tools}
+                                name="libraries"
+                                placeholder="Libraries"
+                                value={form.libraries}
                                 rows={1}
                                 style={{
                                     overflow: "hidden",
@@ -121,11 +121,11 @@ export default function EditTechClient(props : {tech : Tech[]}) {
                         </div>
 
                         <div className="flex flex-col">
-                            <label htmlFor="libraries">Libraries</label>
+                            <label htmlFor="tools">Tools</label>
                             <textarea
-                                name="libraries"
-                                placeholder="Libraries"
-                                value={form.libraries}
+                                name="tools"
+                                placeholder="Tools"
+                                value={form.tools}
                                 rows={1}
                                 style={{
                                     overflow: "hidden",
