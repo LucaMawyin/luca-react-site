@@ -9,7 +9,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "luca-react-site",
-	"main": ".open-next/worker.js",
+	"main": "worker.ts",
 	"compatibility_date": "2026-05-14",
     "workers_dev": false,
 	"compatibility_flags": [
