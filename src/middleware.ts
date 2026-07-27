@@ -6,7 +6,7 @@ const normalize = (p: string) => (p.startsWith("/") ? p : "/" + p);
 
 export function middleware(req: NextRequest) {
     
-    const path = req.nextUrl.pathname;
+    const path = req.nextUrl.pathname + req.nextUrl.search;
 
     // Check if the route is protected and if the user has a session cookie
     const session = req.cookies.get("session")?.value;

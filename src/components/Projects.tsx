@@ -97,8 +97,8 @@ export default function Projects(props : {
                     p-4 sm:p-0
                 ">
                     <Button 
-                    text="Add Project"
-                    onClick={() => (router.push("/add-project"))}
+                        text="Add Project"
+                        onClick={() => (router.push("/add-project"))}
                     />            
                 </div>
             }

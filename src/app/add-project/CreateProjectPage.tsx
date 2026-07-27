@@ -15,7 +15,8 @@ import DeleteButton from "@/components/DeleteButton";
 
 export default function CreateProjectPage(props : {
     initialData? : any;
-    tags : Tag[]
+    tags : Tag[];
+    referrer ?: string | null;
 }) {
 
     // Max image size is 200KB
@@ -202,7 +203,7 @@ export default function CreateProjectPage(props : {
             setPreview(null);
             setError(null);
 
-            router.push("/projects");
+            router.push(props.referrer ?? "/projects");
             router.refresh();
         } 
 
@@ -234,7 +235,7 @@ export default function CreateProjectPage(props : {
     return (
         <div className="flex justify-center min-h-[90vh]">
             <div className="flex flex-col md:w-[40%] w-full max-w-full justify-center mt-[10vh]">
-                <Link href="/projects" className="self-start pt-4 pb-4 pl-6 md:pl-0">&lt; Return </Link>
+                <Link href={props.referrer ?? "/projects"} className="self-start pt-4 pb-4 pl-6 md:pl-0">&lt; Return </Link>
                 <Tile 
                     title="Add Project"
                     disableHover={true}
@@ -513,7 +514,7 @@ export default function CreateProjectPage(props : {
                                 variant="secondary"
                                 className="w-full sm:w-48"
                                 onClick={() => {
-                                    router.push("/#projects");
+                                    router.push(props.referrer ?? "/projects");
                                 }}
                             />                            
                         </div>

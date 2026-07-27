@@ -4,7 +4,8 @@ import Button from "@/components/Button";
 import DeleteButton from "@/components/DeleteButton";
 import Tile from "@/components/Tile";
 import { getDevice } from "@/lib/getDevice";
-import { ChangePasswordResponse, Session, User } from "@/lib/types";
+import { shadow } from "@/lib/tags";
+import { ChangePasswordResponse, Project, Session, User } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
@@ -28,6 +29,7 @@ export default function SettingsClient(props : {
     about : string, 
     activeSessions : Session[],
     currentSession : Session,
+    projects : Project[],
 }){
 
     const router = useRouter();
@@ -36,7 +38,6 @@ export default function SettingsClient(props : {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [ resumeName, setResumeName] = useState<string | null>(null);
     const [ resumeFile, setResumeFile] = useState<File | null>(null);
-
 
     // Password states
     const [showPassword, setShowPassword] = useState(false);
@@ -50,6 +51,12 @@ export default function SettingsClient(props : {
 
     // About me
     const [ about, setAbout ] = useState(props.about || "");
+
+    // Projects
+    const [projects, setProjects] = useState<Project[]>(props.projects);
+    const projectLengthIncrement = 4;
+    const [visibleCount, setVisibleCount] = useState(projectLengthIncrement);
+    const visibleProjects = projects.slice(0, visibleCount);
 
     useEffect(() => {
         const resizeTextAreas = () => {
@@ -372,14 +379,14 @@ export default function SettingsClient(props : {
         <div className="
             mt-[10vh]
             min-h-[90vh]
-            flex justify-center items-center
+            flex flex-wrap justify-center items-center
         ">
             <div
                 className="
                     flex flex-wrap
                     justify-center
                     w-full
-                    max-h-fit
+                    min-h-[90vh]
                 "
             >
 
@@ -387,7 +394,7 @@ export default function SettingsClient(props : {
                 <Tile 
                     title="Profile Settings"
                     disableHover={true}
-                    className="lg:max-w-[40vw] max-w-full shadow-none"
+                    className="lg:max-w-[40vw] shadow-none pb-0"
                     childClassName="mt-0!"
                     titleClassName="border-b"
                 >
@@ -519,8 +526,7 @@ export default function SettingsClient(props : {
 
                 {/* SECURITY */}
                 <Tile
-                    className="lg:max-w-[40vw] max-w-full shadow-none"
-                    childClassName=""
+                    className="lg:max-w-[40vw] shadow-none pb-0"
                     disableHover={true}
                 >
 
@@ -631,7 +637,6 @@ export default function SettingsClient(props : {
                                         bg-gray-100 
                                         rounded-lg 
                                         wrap-break-word 
-
                                     "
                                 >
                                     <summary className="
@@ -740,6 +745,250 @@ export default function SettingsClient(props : {
                         </div>
 
                     </div>
+                </Tile>
+
+
+            </div>
+            <div className="
+                flex flex-wrap
+                justify-center
+                w-full
+                max-h-fit
+            ">
+                <Tile
+                    title="Projects"
+                    disableHover={true}
+                    className="lg:max-w-[80vw] shadow-none py-0"
+                    childClassName="mt-0!"
+                    titleClassName="border-b"
+                >
+                    <Button 
+                        text="Add Project"
+                        className="mt-4 w-full sm:w-56 self-center"
+                        onClick={() => (router.push("/add-project"))}
+                    />            
+                    {visibleProjects.length && 
+                        <div className="
+                            grid
+                            grid-cols-1
+                            lg:grid-cols-2
+                            items-stretch
+                            auto-rows-fr
+                            mt-4
+                            gap-4
+                        ">
+                            {visibleProjects.map((project) => (
+                                <div 
+                                    key={project.id}
+                                    className="
+                                        flex
+                                        flex-wrap
+                                        justify-between
+                                        bg-gray-100 
+                                        rounded-lg 
+                                        p-2
+                                        gap-2
+                                    "
+                                >
+                                    <div className="
+                                        flex 
+                                        flex-col 
+                                        flex-1 
+                                        min-w-[70%] 
+                                        wrap-break-word
+                                        [&_span]:text-gray-500
+                                        gap-1
+                                    ">
+                                        
+                                        {/* PROJECT PIN & HIDDEN */}
+                                        <div className="
+                                            flex 
+                                            gap-4
+                                        ">
+                                            <p className="font-medium">{project.name}</p>
+
+                                            {/* PIN */}
+                                            {(project.pinned === 1) && (
+                                                <div
+                                                    className="
+                                                        self-start
+                                                        px-3
+                                                        py-1
+                                                        text-xs
+                                                        font-semibold
+                                                        rounded-full
+                                                        bg-yellow-400
+                                                        text-black
+                                                    "
+                                                >
+                                                    Pinned
+                                                </div>
+                                            )}
+
+                                            {/* HIDDEN */}
+                                            {(project.hidden === 1) && (
+                                                <div
+                                                    className="
+                                                        self-start
+                                                        px-3
+                                                        py-1
+                                                        text-xs
+                                                        font-semibold
+                                                        rounded-full
+                                                        bg-red-400
+                                                        text-black
+                                                    "
+                                                >
+                                                    Hidden
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {project.tag && (
+                                            <p>
+                                                <span>Tag: </span>
+                                                <span 
+                                                    style={
+                                                        {
+                                                            color: shadow(project.colour).glowColour,
+                                                            backgroundColor: project.colour,
+                                                            borderColor: shadow(project.colour).borderColour,
+                                                        }
+                                                    }
+                                                    className="
+                                                        px-3 
+                                                        rounded-full
+                                                        border
+                                                    "
+                                                >
+                                                    {project.tag}
+                                                </span>
+                                            </p>                                            
+                                        )}
+
+                                        <p>
+                                            <span>Created: </span>
+                                            {new Date(project.created_at.replace(" ", "T") + "Z").toLocaleString("en-US", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "numeric",
+                                                hour: "numeric",
+                                                minute: "2-digit",
+                                            })}
+                                        </p>
+                                        <p>
+                                            <span>Updated: </span>
+                                            {new Date(project.updated_at.replace(" ", "T") + "Z").toLocaleString("en-US", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "numeric",
+                                                hour: "numeric",
+                                                minute: "2-digit",
+                                            })}
+                                        </p>
+                                        {project.link.length && (
+                                            <p className="flex flex-wrap">
+                                                <span>Link:&nbsp;</span>
+                                                <a 
+                                                    href={project.link}
+                                                    target="_blank"
+                                                    className="
+                                                        block
+                                                        max-w-[75%]
+                                                        truncate
+                                                        hover:text-blue-600
+                                                        transition-all
+                                                        ease-in-out
+                                                        duration-50
+                                                    "
+                                                >
+                                                    {project.link}
+                                                </a>
+                                            </p>
+                                        )}
+                                        {project.languages && (
+                                            <p>
+                                                <span>Languages: </span>
+                                                {JSON.parse(project.languages).join(", ")}
+                                            </p>                                            
+                                        )}
+                                        {project.tools && (
+                                            <p>
+                                                <span>Tools: </span>
+                                                {JSON.parse(project.tools).join(", ")}
+                                            </p>                                            
+                                        )}
+                                        {project.libraries && (
+                                            <p>
+                                                <span>Libraries: </span>
+                                                {JSON.parse(project.libraries).join(", ")}
+                                            </p>                                            
+                                        )}
+
+                                    </div>
+
+                                    {/* Delete/Edit Buttons */}
+                                    <div className="shrink-0 self-center flex gap-4">
+                                        <Button
+                                            text="Edit"
+                                            className="py-0! px-2! min-h-fit w-20! sm:w-fit"
+                                            onClick={() => {router.push(`add-project/edit?id=${project.id}`)}}
+                                        />
+                                        <DeleteButton
+                                            className="py-0! px-2! min-h-fit w-20! sm:w-fit"
+                                            text="Project"
+                                            action={async () => {
+                                                const res = await fetch("/api/projects", {
+                                                    method: "DELETE",
+                                                    headers: {
+                                                        "Content-Type": "application/json",
+                                                    },
+                                                    body: JSON.stringify({ id: project.id }),
+                                                });
+
+                                                if (res.status === 401) {
+                                                    router.push("/login");
+                                                    return;
+                                                }
+                                                
+                                                setProjects((prev) =>
+                                                    prev.filter((p) => p.id !== project.id)
+                                                );
+                                            }}
+                                        />                        
+                                    </div>
+                                </div>
+                            ))}
+                        </div> 
+                    }
+                    
+                    <div className="
+                        flex 
+                        flex-wrap 
+                        justify-evenly 
+                        my-4
+                        gap-4
+                    ">
+                        {visibleCount < projects.length && (
+                            <Button
+                                text="More Projects"
+                                variant="secondary"
+                                className="w-full sm:w-56 self-center"
+                                onClick={() => setVisibleCount((prev) => prev + projectLengthIncrement)}
+                            />
+                        )}
+
+                        {visibleCount > projectLengthIncrement && (
+                            <Button
+                                text="Less Projects"
+                                variant="secondary"
+                                className="w-full sm:w-56 self-center"
+                                onClick={() => setVisibleCount((prev) => prev - projectLengthIncrement)}
+                            />
+                        )}                        
+                    </div>
+
+
                 </Tile>
             </div>
         </div>

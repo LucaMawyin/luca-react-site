@@ -1,6 +1,6 @@
 export default function Footer(){
     return (
-        <footer className="w-full py-10 flex flex-col items-center gap-3 text-sm text-gray-500">
+        <footer className="w-full py-4 flex flex-col items-center gap-3 text-sm text-gray-500">
             <p>© {new Date().getFullYear()} Luca Mawyin</p>
 
             <div className="flex gap-4">

@@ -2,6 +2,7 @@ import { getActiveSessions, requireSession } from "@/lib/auth";
 import { getUserById } from "@/lib/user";
 import SettingsClient from "./SettingsClient";
 import { getContent } from "@/lib/getContent";
+import { getProjects } from "@/lib/getProjects";
 
 export default async function DashboardPage() {
     const session = await requireSession();
@@ -9,6 +10,7 @@ export default async function DashboardPage() {
     const user = await getUserById(session.user_id);
     const about = await getContent();
     const { currentSession, activeSessions} = await getActiveSessions();
+    const projects = await getProjects(session);
 
     if (user){
         return (
@@ -17,6 +19,7 @@ export default async function DashboardPage() {
                 about={about} 
                 activeSessions={activeSessions} 
                 currentSession={currentSession}
+                projects={projects}
             />
         );
     }
