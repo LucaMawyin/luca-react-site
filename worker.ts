@@ -12,7 +12,7 @@ export default {
     ) {
         ctx.waitUntil(
             (async () => {
-                const db = await getDB();
+                const db = await getDB(env);
 
                 await db.prepare(`
                     DELETE FROM sessions
