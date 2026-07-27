@@ -965,27 +965,66 @@ export default function SettingsClient(props : {
                     <div className="
                         flex 
                         flex-wrap 
-                        justify-evenly 
+                        justify-center 
                         my-4
                         gap-4
                     ">
-                        {visibleCount < projects.length && (
-                            <Button
-                                text="More Projects"
-                                variant="secondary"
-                                className="w-full sm:w-56 self-center"
-                                onClick={() => setVisibleCount((prev) => prev + projectLengthIncrement)}
-                            />
-                        )}
-
                         {visibleCount > projectLengthIncrement && (
-                            <Button
-                                text="Less Projects"
-                                variant="secondary"
-                                className="w-full sm:w-56 self-center"
+                            <button
                                 onClick={() => setVisibleCount((prev) => prev - projectLengthIncrement)}
-                            />
+                                className="
+                                    cursor-pointer
+                                    w-24
+                                    h-10 
+                                    p-3
+
+                                    flex 
+                                    items-center 
+                                    justify-center
+
+                                    rounded-xl
+                                    transition-all
+                                    duration-(--transition-duration)
+                                    shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                    hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                    hover:scale-(--subtle-scale)
+                                "
+                            >
+                                <img
+                                    src="/arrow-up.svg"
+                                    className="h-6"
+                                />
+                            </button>
                         )}                        
+
+                        {visibleCount < projects.length && (
+                            <button
+                                onClick={() => setVisibleCount((prev) => prev + projectLengthIncrement)}
+                                className="
+                                    cursor-pointer
+                                    w-24
+                                    h-10 
+                                    p-3
+
+                                    flex 
+                                    items-center 
+                                    justify-center
+
+                                    rounded-xl
+                                    transition-all
+                                    duration-(--transition-duration)
+                                    shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                    hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                    hover:scale-(--subtle-scale)
+                                "
+                            >
+                                <img
+                                    src="/arrow-down.svg"
+                                    className="h-6"
+                                />
+                            </button>
+
+                        )}
                     </div>
 
 

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="94.16px"
+     height="122.878px"
+     viewBox="0 0 94.16 122.878">
+  <g transform="translate(0,122.878) rotate(-90)">
+    <polygon fill-rule="evenodd"
+             clip-rule="evenodd"
+             points="122.878,47.07 75.786,0 31.344,0 62.71,31.365 0,31.365 0,62.795 62.71,62.795 31.344,94.16 75.786,94.16 122.878,47.07"/>
+  </g>
+</svg>
