@@ -9,6 +9,7 @@ CREATE TABLE projects(
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     tag TEXT,
+    status TEXT,
     pinned BOOLEAN DEFAULT 0,
     hidden BOOLEAN DEFAULT 0
 );
