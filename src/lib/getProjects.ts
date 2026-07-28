@@ -26,6 +26,7 @@ const getProjectsPrivate = unstable_cache(
 async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
     const db = await getDB();
 
+    
     const { results } = await db
         .prepare(`
             SELECT p.*, t.name AS tag, t.colour AS colour
