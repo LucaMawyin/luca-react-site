@@ -48,7 +48,7 @@ CREATE TABLE tags(
     colour TEXT,
     builtin BOOLEAN DEFAULT FALSE,
     category TEXT NOT NULL CHECK (
-        category IN ('project', 'experience')
+        category IN ('project', 'experience', 'status')
     ),
     UNIQUE(name, category)
 );
