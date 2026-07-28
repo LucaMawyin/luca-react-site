@@ -136,12 +136,12 @@ export default function ProjectCard( props : {
 
             {/* STATUS / PIN / HIDDEN */}
             <div className={`
-                min-h-8 
+                min-h-8
                 flex 
-                ${props.position === "start" ? "sm:flex-wrap" : "sm:flex-wrap-reverse"}
+                ${props.position === "start" ? "sm:flex-row" : "sm:flex-row-reverse"}
                 items-center 
-                sm:justify-between
                 justify-center
+                sm:justify-between
                 gap-4
             `}>
                 
@@ -166,44 +166,47 @@ export default function ProjectCard( props : {
                         {props.project.status}
                     </div>
                 )}
+                
+                {(props.project.pinned === 1|| props.project.hidden === 1) && props.isLoggedIn &&(
+                    <div className="flex flex-row gap-4">
+                        {/* PIN */}
+                        {(props.project.pinned === 1) && (
+                            <div
+                                className="
+                                    px-3
+                                    py-1
+                                    text-xs
+                                    font-semibold
+                                    rounded-full
+                                    bg-yellow-400
+                                    text-black
+                                    shadow-md
+                                "
+                            >
+                                Pinned
+                            </div>
+                        )}
 
-                <div className="flex flex-row gap-4">
-                    {/* PIN */}
-                    {(props.project.pinned === 1) && props.isLoggedIn && (
-                        <div
-                            className="
-                                px-3
-                                py-1
-                                text-xs
-                                font-semibold
-                                rounded-full
-                                bg-yellow-400
-                                text-black
-                                shadow-md
-                            "
-                        >
-                            Pinned
-                        </div>
-                    )}
+                        {/* HIDDEN */}
+                        {(props.project.hidden === 1) && (
+                            <div
+                                className="
+                                    px-3
+                                    py-1
+                                    text-xs
+                                    font-semibold
+                                    rounded-full
+                                    bg-red-400
+                                    text-black
+                                    shadow-md
+                                "
+                            >
+                                Hidden
+                            </div>
+                        )}                    
+                    </div>                    
+                )}
 
-                    {/* HIDDEN */}
-                    {(props.project.hidden === 1) && props.isLoggedIn && (
-                        <div
-                            className="
-                                px-3
-                                py-1
-                                text-xs
-                                font-semibold
-                                rounded-full
-                                bg-red-400
-                                text-black
-                                shadow-md
-                            "
-                        >
-                            Hidden
-                        </div>
-                    )}                    
-                </div>
 
             </div>
 
