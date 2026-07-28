@@ -806,43 +806,68 @@ export default function SettingsClient(props : {
                                             gap-4
                                         ">
                                             <p className="font-medium">{project.name}</p>
+                                            {project.status && (
+                                                <p>
+                                                    <span 
+                                                        style={
+                                                            {
+                                                                color: shadow(project.status_colour).glowColour,
+                                                                backgroundColor: project.status_colour,
+                                                                borderColor: shadow(project.status_colour).borderColour,
+                                                            }
+                                                        }
+                                                        className="
+                                                            px-3 
+                                                            rounded-full
+                                                            border
+                                                        "
+                                                    >
+                                                        {project.status}
+                                                    </span>
+                                                </p>                                            
+                                            )}        
+                                        </div>   
 
-                                            {/* PIN */}
-                                            {(project.pinned === 1) && (
-                                                <div
-                                                    className="
-                                                        self-start
-                                                        px-3
-                                                        py-1
-                                                        text-xs
-                                                        font-semibold
-                                                        rounded-full
-                                                        bg-yellow-400
-                                                        text-black
-                                                    "
-                                                >
-                                                    Pinned
-                                                </div>
-                                            )}
+                                        {(project.pinned === 1 || project.hidden === 1) && (
+                                            <div className="flex gap-4">
+                                                {/* PIN */}
+                                                {(project.pinned === 1) && (
+                                                    <div
+                                                        className="
+                                                            self-start
+                                                            px-3
+                                                            py-1
+                                                            text-xs
+                                                            font-semibold
+                                                            rounded-full
+                                                            bg-yellow-400
+                                                            text-black
+                                                        "
+                                                    >
+                                                        Pinned
+                                                    </div>
+                                                )}
 
-                                            {/* HIDDEN */}
-                                            {(project.hidden === 1) && (
-                                                <div
-                                                    className="
-                                                        self-start
-                                                        px-3
-                                                        py-1
-                                                        text-xs
-                                                        font-semibold
-                                                        rounded-full
-                                                        bg-red-400
-                                                        text-black
-                                                    "
-                                                >
-                                                    Hidden
-                                                </div>
-                                            )}
-                                        </div>
+                                                {/* HIDDEN */}
+                                                {(project.hidden === 1) && (
+                                                    <div
+                                                        className="
+                                                            self-start
+                                                            px-3
+                                                            py-1
+                                                            text-xs
+                                                            font-semibold
+                                                            rounded-full
+                                                            bg-red-400
+                                                            text-black
+                                                        "
+                                                    >
+                                                        Hidden
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+  
 
                                         {project.tag && (
                                             <p>
@@ -896,6 +921,7 @@ export default function SettingsClient(props : {
                                                         block
                                                         max-w-[75%]
                                                         truncate
+                                                        text-blue-300
                                                         hover:text-blue-600
                                                         transition-all
                                                         ease-in-out
