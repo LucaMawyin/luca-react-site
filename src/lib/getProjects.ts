@@ -29,11 +29,19 @@ async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
     
     const { results } = await db
         .prepare(`
-            SELECT p.*, t.name AS tag, t.colour AS colour
+            SELECT 
+                p.*, 
+                project_tag.name AS tag, 
+                project_tag.colour AS colour,
+                status_tag.name AS status,
+                status_tag.colour AS status_colour
             FROM projects p
-            LEFT JOIN tags t 
-                ON p.tag = t.name 
-                AND t.category = 'project'
+            LEFT JOIN tags project_tag
+                ON p.tag = project_tag.name 
+                AND project_tag.category = 'project'
+            LEFT JOIN tags status_tag
+                ON p.status = status_tag.name
+                AND status_tag.category = 'status'
             ${isLoggedIn ? "" : "WHERE p.hidden = FALSE"}
             ORDER BY 
                 p.pinned DESC,

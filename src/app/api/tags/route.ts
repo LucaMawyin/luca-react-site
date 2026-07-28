@@ -10,11 +10,14 @@ export async function DELETE(req: NextRequest) {
     }
 
     try {
-        const { name } = await req.json() as any;
+        const { name, category } = await req.json() as {
+            name : string;
+            category : "project" | "status";
+        };
 
-    if (!name) {
+    if (!name || !category) {
         return NextResponse.json(
-            { error: "Missing tag name" },
+            { error: "Missing tag name or category" },
             { status: 400 }
         );
     }
@@ -22,12 +25,14 @@ export async function DELETE(req: NextRequest) {
     const db = await getDB();
 
     await db
-        .prepare("DELETE FROM tags WHERE name = ?")
-        .bind(name.trim())
+        .prepare("DELETE FROM tags WHERE name = ? and category = ?")
+        .bind(name.trim(), category)
         .run();
 
+    const column = category === "status" ? "status" : "tag";
+
     await db
-        .prepare("UPDATE projects SET tag = NULL WHERE tag = ?")
+        .prepare(`UPDATE projects SET ${column} = NULL WHERE ${column} = ?`)
         .bind(name)
         .run();
 

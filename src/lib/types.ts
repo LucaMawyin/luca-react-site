@@ -15,13 +15,15 @@ export type Project= {
     image_type : string | null;
     languages : string | null;
     tools : string | null;
-    libraries: string | null;
+    libraries:  string | null;
     created_at : string;
-    updated_at:string;
-    tag:string;
-    colour: string;
-    pinned: 1 | 0;
-    hidden: 1 | 0;
+    updated_at :string;
+    tag : string;
+    colour : string;
+    status : string;
+    status_colour : string;
+    pinned : 1 | 0;
+    hidden : 1 | 0;
 };
 
 export type User = {
@@ -79,17 +81,17 @@ export type Page = {
 };
 
 export type Tag = {
-    id: number;
-    name: string;
-    builtin: boolean;
-    category: "projects" | "experience"
-    colour: string;
+    id : number;
+    name : string;
+    builtin : boolean;
+    category : "project" | "experience" | "status"
+    colour : string;
 }
 
 export type Tech = {
-    id: number; 
-    name: string;
-    category: "tools" | "libraries" | "languages";
+    id : number; 
+    name : string;
+    category : "tools" | "libraries" | "languages";
 }
 
 export type TechBody = {
@@ -99,13 +101,13 @@ export type TechBody = {
 };
 
 export type Experience = {
-    id:number;
-    title:string;
-    description:string;
-    tag:string;
-    city:string;
-    region:string;
-    start_date:string;
-    end_date?:string;
-    company:string;
+    id : number;
+    title : string;
+    description : string;
+    tag : string;
+    city : string;
+    region : string;
+    start_date : string;
+    end_date? : string;
+    company : string;
 }

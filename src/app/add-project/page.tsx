@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 
 export default async function Page() {
     const tagOptions = await getTags("project") as Tag[];
+    const statuses = await getTags("status") as Tag[];
 
     const headersList = await headers();
     const referrer = headersList.get("referer")
@@ -14,6 +15,7 @@ export default async function Page() {
     return (
         <CreateProjectPage 
             tags={tagOptions} 
+            statuses={statuses}
             referrer={referrer}
         />
     );

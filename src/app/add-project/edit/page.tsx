@@ -15,27 +15,38 @@ export default async function Page({
 
     const id = sp?.id ? Number(sp.id) : null;
 
-    if (!id) {
-        redirect("/add-project");
-    }
-
     let draft = null;
 
     const db = await getDB();
 
+    // Getting tag & status for project
     if (id) {
         draft = await db
         .prepare(`
-            SELECT p.*, t.colour
+            SELECT 
+                p.*, 
+                project_tag.colour AS colour,
+                status_tag.colour AS status_colour
             FROM projects p
-            LEFT JOIN tags t ON t.name = p.tag AND t.category = 'project'
+            LEFT JOIN tags project_tag 
+                ON project_tag.name = p.tag 
+                AND project_tag.category = 'project'
+            LEFT JOIN tags status_tag 
+                ON status_tag.name = p.status
+                AND status_tag.category = 'status'
             WHERE p.id = ?
         `)
         .bind(id)
         .first();
     }
 
+    // No draft exists
+    if (!draft) {
+        redirect("/add-project");
+    }
+
     const tags = await getTags("project") as Tag[];
+    const statuses = await getTags("status") as Tag[];
 
     const data = draft;
 
@@ -52,6 +63,7 @@ export default async function Page({
         <CreateProjectPage
             initialData={{ ...data, imageUrl }}
             tags={tags}
+            statuses={statuses}
             referrer={referrer}
         />
     );

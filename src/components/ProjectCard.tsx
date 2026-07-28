@@ -32,6 +32,11 @@ export default function ProjectCard( props : {
 
     
     const { glowColour, glowRGB, borderColour } = shadow(props.project.colour);
+    const { 
+        glowColour: statusGlowColour, 
+        glowRGB: statusGlowRGB, 
+        borderColour: statusBorderColour
+    } = shadow(props.project.status_colour);
 
     const [isPressed, setIsPressed] = React.useState(false);
 
@@ -129,51 +134,77 @@ export default function ProjectCard( props : {
                 )}
             </div>
 
-            {/* PROJECT PIN & HIDDEN */}
-            <div className="
+            {/* STATUS / PIN / HIDDEN */}
+            <div className={`
                 min-h-8 
                 flex 
+                ${props.position === "start" ? "sm:flex-wrap" : "sm:flex-wrap-reverse"}
                 items-center 
-                sm:justify-start 
+                sm:justify-between
                 justify-center
                 gap-4
-            ">
-
-                {/* PIN */}
-                {(props.project.pinned === 1) && props.isLoggedIn && (
+            `}>
+                
+                {/* STATUS */}
+                {props.project.status && (
                     <div
+                        style={{
+                            backgroundColor: props.project.status_colour,
+                            borderColor: statusBorderColour,
+                            color: statusGlowColour,
+                            boxShadow: `0 2px 8px rgba(${statusGlowRGB}, 0.3)`,
+                        }}
                         className="
                             px-3
                             py-1
                             text-xs
-                            font-semibold
+                            font-bold
                             rounded-full
-                            bg-yellow-400
-                            text-black
-                            shadow-md
+                            border
                         "
                     >
-                        Pinned
+                        {props.project.status}
                     </div>
                 )}
 
-                {/* HIDDEN */}
-                {(props.project.hidden === 1) && props.isLoggedIn && (
-                    <div
-                        className="
-                            px-3
-                            py-1
-                            text-xs
-                            font-semibold
-                            rounded-full
-                            bg-red-400
-                            text-black
-                            shadow-md
-                        "
-                    >
-                        Hidden
-                    </div>
-                )}
+                <div className="flex flex-row gap-4">
+                    {/* PIN */}
+                    {(props.project.pinned === 1) && props.isLoggedIn && (
+                        <div
+                            className="
+                                px-3
+                                py-1
+                                text-xs
+                                font-semibold
+                                rounded-full
+                                bg-yellow-400
+                                text-black
+                                shadow-md
+                            "
+                        >
+                            Pinned
+                        </div>
+                    )}
+
+                    {/* HIDDEN */}
+                    {(props.project.hidden === 1) && props.isLoggedIn && (
+                        <div
+                            className="
+                                px-3
+                                py-1
+                                text-xs
+                                font-semibold
+                                rounded-full
+                                bg-red-400
+                                text-black
+                                shadow-md
+                            "
+                        >
+                            Hidden
+                        </div>
+                    )}                    
+                </div>
+
             </div>
 
 

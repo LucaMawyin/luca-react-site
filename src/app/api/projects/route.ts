@@ -73,13 +73,18 @@ export async function POST(req: NextRequest) {
         const tag = rawTag
             ? capitalizeNamesAndTitles(rawTag.trim().toLowerCase())
             : null;
+        
+        // Project Tag
+        const rawStatus = (formData.get("status") as string) || null;
+        const status = rawStatus
+            ? capitalizeNamesAndTitles(rawStatus.trim().toLowerCase())
+            : null;
 
         const pinned = formData.get("pinned") as string;
         const hidden = formData.get("hidden") as string;
-        let tagColour = formData.get("colour") as string | null;
-        if (tagColour === "#000000") {
-            tagColour = "#FAE8FF";
-        }
+        
+        const tagColour = formData.get("colour") as string | null;
+        const statusColour = formData.get("status_colour") as string | null;
                 
         const db = await getDB();
 
@@ -97,6 +102,19 @@ export async function POST(req: NextRequest) {
             revalidateTag("tags:project","default");
         }
 
+        if (status) {
+            await db
+                .prepare(`
+                    INSERT INTO tags (name,category,colour)
+                    VALUES (?, ?, ?)
+                    ON CONFLICT(name, category) DO UPDATE SET colour = EXCLUDED.colour
+                `)
+                .bind(status,"status",statusColour)
+                .run();
+
+            revalidateTag("tags:status","default");
+        }
+
         revalidateTag("tech","default");
 
         // UPDATE PROJECT
@@ -111,6 +129,7 @@ export async function POST(req: NextRequest) {
                     tools = ?,
                     libraries = ?,
                     tag = ?,
+                    status = ?,
                     pinned = ?,
                     hidden = ?,
                     updated_at = CURRENT_TIMESTAMP
@@ -126,6 +145,8 @@ export async function POST(req: NextRequest) {
                     libraries ? JSON.stringify(libraries) : null,
 
                     tag,
+                    status,
+
                     pinned,
                     hidden,
 
@@ -149,8 +170,8 @@ export async function POST(req: NextRequest) {
         const result = await db
             .prepare(`
                 INSERT INTO projects
-                (name, description, link, languages, tools, libraries, tag, pinned, hidden)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (name, description, link, languages, tools, libraries, tag, status, pinned, hidden)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `)
             .bind(
                 name,
@@ -160,6 +181,7 @@ export async function POST(req: NextRequest) {
                 JSON.stringify(tools),
                 JSON.stringify(libraries),
                 tag,
+                status,
                 pinned,
                 hidden
             )

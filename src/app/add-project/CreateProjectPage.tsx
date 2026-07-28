@@ -16,6 +16,7 @@ import DeleteButton from "@/components/DeleteButton";
 export default function CreateProjectPage(props : {
     initialData? : any;
     tags : Tag[];
+    statuses : Tag[];
     referrer ?: string | null;
 }) {
 
@@ -35,20 +36,27 @@ export default function CreateProjectPage(props : {
         tools: safeString(normalizeArray(props.initialData?.tools)),
         libraries: safeString(normalizeArray(props.initialData?.libraries)),
         tag: safeString(props.initialData?.tag),
+        colour: safeString(props.initialData?.colour),
+        status: safeString(props.initialData?.status),
+        status_colour: safeString(props.initialData?.status_colour),
         pinned: !!props.initialData?.pinned,
         hidden: !!props.initialData?.hidden,
-        colour: safeString(props.initialData?.colour),
     });
 
-    const [customTag, setCustomTag] = useState("");
-    const [useCustomTag, setUseCustomTag] = useState(false);
+    // Custom tag
+    const [ customTag, setCustomTag ] = useState("");
+    const [ useCustomTag, setUseCustomTag ] = useState(false);
+
+    // Custom Status
+    const [ customStatus, setCustomStatus ] = useState("");
+    const [ useCustomStatus, setUseCustomStatus ] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [ imageFile, setImageFile ] = useState<File | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [preview, setPreview] = useState<string | null>(null);
-    const [fadeOut, setFadeOut] = useState(false);
+    const [ error, setError ] = useState<string | null>(null);
+    const [ preview, setPreview ] = useState<string | null>(null);
+    const [ fadeOut, setFadeOut ] = useState(false);
 
     // Setting data if loading a draft that exists
     useEffect(() => {
@@ -170,9 +178,11 @@ export default function CreateProjectPage(props : {
         formData.append("tools", form.tools);
         formData.append("libraries", form.libraries);
         formData.append("tag", form.tag);
+        formData.append("colour", form.colour);
+        formData.append("status", form.status);
+        formData.append("status_colour", form.status_colour);
         formData.append("pinned", form.pinned ? "1" : "0");
         formData.append("hidden", form.hidden ? "1" : "0");
-        formData.append("colour", form.colour);
         if (imageFile){
             formData.append("image", imageFile);
             formData.append("imageType", imageFile.type);            
@@ -194,9 +204,11 @@ export default function CreateProjectPage(props : {
                 tools: "",
                 libraries:"",
                 tag:"",
+                colour:"",
+                status:"",
+                status_colour:"",
                 pinned:false,
                 hidden:false,
-                colour:"",
             });
 
             setImageFile(null);
@@ -375,7 +387,10 @@ export default function CreateProjectPage(props : {
                                         headers: {
                                             "Content-Type": "application/json",
                                         },
-                                        body: JSON.stringify({ name: form.tag }),
+                                        body: JSON.stringify({ 
+                                            name: form.tag,
+                                            category: "project",
+                                        }),
                                     });
 
                                     setForm((prev) => ({ ...prev, tag: "" }));
@@ -409,6 +424,103 @@ export default function CreateProjectPage(props : {
                                     value={form.colour}
                                     onChange={(e) => {
                                         setForm({ ...form, colour: e.target.value });
+                                    }}
+                                    required
+                                />
+                            </>
+                        )}
+
+                        {/* PROJECT STATUS */}
+                        <label htmlFor="status">Status</label>
+                        <div className="flex items-center justify-between gap-2">
+                            <select
+                                id="status"
+                                name="status"
+                                className="flex-1"
+                                value={form.status}
+                                    onChange={(e) => {
+                                        const selectedStatus = props.statuses.find(status => status.name === e.target.value);
+                                        if (e.target.value === "custom-status") {
+                                            setUseCustomStatus(true);
+                                            setForm({ 
+                                                ...form, 
+                                                status: "",
+                                                status_colour: "#FAE8FF"
+                                            });
+                                        } else {
+                                            setUseCustomStatus(false);
+                                            setForm({ 
+                                                ...form, 
+                                                status: e.target.value,
+                                                status_colour: selectedStatus?.colour || form.status_colour
+                                            });
+                                        }
+                                        
+                                    }}
+                            >
+
+                                {props.statuses.map((status) => (
+                                    <option key={status.id} value={status.name}>
+                                        {status.name === "" ? "No status" : status.name}
+                                    </option>
+                                ))}
+
+                                <option value="custom-status">Add new status</option>
+                            </select>
+
+                            <DeleteButton
+                                disabled={
+                                    !form.status ||
+                                    useCustomStatus || 
+                                    props.statuses.find(status => status.name === form.status)?.builtin
+                                }
+                                text="Status"
+                                className="flex py-0! px-2! min-h-fit"
+                                action={async () => {
+                                    if (!form.status) return;
+
+                                    await fetch("/api/tags", {
+                                        method: "DELETE",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify({ 
+                                            name: form.status,
+                                            category: "status",
+                                        }),
+                                    });
+
+                                    setForm((prev) => ({ ...prev, status: "" }));
+                                    router.refresh();
+                                }}
+                            />
+                        </div>
+                        {useCustomStatus && (
+                            <>
+                                <input
+                                    id="status"
+                                    placeholder="Add New Status"
+                                    value={capitalizeNamesAndTitles(customStatus)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setCustomStatus(value);
+                                        setForm({ ...form, status: value });
+                                    }}
+                                    required
+                                />
+                            </>
+                        )}
+                        {props.statuses.find(status => status.name === form.status)?.builtin ? null : (
+                            <>
+                                <label htmlFor="status-colour">Color</label>
+                                <input
+                                    id="status-colour"
+                                    name="status-colour"
+                                    type="color"
+                                    placeholder="Colour"
+                                    value={form.status_colour}
+                                    onChange={(e) => {
+                                        setForm({ ...form, status_colour: e.target.value });
                                     }}
                                     required
                                 />

@@ -45,7 +45,7 @@ export default function Projects(props : {
 
         intervalRef.current = setInterval(() => {
             setIndex((prev) => (prev + 1) % otherProjects.length);
-        }, 5000);
+        }, 500000);
 
         return () => {
             if (intervalRef.current) clearInterval(intervalRef.current);
