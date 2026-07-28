@@ -394,7 +394,6 @@ export default function CreateProjectPage(props : {
                                     });
 
                                     setForm((prev) => ({ ...prev, tag: "" }));
-                                    router.refresh();
                                 }}
                             />
                         </div>
@@ -491,7 +490,6 @@ export default function CreateProjectPage(props : {
                                     });
 
                                     setForm((prev) => ({ ...prev, status: "" }));
-                                    router.refresh();
                                 }}
                             />
                         </div>
