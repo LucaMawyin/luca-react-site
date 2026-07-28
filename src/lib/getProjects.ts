@@ -30,7 +30,9 @@ async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
         .prepare(`
             SELECT p.*, t.name AS tag, t.colour AS colour
             FROM projects p
-            LEFT JOIN tags t ON p.tag = t.name
+            LEFT JOIN tags t 
+                ON p.tag = t.name 
+                AND t.category = 'project'
             ${isLoggedIn ? "" : "WHERE p.hidden = FALSE"}
             ORDER BY 
                 p.pinned DESC,
