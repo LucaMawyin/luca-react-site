@@ -149,11 +149,11 @@ export default function ProjectCard( props : {
                 {props.project.status && (
                     <div
                         style={{
+                            "--glow" : statusGlowRGB,
                             backgroundColor: props.project.status_colour,
                             borderColor: statusBorderColour,
                             color: statusGlowColour,
-                            boxShadow: `0 2px 8px rgba(${statusGlowRGB}, 0.3)`,
-                        }}
+                        } as React.CSSProperties}
                         className="
                             px-3
                             py-1
@@ -161,6 +161,7 @@ export default function ProjectCard( props : {
                             font-bold
                             rounded-full
                             border
+                            animate-tag-pulse
                         "
                     >
                         {props.project.status}
