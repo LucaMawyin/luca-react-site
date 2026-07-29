@@ -132,3 +132,14 @@ select:focus {
 .animate-tag-pulse {
 	animation: tagPulse 2.5s ease-in-out infinite;
 }
+
+@keyframes messageIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

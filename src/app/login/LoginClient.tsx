@@ -14,6 +14,11 @@ export default function Login(props : {isLoggedIn : boolean}){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
+    const [errorKey, setErrorKey] = useState(0);
+    function showError(message: string) {
+        setError(message);
+        setErrorKey(prev => prev + 1);
+    }
 
     // Login form submission
     const router = useRouter();
@@ -43,7 +48,7 @@ export default function Login(props : {isLoggedIn : boolean}){
 
         // Login error response
         if (!response.ok) {
-            setError(data.error || "Login failed");
+            showError(data.error || "Login failed");
             return;
         }
 
@@ -132,7 +137,15 @@ export default function Login(props : {isLoggedIn : boolean}){
 
                     {/* Error message */}
                     {error && (
-                        <p className="text-red-500 text-sm text-center">
+                        <p
+                            key={errorKey}
+                            className="
+                                text-red-500
+                                text-sm
+                                text-center
+                                animate-[messageIn_200ms_ease-out]
+                            "
+                        >
                             {error}
                         </p>
                     )}

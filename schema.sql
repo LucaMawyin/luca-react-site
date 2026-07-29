@@ -19,7 +19,10 @@ CREATE TABLE users (
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     password TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    failed_attempts INTEGER DEFAULT 0,
+    locked_until DATETIME
 );
 CREATE TABLE sessions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,6 +44,10 @@ CREATE TABLE login_verifications (
     ip_address TEXT,
     geo TEXT,
     user_agent TEXT,
+    serial TEXT UNIQUE,
+    type TEXT NOT NULL DEFAULT 'login' CHECK (
+        type IN ('login', 'unlock')
+    ),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 CREATE TABLE tags(

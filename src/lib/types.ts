@@ -30,10 +30,11 @@ export type User = {
     id: number;
     email: string;
     password: string;
-    firstName : string;
-    lastName : string;
-    createdAt : string; 
-    emailVerified : boolean;
+    first_name : string;
+    last_name : string;
+    created_at : string; 
+    failed_attempts : number;
+    locked_until : string;
 };
 
 export type LoginBody = {
@@ -66,8 +67,21 @@ export type ChangePasswordResponse =
     | { success: true ; error : "" }
     | { success: false; error: string };
 
+export type LoginVerification = {
+    id: number;
+    user_id: number;
+    token: string;
+    serial: string | null;
+    type: "login" | "unlock";
+    expires_at: string;
+    ip_address: string | null;
+    geo: string | null;
+    user_agent: string | null;
+};
+
 export type VerifyLoginBody = {
     code: string;
+    serial?: string;
 };
 
 

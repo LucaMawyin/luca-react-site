@@ -6,7 +6,7 @@ import { LoginResponse } from "@/lib/types";
 import Button from "@/components/Button";
 import { isSafeNext } from "@/lib/nextPath";
 
-export default function VerifyLoginClient() {
+export default function VerifyLoginClient(props : {type : string}) {
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -58,12 +58,18 @@ export default function VerifyLoginClient() {
                 return;
             }
 
+            const serial = searchParams.get("serial");
+
             const res = await fetch("/api/verify-login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, code: fullCode }),
+                body: JSON.stringify({ 
+                    email, 
+                    code: fullCode,
+                    serial: props.type === "unlock" ? serial : undefined,
+                }),
             });
 
             const data = await res.json() as LoginResponse;
