@@ -3,6 +3,7 @@ export default function Badge(props : {
     className?: string;
     shadow?: boolean;
     style?: React.CSSProperties;
+    fit?: "tight" | "short" | "wide" | "tall";
 }) {
     return (
         <span
@@ -11,12 +12,20 @@ export default function Badge(props : {
                 ...props.style,
             }}
             className={`
-                px-3
-                py-1
-                text-xs
-                font-semibold
+                ${props.className?.includes("font-") ? "" : "font-semibold"}
                 rounded-full
                 ${props.shadow !== false ? "shadow-md" : ""}
+                ${
+                    props.fit === "tight"
+                        ? "px-2 py-1 text-sm"
+                        : props.fit === "short"
+                        ? "px-3 py-0 text-base"
+                        : props.fit === "wide"
+                        ? "px-5 py-1 text-xs"
+                        : props.fit === "tall"
+                        ? "px-3 py-2 text-xs"
+                        : "px-3 py-1 text-xs"
+                }
                 ${props.className ?? ""}
             `}
         >

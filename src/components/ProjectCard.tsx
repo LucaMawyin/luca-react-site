@@ -230,12 +230,13 @@ export default function ProjectCard( props : {
                         <div className="flex flex-wrap gap-2 mt-2">
                             {(languages ?? []).length > 0 && <b>Languages:</b>}
                             {(languages ?? []).map((lang, i) => (
-                            <span
-                                key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-200"
-                            >
-                                {lang}
-                            </span>
+                                <Badge
+                                    key={i}
+                                    shadow={false}
+                                    fit="tight"
+                                    className="bg-gray-200 font-normal"
+                                    text={lang}
+                                />
                             ))}
                         </div>
 
@@ -243,12 +244,13 @@ export default function ProjectCard( props : {
                         <div className="flex flex-wrap gap-2 mt-2">
                             {(libraries ?? []).length > 0 && <b>Libraries:</b>}
                             {(libraries ?? []).map((libraries, i) => (
-                            <span
-                                key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-100"
-                            >
-                                {libraries}
-                            </span>
+                                <Badge
+                                    key={i}
+                                    shadow={false}
+                                    fit="tight"
+                                    className="bg-gray-100 font-normal"
+                                    text={libraries}
+                                />
                             ))}
                         </div>
 
@@ -256,12 +258,13 @@ export default function ProjectCard( props : {
                         <div className="flex flex-wrap gap-2 mt-2">
                             {(tools ?? []).length > 0 && <b>Tools:</b>}
                             {(tools ?? []).map((tool, i) => (
-                            <span
-                                key={i}
-                                className="px-2 py-1 text-sm rounded-full bg-gray-300"
-                            >
-                                {tool}
-                            </span>
+                                <Badge
+                                    key={i}
+                                    shadow={false}
+                                    fit="tight"
+                                    className="bg-gray-300 font-normal"
+                                    text={tool}
+                                />
                             ))}
                         </div>
 

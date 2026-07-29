@@ -812,6 +812,7 @@ export default function SettingsClient(props : {
                                                     <Badge
                                                         text={project.status}
                                                         shadow={false}
+                                                        fit="short"
                                                         style={
                                                             {
                                                                 color: shadow(project.status_colour).glowColour,
@@ -819,7 +820,7 @@ export default function SettingsClient(props : {
                                                                 borderColor: shadow(project.status_colour).borderColour,
                                                             }
                                                         }
-                                                        className="border"
+                                                        className="border font-normal"
                                                     />
                                                 </p>                                            
                                             )}        
@@ -855,17 +856,13 @@ export default function SettingsClient(props : {
                                                 <Badge
                                                     text={project.tag}
                                                     shadow={false}
-                                                    className="border"
+                                                    fit="short"
+                                                    className="border font-normal"
                                                     style={
                                                         {
                                                             color: shadow(project.colour).glowColour,
                                                             backgroundColor: project.colour,
                                                             borderColor: shadow(project.colour).borderColour,
-                                                            
-                                                            paddingTop: 0,
-                                                            paddingBottom: 0,
-                                                            fontSize: "1em",
-                                                            fontWeight: "400",
                                                         }
                                                     }
                                                 />
