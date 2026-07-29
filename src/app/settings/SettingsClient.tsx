@@ -1,5 +1,6 @@
 "use client";
 
+import Badge from "@/components/Badge";
 import Button from "@/components/Button";
 import DeleteButton from "@/components/DeleteButton";
 import Tile from "@/components/Tile";
@@ -808,7 +809,9 @@ export default function SettingsClient(props : {
                                             <p className="font-medium">{project.name}</p>
                                             {project.status && (
                                                 <p>
-                                                    <span 
+                                                    <Badge
+                                                        text={project.status}
+                                                        shadow={false}
                                                         style={
                                                             {
                                                                 color: shadow(project.status_colour).glowColour,
@@ -816,14 +819,8 @@ export default function SettingsClient(props : {
                                                                 borderColor: shadow(project.status_colour).borderColour,
                                                             }
                                                         }
-                                                        className="
-                                                            px-3 
-                                                            rounded-full
-                                                            border
-                                                        "
-                                                    >
-                                                        {project.status}
-                                                    </span>
+                                                        className="border"
+                                                    />
                                                 </p>                                            
                                             )}        
                                         </div>   
@@ -832,38 +829,20 @@ export default function SettingsClient(props : {
                                             <div className="flex gap-4">
                                                 {/* PIN */}
                                                 {(project.pinned === 1) && (
-                                                    <div
-                                                        className="
-                                                            self-start
-                                                            px-3
-                                                            py-1
-                                                            text-xs
-                                                            font-semibold
-                                                            rounded-full
-                                                            bg-yellow-400
-                                                            text-black
-                                                        "
-                                                    >
-                                                        Pinned
-                                                    </div>
+                                                    <Badge
+                                                        text="Pinned"
+                                                        className="bg-yellow-400"
+                                                        shadow={false}
+                                                    />
                                                 )}
 
                                                 {/* HIDDEN */}
                                                 {(project.hidden === 1) && (
-                                                    <div
-                                                        className="
-                                                            self-start
-                                                            px-3
-                                                            py-1
-                                                            text-xs
-                                                            font-semibold
-                                                            rounded-full
-                                                            bg-red-400
-                                                            text-black
-                                                        "
-                                                    >
-                                                        Hidden
-                                                    </div>
+                                                    <Badge
+                                                        text="Hidden"
+                                                        className="bg-red-400"
+                                                        shadow={false}
+                                                    />
                                                 )}
                                             </div>
                                         )}
@@ -872,22 +851,24 @@ export default function SettingsClient(props : {
                                         {project.tag && (
                                             <p>
                                                 <span>Tag: </span>
-                                                <span 
+
+                                                <Badge
+                                                    text={project.tag}
+                                                    shadow={false}
+                                                    className="border"
                                                     style={
                                                         {
                                                             color: shadow(project.colour).glowColour,
                                                             backgroundColor: project.colour,
                                                             borderColor: shadow(project.colour).borderColour,
+                                                            
+                                                            paddingTop: 0,
+                                                            paddingBottom: 0,
+                                                            fontSize: "1em",
+                                                            fontWeight: "400",
                                                         }
                                                     }
-                                                    className="
-                                                        px-3 
-                                                        rounded-full
-                                                        border
-                                                    "
-                                                >
-                                                    {project.tag}
-                                                </span>
+                                                />
                                             </p>                                            
                                         )}
 

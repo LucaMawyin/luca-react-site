@@ -2,6 +2,7 @@ import { shadow } from "@/lib/tags";
 import { Project } from "@/lib/types";
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import Badge from "./Badge";
 
 
 export default function ProjectCard( props : {
@@ -147,7 +148,8 @@ export default function ProjectCard( props : {
                 
                 {/* STATUS */}
                 {props.project.status && (
-                    <div
+                    <Badge
+                        text={props.project.status}
                         style={{
                             "--glow" : statusGlowRGB,
                             backgroundColor: props.project.status_colour,
@@ -155,55 +157,30 @@ export default function ProjectCard( props : {
                             color: statusGlowColour,
                         } as React.CSSProperties}
                         className="
-                            px-3
-                            py-1
-                            text-xs
-                            font-bold
-                            rounded-full
                             border
                             animate-tag-pulse
                         "
-                    >
-                        {props.project.status}
-                    </div>
+                    />
+                        
                 )}
                 
                 {(props.project.pinned === 1|| props.project.hidden === 1) && props.isLoggedIn &&(
                     <div className="flex flex-row gap-4">
                         {/* PIN */}
                         {(props.project.pinned === 1) && (
-                            <div
-                                className="
-                                    px-3
-                                    py-1
-                                    text-xs
-                                    font-semibold
-                                    rounded-full
-                                    bg-yellow-400
-                                    text-black
-                                    shadow-md
-                                "
-                            >
-                                Pinned
-                            </div>
+                            <Badge
+                                text="Pinned"
+                                className="bg-yellow-400"
+                            />
+
                         )}
 
                         {/* HIDDEN */}
                         {(props.project.hidden === 1) && (
-                            <div
-                                className="
-                                    px-3
-                                    py-1
-                                    text-xs
-                                    font-semibold
-                                    rounded-full
-                                    bg-red-400
-                                    text-black
-                                    shadow-md
-                                "
-                            >
-                                Hidden
-                            </div>
+                            <Badge
+                                text="Hidden"
+                                className="bg-red-400"
+                            />
                         )}                    
                     </div>                    
                 )}
