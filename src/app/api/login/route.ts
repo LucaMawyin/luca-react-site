@@ -58,6 +58,8 @@ export async function POST(request: Request) {
 
         // Check if account is locked
         if ( user.locked_until && new Date(user.locked_until) > new Date()){
+
+            // Check if there is still an active unlock code
             const existingUnlock = await db.prepare(`
                 SELECT id 
                 FROM login_verifications
@@ -68,38 +70,25 @@ export async function POST(request: Request) {
             .bind(user.id)
             .first();
 
+            // Initialize new unlock code
             if (!existingUnlock) {
-
-                // Delete old code
-                await db.prepare(`
-                    DELETE FROM login_verifications
-                    WHERE user_id = ?
-                    AND type = 'unlock'
-                `)
-                .bind(user.id)
-                .run();
 
                 // Create new unlock code
                 const unlockCode = crypto
                     .randomInt(100000, 999999)
                     .toString();
 
+                // Create new serial
                 const serial = crypto.randomUUID();
 
-                await db.prepare(`
-                    INSERT INTO login_verifications
-                    (user_id, token, serial, expires_at, ip_address, geo, user_agent, type)
-                    VALUES (?, ?, ?, datetime('now', '+10 minutes'), ?, ?, ?, 'unlock')
-                `)
-                .bind(
+                createNewUnlock(
                     user.id,
-                    unlockCode,
-                    serial,
                     userIP,
-                    JSON.stringify(geo),
-                    userAgent
+                    geo,
+                    userAgent,
+                    unlockCode,
+                    serial
                 )
-                .run();
 
                 await sendUnlockEmail(
                     user.email,
@@ -129,7 +118,7 @@ export async function POST(request: Request) {
 
             const failedAttempts = user.failed_attempts + 1;
 
-            // Account lock
+            // Lock account & create new unlock code
             if (failedAttempts >= 3){
                 await db.prepare(`
                     UPDATE users
@@ -143,15 +132,6 @@ export async function POST(request: Request) {
                     user.id
                 )
                 .run();
-
-                // Delete old code
-                await db.prepare(`
-                    DELETE FROM login_verifications
-                    WHERE user_id = ?
-                    AND type = 'unlock'
-                `)
-                .bind(user.id)
-                .run();
                 
                 const unlockCode = crypto
                     .randomInt(100000, 999999)
@@ -159,20 +139,14 @@ export async function POST(request: Request) {
 
                 const serial = crypto.randomUUID();
 
-                await db.prepare(`
-                    INSERT INTO login_verifications
-                    (user_id, token, serial, expires_at, ip_address, geo, user_agent, type)
-                    VALUES (?, ?, ?, datetime('now', '+10 minutes'), ?, ?, ?, 'unlock')
-                `)
-                .bind(
+                await createNewUnlock(
                     user.id,
-                    unlockCode,
-                    serial,
                     userIP,
-                    JSON.stringify(geo),
-                    userAgent
-                )
-                .run();
+                    geo,
+                    userAgent,
+                    unlockCode,
+                    serial
+                );
 
                 await sendUnlockEmail(
                     user.email,
@@ -270,6 +244,42 @@ export async function POST(request: Request) {
             }
         );
     }
+}
+
+async function createNewUnlock(
+    userId : number,
+    userIP : string,
+    geo: any,
+    userAgent : string,
+    unlockCode : string,
+    serial : string
+){
+
+    const db = await getDB();
+
+    // Delete old verification code
+    await db.prepare(`
+        DELETE FROM login_verifications
+        WHERE user_id = ?
+        AND type = 'unlock'
+    `)
+    .bind(userId)
+    .run();
+
+    await db.prepare(`
+        INSERT INTO login_verifications
+        (user_id, token, serial, expires_at, ip_address, geo, user_agent, type)
+        VALUES (?, ?, ?, datetime('now', '+10 minutes'), ?, ?, ?, 'unlock')
+    `)
+    .bind(
+        userId,
+        unlockCode,
+        serial,
+        userIP,
+        JSON.stringify(geo),
+        userAgent
+    )
+    .run();
 }
 
 async function getGeoFromIp(ip: string) {

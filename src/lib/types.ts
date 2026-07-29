@@ -74,9 +74,9 @@ export type LoginVerification = {
     serial: string | null;
     type: "login" | "unlock";
     expires_at: string;
-    ip_address: string | null;
-    geo: string | null;
-    user_agent: string | null;
+    ip_address: string;
+    geo: string;
+    user_agent: string;
 };
 
 export type VerifyLoginBody = {
