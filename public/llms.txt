@@ -4,12 +4,12 @@ Software developer and McMaster Computer Science student focused on building cle
 
 ## Website
 
-- Homepage: https://lucamawyin.com/
-- Projects: https://lucamawyin.com/projects
-- About: https://lucamawyin.com/about
-- Experience: https://lucamawyin.com/experience
-- Technologies: https://lucamawyin.com/tech
-- Resume: https://lucamawyin.com/resume
+- [Homepage](https://lucamawyin.com/)
+- [Projects](https://lucamawyin.com/projects)
+- [About](https://lucamawyin.com/about)
+- [Experience](https://lucamawyin.com/experience)
+- [Technologies](https://lucamawyin.com/tech)
+- [Resume](https://lucamawyin.com/resume)
 
 ## About
 
@@ -17,8 +17,8 @@ Luca Mawyin is a software developer interested in full-stack development, web ap
 
 ## Profiles
 
-- GitHub: https://github.com/LucaMawyin
-- LinkedIn: https://www.linkedin.com/in/lucamawyin
+- [GitHub](https://github.com/LucaMawyin)
+- [LinkedIn](https://www.linkedin.com/in/lucamawyin)
 
 ## Technologies
 
