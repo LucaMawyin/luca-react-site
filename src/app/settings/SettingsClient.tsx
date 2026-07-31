@@ -1067,7 +1067,7 @@ export default function SettingsClient(props : {
             {deletedProjects.length > 0 && (
                 <Button
                     text={showDeletedProjects ? "Hide Deleted Projects" : "Show Deleted Projects"}
-                    className="w-fit self-center"
+                    className="w-fit self-center my-4"
                     onClick={() => setShowDeletedProjects((prev) => !prev)}
                 />                
             )}
