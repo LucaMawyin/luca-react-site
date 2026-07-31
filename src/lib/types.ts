@@ -18,13 +18,14 @@ export type Project= {
     libraries:  string | null;
     created_at : string;
     updated_at :string;
+    deleted_at : string | null;
     tag : string;
     colour : string;
     status : string;
     status_colour : string;
     pinned : 1 | 0;
     hidden : 1 | 0;
-    deletetd : 1 | 0;
+    deleted : 1 | 0;
 };
 
 export type User = {

@@ -16,7 +16,9 @@ export default function Projects(props : {
     const router = useRouter();
 
     // Fetching projects on load
-    const [projects, setProjects] = useState<Project[]>(props.projects);
+    const [projects, setProjects] = useState<Project[]>(
+        props.projects.filter((project) => project.deleted === 0)
+    );
     const featuredProjects = projects.slice(0,5);
     const otherProjects = projects.slice(5);
 

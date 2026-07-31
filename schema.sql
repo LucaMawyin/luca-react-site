@@ -8,6 +8,7 @@ CREATE TABLE projects(
     libraries TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    deleted_at DATETIME,
     tag TEXT,
     status TEXT,
     pinned BOOLEAN DEFAULT 0,

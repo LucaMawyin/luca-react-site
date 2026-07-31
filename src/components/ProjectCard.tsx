@@ -179,7 +179,7 @@ export default function ProjectCard( props : {
                         {(props.project.hidden === 1) && (
                             <Badge
                                 text="Hidden"
-                                className="bg-red-400"
+                                className="bg-orange-400"
                             />
                         )}                    
                     </div>                    

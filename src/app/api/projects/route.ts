@@ -237,8 +237,26 @@ export async function DELETE(req: NextRequest) {
             );
         }
 
+        const result = await db
+            .prepare(`
+                SELECT * 
+                FROM projects
+                WHERE id = ?
+                AND deleted = 1
+            `)
+            .bind(id)
+            .first<Project | null>();
+
+        console.log(result);
+
         await db
-            .prepare("UPDATE projects SET deleted = 1 WHERE id = ?")
+            .prepare(`
+                UPDATE projects 
+                SET 
+                    deleted = 1,
+                    deleted_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+            `)
             .bind(id)
             .run();
         
@@ -256,6 +274,45 @@ export async function DELETE(req: NextRequest) {
     catch (err) {
         return NextResponse.json(
             { error: "Failed to delete project" },
+            { status: 500 }
+        );
+    }
+}
+
+export async function PATCH(req: NextRequest) {
+
+    // Authenticate before proceeding
+    const session = await validateSession();
+    if (!session) {
+        return NextResponse.json(
+            { error: "Unauthorized" },
+            { status: 401 }
+        );
+    }
+
+    try {
+        const db = await getDB();
+        const { id } = await req.json() as any;
+
+        await db
+            .prepare(`
+                UPDATE projects
+                SET deleted = 0,
+                    deleted_at = NULL
+                WHERE id = ?
+            `)
+            .bind(id)
+            .run();
+
+        revalidateTag("projects", "default");
+
+        return NextResponse.json({
+            success: true,
+        });
+
+    } catch {
+        return NextResponse.json(
+            { error: "Failed to restore project" },
             { status: 500 }
         );
     }

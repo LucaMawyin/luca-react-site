@@ -57,7 +57,15 @@ export default function SettingsClient(props : {
     const [projects, setProjects] = useState<Project[]>(props.projects);
     const projectLengthIncrement = 4;
     const [visibleCount, setVisibleCount] = useState(projectLengthIncrement);
-    const visibleProjects = projects.slice(0, visibleCount);
+    const visibleProjects = projects
+        .filter((project) => project.deleted === 0)
+        .slice(0, visibleCount);
+
+    // Deleted projects
+    const [showDeletedProjects, setShowDeletedProjects] = useState(false);
+    const deletedProjects = props.projects.filter(
+        (project) => project.deleted === 1
+    );
 
     useEffect(() => {
         const resizeTextAreas = () => {
@@ -841,7 +849,7 @@ export default function SettingsClient(props : {
                                                 {(project.hidden === 1) && (
                                                     <Badge
                                                         text="Hidden"
-                                                        className="bg-red-400"
+                                                        className="bg-orange-400"
                                                         shadow={false}
                                                     />
                                                 )}
@@ -1030,10 +1038,277 @@ export default function SettingsClient(props : {
 
                         )}
                     </div>
-
-
                 </Tile>
             </div>
+
+
+            {/* DELETED PROJECTS */}
+            {deletedProjects.length > 0 && (
+                <Button
+                    text={showDeletedProjects ? "Hide Deleted Projects" : "Show Deleted Projects"}
+                    className="w-fit self-center"
+                    onClick={() => setShowDeletedProjects((prev) => !prev)}
+                />                
+            )}
+
+            {showDeletedProjects && (
+                <div className="
+                    flex flex-wrap
+                    justify-center
+                    w-full
+                    max-h-fit
+                ">
+
+                    <Tile
+                        title="Deleted Projects"
+                        disableHover={true}
+                        className="lg:max-w-[80vw] shadow-none py-0"
+                        childClassName="mt-0!"
+                        titleClassName="border-b"
+                    >
+                        {deletedProjects.length && 
+                            <div className="
+                                grid
+                                grid-cols-1
+                                lg:grid-cols-2
+                                items-stretch
+                                auto-rows-fr
+                                mt-4
+                                gap-4
+                            ">
+                                {deletedProjects.map((project) => (
+                                    <div 
+                                        key={project.id}
+                                        className="
+                                            flex
+                                            flex-wrap
+                                            justify-between
+                                            bg-gray-100 
+                                            rounded-lg 
+                                            p-2
+                                            gap-2
+                                        "
+                                    >
+                                        <div className="
+                                            flex 
+                                            flex-col 
+                                            flex-1 
+                                            min-w-[70%] 
+                                            wrap-break-word
+                                            [&_span]:text-gray-500
+                                            gap-1
+                                        ">
+                                            
+                                            {/* PROJECT PIN & HIDDEN */}
+                                            <div className="
+                                                flex 
+                                                gap-4
+                                            ">
+                                                <p className="font-medium">{project.name}</p>
+
+                                                {project.status && (
+                                                    <p>
+                                                        <Badge
+                                                            text={project.status}
+                                                            shadow={false}
+                                                            fit="short"
+                                                            style={
+                                                                {
+                                                                    color: shadow(project.status_colour).glowColour,
+                                                                    backgroundColor: project.status_colour,
+                                                                    borderColor: shadow(project.status_colour).borderColour,
+                                                                }
+                                                            }
+                                                            className="border font-normal"
+                                                        />
+                                                    </p>                                            
+                                                )}        
+                                            </div>   
+
+                                            <div className="flex gap-4">
+                                                {/* DELETED */}
+                                                <Badge
+                                                    text="Deleted"
+                                                    className="bg-red-400"
+                                                    shadow={false}
+                                                />
+
+                                                {/* PIN */}
+                                                {(project.pinned === 1) && (
+                                                    <Badge
+                                                        text="Pinned"
+                                                        className="bg-yellow-400"
+                                                        shadow={false}
+                                                    />
+                                                )}
+
+                                                {/* HIDDEN */}
+                                                {(project.hidden === 1) && (
+                                                    <Badge
+                                                        text="Hidden"
+                                                        className="bg-orange-400"
+                                                        shadow={false}
+                                                    />
+                                                )}
+                                            </div>
+    
+
+                                            {project.tag && (
+                                                <p>
+                                                    <span>Tag: </span>
+
+                                                    <Badge
+                                                        text={project.tag}
+                                                        shadow={false}
+                                                        fit="short"
+                                                        className="border font-normal"
+                                                        style={
+                                                            {
+                                                                color: shadow(project.colour).glowColour,
+                                                                backgroundColor: project.colour,
+                                                                borderColor: shadow(project.colour).borderColour,
+                                                            }
+                                                        }
+                                                    />
+                                                </p>                                            
+                                            )}
+
+                                            <p>
+                                                <span>Created: </span>
+                                                {new Date(project.created_at.replace(" ", "T") + "Z").toLocaleString("en-US", {
+                                                    year: "numeric",
+                                                    month: "short",
+                                                    day: "numeric",
+                                                    hour: "numeric",
+                                                    minute: "2-digit",
+                                                })}
+                                            </p>
+                                            <p>
+                                                <span>Updated: </span>
+                                                {new Date(project.updated_at.replace(" ", "T") + "Z").toLocaleString("en-US", {
+                                                    year: "numeric",
+                                                    month: "short",
+                                                    day: "numeric",
+                                                    hour: "numeric",
+                                                    minute: "2-digit",
+                                                })}
+                                            </p>
+                                            <p>
+                                                <span>Deleted: </span>
+                                                {new Date(project.deleted_at?.replace(" ", "T") + "Z").toLocaleString("en-US", {
+                                                    year: "numeric",
+                                                    month: "short",
+                                                    day: "numeric",
+                                                    hour: "numeric",
+                                                    minute: "2-digit",
+                                                })}
+                                            </p>
+                                            {project.link.length && (
+                                                <p className="flex flex-wrap">
+                                                    <span>Link:&nbsp;</span>
+                                                    <a 
+                                                        href={project.link}
+                                                        target="_blank"
+                                                        className="
+                                                            block
+                                                            max-w-[75%]
+                                                            truncate
+                                                            text-blue-300
+                                                            hover:text-blue-600
+                                                            transition-all
+                                                            ease-in-out
+                                                            duration-50
+                                                        "
+                                                    >
+                                                        {project.link}
+                                                    </a>
+                                                </p>
+                                            )}
+                                            {project.languages && (
+                                                <p>
+                                                    <span>Languages: </span>
+                                                    {JSON.parse(project.languages).join(", ")}
+                                                </p>                                            
+                                            )}
+                                            {project.libraries && (
+                                                <p>
+                                                    <span>Libraries: </span>
+                                                    {JSON.parse(project.libraries).join(", ")}
+                                                </p>                                            
+                                            )}
+                                            {project.tools && (
+                                                <p>
+                                                    <span>Tools: </span>
+                                                    {JSON.parse(project.tools).join(", ")}
+                                                </p>                                            
+                                            )}
+
+                                        </div>
+
+                                        {/* Delete/Edit Buttons */}
+                                        <div className="shrink-0 self-center flex gap-4">
+                                            <Button
+                                                text="Restore"
+                                                className="py-0! px-2! min-h-fit w-20! sm:w-fit"
+                                                onClick={async () => {
+                                                    const res = await fetch("/api/projects", {
+                                                        method: "PATCH",
+                                                        headers: {
+                                                            "Content-Type": "application/json",
+                                                        },
+                                                        body: JSON.stringify({ id: project.id }),
+                                                    });
+
+                                                    if (res.status === 401) {
+                                                        router.push("/login");
+                                                        return;
+                                                    }
+
+                                                    if (!res.ok) {
+                                                        return;
+                                                    }
+
+                                                    setProjects((prev) =>
+                                                        prev.map((p) =>
+                                                            p.id === project.id
+                                                                ? { ...p, deleted: 0, deleted_at: null }
+                                                                : p
+                                                        )
+                                                    );
+                                                }}
+
+                                            />
+                                            <DeleteButton
+                                                className="py-0! px-2! min-h-fit w-20! sm:w-fit"
+                                                text="Project"
+                                                action={async () => {
+                                                    const res = await fetch("/api/projects", {
+                                                        method: "DELETE",
+                                                        headers: {
+                                                            "Content-Type": "application/json",
+                                                        },
+                                                        body: JSON.stringify({ id: project.id }),
+                                                    });
+
+                                                    if (res.status === 401) {
+                                                        router.push("/login");
+                                                        return;
+                                                    }
+                                                    
+                                                    setProjects((prev) =>
+                                                        prev.filter((p) => p.id !== project.id)
+                                                    );
+                                                }}
+                                            />                        
+                                        </div>
+                                    </div>
+                                ))}
+                            </div> 
+                        }
+                    </Tile>                
+                </div>
+            )}
+
         </div>
     );
 }

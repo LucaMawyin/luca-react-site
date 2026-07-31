@@ -35,6 +35,7 @@ export default async function Page({
                 ON status_tag.name = p.status
                 AND status_tag.category = 'status'
             WHERE p.id = ?
+            AND p.deleted = 0
         `)
         .bind(id)
         .first();
