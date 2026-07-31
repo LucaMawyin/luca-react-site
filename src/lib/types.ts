@@ -24,6 +24,7 @@ export type Project= {
     status_colour : string;
     pinned : 1 | 0;
     hidden : 1 | 0;
+    deletetd : 1 | 0;
 };
 
 export type User = {

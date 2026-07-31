@@ -42,7 +42,8 @@ async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
             LEFT JOIN tags status_tag
                 ON p.status = status_tag.name
                 AND status_tag.category = 'status'
-            ${isLoggedIn ? "" : "WHERE p.hidden = FALSE"}
+            WHERE deleted = FALSE
+            ${isLoggedIn ? "" : "AND p.hidden = FALSE"}
             ORDER BY 
                 p.pinned DESC,
                 CASE WHEN p.pinned = 1 THEN p.updated_at END ASC,

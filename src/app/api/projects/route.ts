@@ -238,11 +238,11 @@ export async function DELETE(req: NextRequest) {
         }
 
         await db
-            .prepare("DELETE FROM projects WHERE id = ?")
+            .prepare("UPDATE projects SET deleted = 1 WHERE id = ?")
             .bind(id)
             .run();
         
-        deleteFromR2("projects",`${id}`)
+        // deleteFromR2("projects",`${id}`)
 
         revalidateTag("projects","default");
 
