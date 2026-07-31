@@ -1,0 +1,124 @@
+# Luca Mawyin Portfolio
+
+Software developer and McMaster Computer Science student focused on building clean, intuitive web applications, software systems, and technology projects.
+
+## Website
+
+- Homepage: https://lucamawyin.com/
+- Projects: https://lucamawyin.com/projects
+- About: https://lucamawyin.com/about
+- Experience: https://lucamawyin.com/experience
+- Technologies: https://lucamawyin.com/tech
+- Resume: https://lucamawyin.com/resume
+
+## About
+
+Luca Mawyin is a software developer interested in full-stack development, web applications, computer science, and software engineering.
+
+## Profiles
+
+- GitHub: https://github.com/LucaMawyin
+- LinkedIn: https://www.linkedin.com/in/lucamawyin
+
+## Technologies
+
+### Languages
+
+- JavaScript
+- TypeScript
+- Python
+- Java
+- C
+- C++
+- C#
+- Go
+- Haskell
+- PHP
+- SQL
+- HTML
+- CSS
+- LaTeX
+- Assembly
+
+### Frontend Development
+
+- React
+- Next.js
+- OpenNext
+- Tailwind CSS
+- HTML
+- CSS
+- UI Development
+- Responsive Web Design
+
+### Backend Development
+
+- Node.js
+- Flask
+- REST APIs
+- API Development
+- Server-Side Applications
+- Authentication Systems
+
+### Databases
+
+- SQL
+- MySQL
+- SQLite
+- Cloudflare D1
+- Database Design
+- Data Modeling
+
+### Cloud & Infrastructure
+
+- Cloudflare Workers
+- Cloudflare Pages
+- Cloudflare D1
+- Cloudflare R2
+- Cloudflare Cron Triggers (Scheduled Workers)
+- AWS
+- Resend
+- Linux
+- DevOps
+- Git
+
+### Machine Learning & Computer Vision
+
+- PyTorch
+- OpenCV
+- MediaPipe
+- Ultralytics
+- YOLO
+- Computer Vision
+- Machine Learning
+- Deep Learning
+
+### Embedded Systems
+
+- Arduino
+- Microcontrollers
+- Embedded Programming
+
+## Projects
+
+Projects include:
+- Full-stack web applications
+- Custom authentication systems
+- Cloud-based applications
+- Machine learning and computer vision projects
+- Software engineering experiments
+
+Project details are available on the website.
+
+## Platform
+
+This portfolio is built using:
+- Next.js
+- OpenNext
+- Cloudflare Workers
+- Cloudflare D1
+- Cloudflare R2
+- Resend
+- Custom CMS
+- Custom authentication and session management
+- Automated reliability monitoring

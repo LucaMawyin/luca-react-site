@@ -186,7 +186,18 @@ export default function HomeClient(props :
                 </div>
 
                 {/* Scroll down arrow */}
-                <a href="#about" className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 animate-arrow-entry">
+                <a 
+                    href="#about" 
+                    aria-label="Scroll to about section"
+                    className="
+                        absolute 
+                        bottom-6 
+                        left-1/2 
+                        -translate-x-1/2 
+                        opacity-0 
+                        animate-arrow-entry
+                    "
+                >
                     <div className="animate-bounce-slow">
                         <svg
                             className="w-6 h-6 text-black"
@@ -194,6 +205,7 @@ export default function HomeClient(props :
                             stroke="currentColor"
                             strokeWidth="2"
                             viewBox="0 0 24 24"
+                            aria-hidden="true"
                         >
                             <path
                                 strokeLinecap="round"
