@@ -246,7 +246,10 @@ export default async function RootLayout({
                     }}
                 />
                 <NavBar isLoggedIn={!!session} />
-                {children}
+                <main>
+                    {children}
+                </main>
+                
                 <Footer/>
             </body>
         </html>
