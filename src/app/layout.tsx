@@ -1,8 +1,10 @@
 import { validateSession } from "@/lib/auth";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { Metadata } from "next";
 import Footer from "@/components/Footer";
+
 
 export const dynamic = "force-dynamic";
 
@@ -78,20 +80,26 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
 
-  const session = await validateSession();
+    const session = await validateSession();
 
-  return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col justify-between">
-        <NavBar isLoggedIn={!!session} />
-        {children}
-        <Footer/>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={`
+                min-h-screen 
+                flex 
+                flex-col 
+                justify-between
+                ${GeistMono.className}
+            `}>
+                <NavBar isLoggedIn={!!session} />
+                {children}
+                <Footer/>
+            </body>
+        </html>
+    );
 }

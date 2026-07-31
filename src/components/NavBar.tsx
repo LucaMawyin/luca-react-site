@@ -284,6 +284,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     >
                         <img 
                             src={`/icons/${icon.title}.svg`}
+                            alt={icon.title}
                             className="w-[clamp(2em,2vw,5em)]"
                         />
                     </a>

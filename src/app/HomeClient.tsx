@@ -122,6 +122,7 @@ export default function HomeClient(props :
                             >
                                 <img
                                     src={`/icons/${icon.title}.svg`}
+                                    alt={icon.title}
                                     className="h-[clamp(3rem,5vw,4rem)]"
                                 />
                             </a>
