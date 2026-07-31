@@ -206,6 +206,7 @@ export default function Projects(props : {
                                 >
                                     <img
                                         src="/arrow-left.svg"
+                                        alt="left"
                                     />
                                 </button>
 
@@ -232,6 +233,7 @@ export default function Projects(props : {
 
                                     <img
                                         src="/arrow-right.svg"
+                                        alt="right"
                                     />
                                 </button>
                             </div>                    

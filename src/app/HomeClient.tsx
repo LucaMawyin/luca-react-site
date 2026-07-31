@@ -30,7 +30,11 @@ export default function HomeClient(props :
     // Page animation on load
     const [loaded, setLoaded] = useState(false);
     useEffect(() => {
-        setLoaded(true);
+        const frame = requestAnimationFrame(() => {
+            setLoaded(true);
+        });
+
+        return () => cancelAnimationFrame(frame);
     }, []);
 
     // Scroll to section if URL has section on load
@@ -258,6 +262,7 @@ export default function HomeClient(props :
                     ">
                         <img
                             src="/images/headshot.webp"
+                            alt="headshot"
                             className="my-auto w-full h-auto object-contain rounded-2xl"
 
                         />
