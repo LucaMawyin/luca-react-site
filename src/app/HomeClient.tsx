@@ -134,7 +134,7 @@ export default function HomeClient(props :
                             mb-2
                             sm:mb-0
                             transition-all duration-700 ease-out
-                            ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
+                            ${loaded ? "opacity-100 translate-y-0" : "opacity-[0.01] translate-y-4"}
                     `}>
                         Luca Mawyin
                     </h1>
