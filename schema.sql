@@ -11,7 +11,8 @@ CREATE TABLE projects(
     tag TEXT,
     status TEXT,
     pinned BOOLEAN DEFAULT 0,
-    hidden BOOLEAN DEFAULT 0
+    hidden BOOLEAN DEFAULT 0,
+    deleted BOOLEAN DEFAULT 0
 );
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,7 +21,6 @@ CREATE TABLE users (
     last_name TEXT NOT NULL,
     password TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-
     failed_attempts INTEGER DEFAULT 0,
     locked_until DATETIME
 );
@@ -45,9 +45,7 @@ CREATE TABLE login_verifications (
     geo TEXT,
     user_agent TEXT,
     serial TEXT UNIQUE,
-    type TEXT NOT NULL DEFAULT 'login' CHECK (
-        type IN ('login', 'unlock')
-    ),
+    type TEXT NOT NULL DEFAULT 'login' CHECK (type IN ('login', 'unlock')),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 CREATE TABLE tags(
@@ -80,8 +78,5 @@ CREATE TABLE experience (
     city TEXT NOT NULL,
     region TEXT NOT NULL,
     start_date INTEGER NOT NULL,
-    end_date INTEGER,
-    category TEXT NOT NULL CHECK (
-        category IN ('project', 'experience')
-    )
+    end_date INTEGER
 );
