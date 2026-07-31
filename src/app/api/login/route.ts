@@ -387,7 +387,7 @@ async function sendUnlockEmail(
 ){
     const resend = new Resend(process.env.RESEND_KEY);
 
-    const unlockLink = `${process.env.NEXT_PUBLIC_SITE_URL}/verify-login?serial=${serial}`;
+    const unlockLink = `${process.env.NEXT_PUBLIC_APP_URL}/verify-login?serial=${serial}`;
 
     await resend.emails.send({
         from: "Luca Mawyin <security@lucamawyin.com>",
