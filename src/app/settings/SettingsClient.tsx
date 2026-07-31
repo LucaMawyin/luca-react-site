@@ -63,7 +63,7 @@ export default function SettingsClient(props : {
 
     // Deleted projects
     const [showDeletedProjects, setShowDeletedProjects] = useState(false);
-    const deletedProjects = props.projects.filter(
+    const deletedProjects = projects.filter(
         (project) => project.deleted === 1
     );
 
