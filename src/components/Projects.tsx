@@ -177,7 +177,7 @@ export default function Projects(props : {
 
                         {/* TITLE + BUTTONS */}
                         <div
-                            className="flex w-full sm:w-[60vw] h-fit justify-between"
+                            className="flex w-full md:w-[70%] h-fit justify-between"
                         >
                             <h3>
                                 Other Projects
@@ -277,7 +277,7 @@ export default function Projects(props : {
                                         />
                                         {/* Delete button if logged in */}
                                         {props.isLoggedIn && (
-                                            <div className="w-full md:w-[60%] flex justify-between">
+                                            <div className="w-full md:w-[70%] flex justify-between">
                                                 <Button
                                                     text="Edit"
                                                     className="min-w-32"
