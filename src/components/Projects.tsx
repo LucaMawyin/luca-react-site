@@ -110,7 +110,7 @@ export default function Projects(props : {
                 auto-rows-fr
                 pt-[2.5%]
                 p-[5%]
-                gap-8
+                gap-16
             ">  
                 {                
                     featuredProjects.map((project,i) => (

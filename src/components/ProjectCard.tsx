@@ -52,7 +52,7 @@ export default function ProjectCard( props : {
                 shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
                 w-full
                 h-full
-                md:w-[60%]
+                md:w-[70%]
                 md:p-8
                 p-4
                 
