@@ -30,11 +30,7 @@ export default function HomeClient(props :
     // Page animation on load
     const [loaded, setLoaded] = useState(false);
     useEffect(() => {
-        const frame = requestAnimationFrame(() => {
-            setLoaded(true);
-        });
-
-        return () => cancelAnimationFrame(frame);
+        setLoaded(true);
     }, []);
 
     // Scroll to section if URL has section on load
