@@ -256,7 +256,7 @@ export default function HomeClient(props :
                         flex justify-center
                     ">
                         <img
-                            src="/images/headshot.png"
+                            src="/images/headshot.webp"
                             className="my-auto w-full h-auto object-contain rounded-2xl"
 
                         />
