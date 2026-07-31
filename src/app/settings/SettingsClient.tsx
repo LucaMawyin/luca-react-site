@@ -62,10 +62,16 @@ export default function SettingsClient(props : {
         .slice(0, visibleCount);
 
     // Deleted projects
-    const [showDeletedProjects, setShowDeletedProjects] = useState(false);
     const deletedProjects = projects.filter(
         (project) => project.deleted === 1
     );
+    const [showDeletedProjects, setShowDeletedProjects] = useState(false);
+
+    useEffect(() => {
+        if (deletedProjects.length === 0) {
+            setShowDeletedProjects(false);
+        }
+    }, [deletedProjects.length]);
 
     useEffect(() => {
         const resizeTextAreas = () => {
@@ -776,7 +782,7 @@ export default function SettingsClient(props : {
                         className="mt-4 w-full sm:w-56 self-center"
                         onClick={() => (router.push("/add-project"))}
                     />            
-                    {visibleProjects.length && 
+                    {visibleProjects.length > 0 && 
                         <div className="
                             grid
                             grid-cols-1
@@ -962,9 +968,24 @@ export default function SettingsClient(props : {
                                                     router.push("/login");
                                                     return;
                                                 }
+
+                                                if (!res.ok) {
+                                                    return;
+                                                }
                                                 
                                                 setProjects((prev) =>
-                                                    prev.filter((p) => p.id !== project.id)
+                                                    prev.map((p) =>
+                                                        p.id === project.id
+                                                            ? {
+                                                                ...p,
+                                                                deleted: 1,
+                                                                deleted_at: new Date()
+                                                                    .toISOString()
+                                                                    .slice(0, 19)
+                                                                    .replace("T", " "),
+                                                            }
+                                                            : p
+                                                    )
                                                 );
                                             }}
                                         />                        
@@ -1066,7 +1087,7 @@ export default function SettingsClient(props : {
                         childClassName="mt-0!"
                         titleClassName="border-b"
                     >
-                        {deletedProjects.length && 
+                        { 
                             <div className="
                                 grid
                                 grid-cols-1

@@ -247,20 +247,31 @@ export async function DELETE(req: NextRequest) {
             .bind(id)
             .first<Project | null>();
 
-        console.log(result);
+        // Final blow
+        if (result?.deleted === 1){
+            await db
+                .prepare(`DELETE FROM projects WHERE id = ?`)
+                .bind(id)
+                .run();
+            
+            // Delete image
+            deleteFromR2("projects",`${id}`);
+        }
 
-        await db
-            .prepare(`
-                UPDATE projects 
-                SET 
-                    deleted = 1,
-                    deleted_at = CURRENT_TIMESTAMP
-                WHERE id = ?
-            `)
-            .bind(id)
-            .run();
-        
-        // deleteFromR2("projects",`${id}`)
+        // Initial delete
+        else {
+            await db
+                .prepare(`
+                    UPDATE projects 
+                    SET 
+                        deleted = 1,
+                        deleted_at = CURRENT_TIMESTAMP
+                    WHERE id = ?
+                `)
+                .bind(id)
+                .run();
+        }
+
 
         revalidateTag("projects","default");
 
