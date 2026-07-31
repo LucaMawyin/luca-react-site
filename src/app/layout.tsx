@@ -8,12 +8,14 @@ import Footer from "@/components/Footer";
 
 export const dynamic = "force-dynamic";
 
-const description = "Luca Mawyin is a developer and McMaster Computer Science student focused on building clean, intuitive web applications"
+const description = "Luca Mawyin is a software developer and McMaster Computer Science student focused on building clean, intuitive web applications"
 const siteUrl = "https://lucamawyin.com"
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
-    title: "Luca Mawyin",
+    title: "Luca Mawyin | Software Developer",
+    applicationName: "Luca Mawyin Portfolio",
+    category: "technology",
     icons: {
         icon: [
             {
@@ -24,28 +26,56 @@ export const metadata: Metadata = {
     },
     description,
     keywords: [
+        // Identity
         "Luca Mawyin",
+        "Luca Mawyin Developer",
+        "Luca Mawyin Portfolio",
+        "Luca Mawyin Software Developer",
+
+        // Role
         "Software Developer",
         "Software Engineer",
+        "Full Stack Developer",
         "Web Developer",
         "Frontend Developer",
-        "Full Stack Developer",
+        "Backend Developer",
 
-        "React",
-        "Next.js",
-        "TypeScript",
-        "JavaScript",
-        "Node.js",
-        "PHP",
-        "MySQL",
-
-        "Web Applications",
-        "UI Development",
-        "API Development",
-        "Developer Portfolio",
-
+        // Education
         "McMaster University",
-        "Computer Science"
+        "McMaster Computer Science",
+        "Computer Science Student",
+
+        // Web Development
+        "Web Applications",
+        "API Development",
+        "UI Development",
+        "Database Design",
+        "Cloud Computing",
+
+        // Main Technologies
+        "React Developer",
+        "Next.js Developer",
+        "TypeScript Developer",
+        "Node.js Developer",
+        "Python Developer",
+        "Java Developer",
+        "C++ Developer",
+
+        // Cloud / Infrastructure
+        "Cloudflare Developer",
+        "Cloudflare Workers",
+        "AWS Developer",
+
+        // AI / Computer Vision
+        "Machine Learning Developer",
+        "Computer Vision Developer",
+        "OpenCV",
+        "PyTorch",
+        "YOLO",
+
+        // General
+        "Developer Portfolio",
+        "Software Portfolio",
     ],
     authors:[
         {
@@ -54,12 +84,22 @@ export const metadata: Metadata = {
         }
     ],
     creator: "Luca Mawyin",
+    publisher: "Luca Mawyin",
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+        },
+    },
     alternates:{
         canonical: "/",
     },
     openGraph: {
         type: "website",
-        title: "Luca Mawyin · Software Developer",
+        title: "Luca Mawyin | Software Developer",
         description,
         siteName: "Luca Mawyin",
         images: [
@@ -67,13 +107,13 @@ export const metadata: Metadata = {
                 url: "/og-image.png",
                 width:800,
                 height:800,
-                alt:"Luca Mawyin - Computer Science student and software developer"
+                alt: "Luca Mawyin - Software Developer Portfolio",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Luca Mawyin · Software Developer",
+        title: "Luca Mawyin | Software Developer",
         description,
         images: ["/og-image.png"],
     }
@@ -84,6 +124,102 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+
+    const websiteJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "Luca Mawyin Portfolio",
+        url: siteUrl,
+        description,
+        author: {
+            "@type": "Person",
+            name: "Luca Mawyin",
+            url: siteUrl,
+        },
+    };
+
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Luca Mawyin",
+        url: siteUrl,
+        mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": siteUrl,
+        },
+        jobTitle: "Software Developer",
+        description,
+        sameAs: [
+            "https://github.com/LucaMawyin",
+            "https://www.linkedin.com/in/lucamawyin",
+        ],
+        knowsAbout: [
+            "Software Development",
+            "Web Development",
+            "Database Design",
+            "UI/UX Development",
+            "Computer Science",
+            "Full-Stack Development",
+            "Frontend Development",
+            "Backend Development",
+            "Web Applications",
+            "API Development",
+            "Database Systems",
+            "Cloud Computing",
+            "DevOps",
+            "Computer Vision",
+            "Machine Learning",
+            "Embedded Systems",
+            "Systems Programming",
+
+            "JavaScript",
+            "TypeScript",
+            "React",
+            "Next.js",
+            "OpenNext",
+            "Node.js",
+            "Python",
+            "Java",
+            "C",
+            "C++",
+            "C#",
+            "Go",
+            "Haskell",
+            "Assembly",
+            "PHP",
+
+            "SQL",
+            "MySQL",
+            "SQLite",
+
+            "HTML",
+            "CSS",
+            "LaTeX",
+
+            "PyTorch",
+            "OpenCV",
+            "MediaPipe",
+            "YOLO",
+
+            "Linux",
+            "Git",
+            "Arduino",
+
+            "Cloudflare Workers",
+            "Cloudflare Pages",
+            "Cloudflare D1",
+            "Cloudflare R2",
+            "AWS",
+        ],
+        knowsLanguage: [
+            "English",
+            "French",
+        ],
+        alumniOf: {
+            "@type": "CollegeOrUniversity",
+            name: "McMaster University",
+        },
+    };
 
     const session = await validateSession();
 
@@ -96,6 +232,19 @@ export default async function RootLayout({
                 justify-between
                 ${GeistMono.className}
             `}>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(jsonLd),
+                    }}
+                />
+
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(websiteJsonLd),
+                    }}
+                />
                 <NavBar isLoggedIn={!!session} />
                 {children}
                 <Footer/>
