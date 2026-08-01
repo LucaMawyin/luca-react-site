@@ -249,13 +249,15 @@ export async function DELETE(req: NextRequest) {
 
         // Final blow
         if (result?.deleted === 1){
+
+            // Delete from R2
+            await deleteFromR2("projects",`${id}`);
+
+            // Delete from D1
             await db
                 .prepare(`DELETE FROM projects WHERE id = ?`)
                 .bind(id)
                 .run();
-            
-            // Delete image
-            deleteFromR2("projects",`${id}`);
         }
 
         // Initial delete
