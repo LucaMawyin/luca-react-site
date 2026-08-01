@@ -52,7 +52,7 @@ export default async function Page({
     const data = draft;
 
     const imageUrl = data?.id
-        ? await getImageDataUrl(String(data.id))
+        ? await getImageDataUrl("projects", String(data.id))
         : null;
 
     const headersList = await headers();
