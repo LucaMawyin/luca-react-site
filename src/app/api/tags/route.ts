@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateSession } from "@/lib/auth";
 import { getDB } from "@/lib/db";
+import { revalidateTag } from "next/cache";
 
 export async function DELETE(req: NextRequest) {
     const session = await validateSession();
@@ -12,32 +13,54 @@ export async function DELETE(req: NextRequest) {
     try {
         const { name, category } = await req.json() as {
             name : string;
-            category : "project" | "status";
+            category: "project" | "status" | "experience";
         };
 
-    if (!name || !category) {
-        return NextResponse.json(
-            { error: "Missing tag name or category" },
-            { status: 400 }
-        );
-    }
+        if (!name || !category) {
+            return NextResponse.json(
+                { error: "Missing tag name or category" },
+                { status: 400 }
+            );
+        }
 
-    const db = await getDB();
+        const db = await getDB();
 
-    await db
-        .prepare("DELETE FROM tags WHERE name = ? and category = ?")
-        .bind(name.trim(), category)
-        .run();
+        // Delete tag
+        await db
+            .prepare("DELETE FROM tags WHERE name = ? and category = ?")
+            .bind(name.trim(), category)
+            .run();
 
-    const column = category === "status" ? "status" : "tag";
+        // Determine if tag is from project or experience
+        let table: "projects" | "experience";
+        let column = "tag";     
+        if (category === "experience") {
+            table = "experience";
+        } else {
+            table = "projects";
+            column = category === "status" ? "status" : "tag";
+        }
 
-    await db
-        .prepare(`UPDATE projects SET ${column} = NULL WHERE ${column} = ?`)
-        .bind(name)
-        .run();
+        // Updating tag on table
+        await db
+            .prepare(`UPDATE ${table} SET ${column} = NULL WHERE ${column} = ?`)
+            .bind(name)
+            .run();
+
+        revalidateTag(`tags:${category}`, "default");
+
+        if (category === "project" || category === "status") {
+            revalidateTag("projects", "default");
+        }
+
+        if (category === "experience") {
+            revalidateTag("experiences", "default");
+        }
 
         return NextResponse.json({ success: true });
-    } 
+    }
+
+
     
     catch (err) {
         return NextResponse.json(
