@@ -1,21 +1,26 @@
+import { NextResponse } from "next/server";
 import { getR2Object } from "@/lib/r2";
 
 export async function GET(
     req: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const { id } = await params;
+    try {
+        const { id } = await params;
 
-    const image = await getR2Object(`projects/${id}`);
+        const object = await getR2Object(`projects/${id}`) as any;
 
-    if (!image) {
-        return new Response("Not found", { status: 404 });
+        // Return image
+        return new NextResponse(object.body, {
+            headers: {
+                "Content-Type": object.contentType ?? "image/jpeg",
+            },
+        });
+
+    } 
+    
+    // Redirect to home if image doesnt exist
+    catch (err) {
+        return NextResponse.redirect(new URL("/404", req.url));
     }
-
-    return new Response(image.body, {
-        headers: {
-            "Content-Type": image.contentType,
-            "Cache-Control": "public, max-age=86400",
-        },
-    });
 }
