@@ -48,7 +48,7 @@
 	"r2_buckets": [
 		{
 			"bucket_name": "luca-bucket",
-			"binding": "luca_bucket",
+			"binding": "NEXT_INC_CACHE_R2_BUCKET",
 			"remote": true
 		}
 	]

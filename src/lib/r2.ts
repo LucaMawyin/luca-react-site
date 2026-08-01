@@ -35,11 +35,11 @@ export async function deleteFromR2(filePath:string,fileName:string){
     );
 }
 
-export async function getImageDataUrl(id: string) {
+export async function getImageDataUrl(filePath:string, id: string) {
     const res = await r2.send(
         new GetObjectCommand({
             Bucket: process.env.CF_BUCKET_NAME!,
-            Key: `projects/${id}`,
+            Key: `${filePath}/${id}`,
         })
     );
 

@@ -55,7 +55,7 @@ async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
     return Promise.all(
         results.map(async (p) => ({
             ...p,
-            image: await getImageDataUrl(String(p.id)),
+            image: await getImageDataUrl("projects", String(p.id)),
         }))
     );
 }
