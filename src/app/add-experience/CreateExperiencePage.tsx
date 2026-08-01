@@ -390,7 +390,10 @@ export default function CreateExperiencePage(props : {
                                     headers: {
                                         "Content-Type": "application/json",
                                     },
-                                    body: JSON.stringify({ name: form.tag }),
+                                    body: JSON.stringify({ 
+                                        name: form.tag,
+                                        category: "experience",
+                                    }),
                                 });
 
                                 setForm((prev) => ({ ...prev, tag: "" }));
