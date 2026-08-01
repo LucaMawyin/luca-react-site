@@ -106,11 +106,13 @@ export default function CreateProjectPage(props : {
             name === "languages" || 
             name === "libraries";
 
+        const formattedValue = shouldCapitalize
+            ? capitalizeNamesAndTitles(value.replace(/\s{2,}/g, ", "))
+            : value;
+
         setForm({
             ...form,
-            [name]: shouldCapitalize
-                ? capitalizeNamesAndTitles(value)
-                : value,
+            [name]: formattedValue,
         });
         
         if (e.target instanceof HTMLTextAreaElement) {
