@@ -332,7 +332,7 @@ export default function SettingsClient(props : {
             return;
         }
 
-        await router.refresh();
+        router.refresh();
 
         // Success message
         setMessage({
@@ -903,7 +903,8 @@ export default function SettingsClient(props : {
                                                 minute: "2-digit",
                                             })}
                                         </p>
-                                        {project.link.length && (
+
+                                        {!!project.link && (
                                             <p className="flex flex-wrap">
                                                 <span>Link:&nbsp;</span>
                                                 <a 
@@ -1224,7 +1225,7 @@ export default function SettingsClient(props : {
                                                     minute: "2-digit",
                                                 })}
                                             </p>
-                                            {project.link.length && (
+                                            {!!project.link && (
                                                 <p className="flex flex-wrap">
                                                     <span>Link:&nbsp;</span>
                                                     <a 
