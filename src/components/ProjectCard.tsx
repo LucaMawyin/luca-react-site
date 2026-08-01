@@ -210,6 +210,7 @@ export default function ProjectCard( props : {
                                 src={props.project.image}
                                 alt={`Project ${props.project.id}`}
                                 className="w-full h-auto rounded-xl"
+                                loading="lazy"
                             />                                   
                         </div>
                  
