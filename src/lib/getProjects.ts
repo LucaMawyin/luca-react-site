@@ -24,6 +24,7 @@ const getProjectsPrivate = unstable_cache(
 
 async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
 
+    console.log("FETCH PROJECTS FROM DB");
     const db = await getDB();
     
     const { results } = await db

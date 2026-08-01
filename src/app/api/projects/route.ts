@@ -271,7 +271,7 @@ export async function DELETE(req: NextRequest) {
         }
 
 
-        revalidateTag("projects","default");
+        revalidateTag("projects","max");
 
         return NextResponse.json({
             success: true,
