@@ -82,16 +82,6 @@ export default function CreateProjectPage(props : {
         );
     }, []);
 
-    const updateNextPage = (page: string | null) => {
-        setNextPage(page);
-
-        if (page) {
-            sessionStorage.setItem("nextPage", page);
-        } else {
-            sessionStorage.removeItem("nextPage");
-        }
-    };
-
     // Auto capitalize project name, tools and languages
     const handleChange = (
         e: React.ChangeEvent<

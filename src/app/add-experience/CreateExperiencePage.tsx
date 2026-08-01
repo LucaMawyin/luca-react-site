@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import resizeImage from "@/lib/resizeImage";
 import Tile from "@/components/Tile";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
@@ -14,7 +13,8 @@ import DeleteButton from "@/components/DeleteButton";
 
 export default function CreateExperiencePage(props : {
     initialData? : any;
-    tags : Tag[]
+    tags : Tag[];
+    referrer ?: string | null;
 }) {
 
     const router = useRouter();
@@ -53,6 +53,13 @@ export default function CreateExperiencePage(props : {
     const [error, setError] = useState<string | null>(null);
 
     const [fadeOut, setFadeOut] = useState(false);
+
+    const [nextPage, setNextPage] = useState<string | null>(() => {
+        if (typeof window === "undefined") return props.referrer ?? null;
+
+        return sessionStorage.getItem("nextPage") ?? props.referrer ?? null;
+    });
+    console.log(nextPage);
 
 
     // Auto resize text area on load
@@ -148,8 +155,8 @@ export default function CreateExperiencePage(props : {
 
             setError(null);
 
-            router.push("/experience");
             router.refresh();
+            router.push(nextPage ?? "/experience");
         } 
 
         // Unauthorized redirect to login
@@ -180,7 +187,7 @@ export default function CreateExperiencePage(props : {
     return (
         <div className="flex justify-center min-h-[90vh]">
             <div className="flex flex-col md:w-[40%] w-full max-w-full justify-center mt-[10vh]">
-                <Link href="/experience" className="self-start pt-4 pb-4 pl-6 md:pl-0">&lt; Return </Link>
+                <Link href={nextPage ?? "/experience"} className="self-start pt-4 pb-4 pl-6 md:pl-0">&lt; Return </Link>
                 <Tile 
                     title="Add Experience"
                     disableHover={true}
@@ -452,7 +459,7 @@ export default function CreateExperiencePage(props : {
                                 variant="secondary"
                                 className="w-full sm:w-48"
                                 onClick={() => {
-                                    router.push("/#experience");
+                                    router.push(props.referrer ?? "/experience");
                                 }}
                             />                            
                         </div>

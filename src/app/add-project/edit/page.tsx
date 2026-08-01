@@ -57,7 +57,7 @@ export default async function Page({
     const headersList = await headers();
     const referrer = headersList.get("referer")
         ? new URL(headersList.get("referer")!).pathname
-        : "/";
+        : null;
 
     return (
         <CreateProjectPage

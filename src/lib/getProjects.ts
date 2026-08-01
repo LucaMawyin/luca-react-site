@@ -1,17 +1,9 @@
 import { getDB } from "@/lib/db";
 import { Project, Session, Tech } from "@/lib/types";
 
-const getProjectsPublic = async (): Promise<Project[]> => {
-    return fetchProjects(false);
-};
+export async function getProjects(session: Session): Promise<Project[]> {
+    const isLoggedIn = !!session;
 
-const getProjectsPrivate = async (): Promise<Project[]> => {
-    return fetchProjects(true);
-};
-
-async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
-
-    console.log("FETCH PROJECTS FROM DB");
     const db = await getDB();
     
     const { results } = await db
@@ -42,11 +34,6 @@ async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
         ...p,
         image: `/images/projects/${p.id}?v=${p.updated_at}`,
     }));
-}
-
-
-export function getProjects(session: Session) {
-    return session ? getProjectsPrivate() : getProjectsPublic();
 }
 
 export const getTech = async() : Promise<Tech[]> => {

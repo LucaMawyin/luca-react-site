@@ -8,7 +8,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function EditTechClient(props : {tech : Tech[]}) {
+export default function EditTechClient(props : {
+    tech : Tech[];
+    referrer ?: string | null;
+}) {
 
     const grouped = props.tech.reduce((acc, item) => {
         if (!acc[item.category]) acc[item.category] = [];
@@ -20,6 +23,12 @@ export default function EditTechClient(props : {tech : Tech[]}) {
         languages: grouped.languages?.join(",") ?? "",
         libraries: grouped.libraries?.join(",") ?? "",
         tools: grouped.tools?.join(",") ?? ""
+    });
+
+    const [nextPage, setNextPage] = useState<string | null>(() => {
+        if (typeof window === "undefined") return props.referrer ?? null;
+
+        return sessionStorage.getItem("nextPage") ?? props.referrer ?? null;
     });
 
     // Auto capitalize project name, tools and languages
@@ -57,8 +66,8 @@ export default function EditTechClient(props : {tech : Tech[]}) {
         });
 
         if (res.ok) {
-            router.push("/tech");
             router.refresh();
+            router.push(nextPage ?? "/tech");
         }
     };
 
@@ -76,7 +85,7 @@ export default function EditTechClient(props : {tech : Tech[]}) {
     return (
         <div className="flex justify-center min-h-[90vh]">
             <div className="flex flex-col md:w-[40%] w-full max-w-full justify-center mt-[10vh]">
-                <Link href="/tech" className="self-start pt-4 pb-4 pl-6 md:pl-0">&lt; Return </Link>
+                <Link href={nextPage ?? "/tech"} className="self-start pt-4 pb-4 pl-6 md:pl-0">&lt; Return </Link>
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
@@ -155,7 +164,7 @@ export default function EditTechClient(props : {tech : Tech[]}) {
                                 variant="secondary"
                                 className="w-full sm:w-48"
                                 onClick={() => {
-                                    router.push("/tech");
+                                    router.push(props.referrer ?? "/tech");
                                 }}
                             />                            
                         </div>                        
