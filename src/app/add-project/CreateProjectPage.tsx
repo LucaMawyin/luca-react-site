@@ -281,13 +281,18 @@ export default function CreateProjectPage(props : {
 
                         {/* Name, description, link, languages, tools */}
                         <label htmlFor="name">Project Name</label>
-                        <input
+                        <textarea
                             id="name"
                             name="name"
                             placeholder="Name"
                             value={form.name}
+                            rows={1}
+                            style={{
+                                overflow: "hidden",
+                                resize: "none",
+                            }}
                             onChange={handleChange}
-                            autoComplete="name"
+                            autoComplete="off"
                             required
                         />
                         
@@ -316,36 +321,51 @@ export default function CreateProjectPage(props : {
                         <input
                             id="link"
                             name="link"
+                            type="url"
                             placeholder="Link"
                             value={form.link}
                             onChange={handleChange}
-                            required
                         />
 
                         <label htmlFor="languages">Languages Used</label>
-                        <input
+                        <textarea
                             id="languages"
                             name="languages"
                             placeholder="Languages (comma separated)"
                             value={form.languages}
+                            rows={1}
+                            style={{
+                                overflow: "hidden",
+                                resize: "none",
+                            }}
                             onChange={handleChange}
                         />
 
                         <label htmlFor="libraries">Libraries Used</label>
-                        <input
+                        <textarea
                             id="libraries"
                             name="libraries"
                             placeholder="Libraries (comma separated)"
                             value={form.libraries}
+                            rows={1}
+                            style={{
+                                overflow: "hidden",
+                                resize: "none",
+                            }}
                             onChange={handleChange}
                         />
 
                         <label htmlFor="tools">Tools Used</label>
-                        <input
+                        <textarea
                             id="tools"
                             name="tools"
                             placeholder="Tools (comma separated)"
                             value={form.tools}
+                            rows={1}
+                            style={{
+                                overflow: "hidden",
+                                resize: "none",
+                            }}
                             onChange={handleChange}
                         />
 
