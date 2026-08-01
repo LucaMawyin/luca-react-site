@@ -13,19 +13,21 @@ export default async function Home() {
 
     console.log("SESSION COMPLETE");
 
-    const [
-        projects,
-        tech,
-        about,
-        experience
-    ] = await Promise.all([
-        getProjects(session),
-        getTech(),
-        getContent(),
-        getExperience()
-    ]);
+    console.log("PROJECTS START");
+    const projects = await getProjects(session);
+    console.log("PROJECTS COMPLETE");
 
-    console.log("DATA COMPLETE");
+    console.log("TECH START");
+    const tech = await getTech();
+    console.log("TECH COMPLETE");
+
+    console.log("CONTENT START");
+    const about = await getContent();
+    console.log("CONTENT COMPLETE");
+
+    console.log("EXPERIENCE START");
+    const experience = await getExperience();
+    console.log("EXPERIENCE COMPLETE");
 
     return (
         <HomeClient 
