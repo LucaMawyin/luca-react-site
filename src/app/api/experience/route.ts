@@ -67,7 +67,7 @@ export async function POST(req: Request) {
             .bind(title, company, description, tag, city, region, start_date,end_date)
             .run();
 
-        revalidateTag("experience","default");
+        revalidateTag("experience","max");
 
         return NextResponse.json({ success: true, created: true });
     } 
@@ -110,7 +110,7 @@ export async function DELETE(req: NextRequest) {
             .bind(id)
             .run();
 
-        revalidateTag("experience","default");
+        revalidateTag("experience","max");
 
         return NextResponse.json({
             success: true,

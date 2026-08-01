@@ -49,6 +49,6 @@ export async function POST(req: Request) {
         ),
     ])
 
-    revalidateTag("tech","default");
+    revalidateTag("tech","max");
     return NextResponse.json({ success: true });
 }

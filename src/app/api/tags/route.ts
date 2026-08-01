@@ -54,7 +54,7 @@ export async function DELETE(req: NextRequest) {
         }
 
         if (category === "experience") {
-            revalidateTag("experiences", "default");
+            revalidateTag("experience", "default");
         }
 
         return NextResponse.json({ success: true });

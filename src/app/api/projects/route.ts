@@ -59,10 +59,6 @@ export async function POST(req: NextRequest) {
         // Image upload
         const image = formData.get("image") as File | null;
 
-        const imageType =
-            (formData.get("imageType") as string) ||
-            (image ? image.type : null);
-
         // Project name, description and id (for updates)
         const id = formData.get("id") as string | null;
         const name = formData.get("name") as string;
@@ -99,7 +95,7 @@ export async function POST(req: NextRequest) {
                 .bind(tag, "project", tagColour)
                 .run();
 
-            revalidateTag("tags:project","default");
+            revalidateTag("tags:project","max");
         }
 
         if (status) {
@@ -112,28 +108,28 @@ export async function POST(req: NextRequest) {
                 .bind(status,"status",statusColour)
                 .run();
 
-            revalidateTag("tags:status","default");
+            revalidateTag("tags:status","max");
         }
 
-        revalidateTag("tech","default");
+        revalidateTag("tech","max");
 
         // UPDATE PROJECT
         if (id) {
             await db
                 .prepare(`
-                UPDATE projects
-                SET name = ?,
-                    description = ?,
-                    link = ?,
-                    languages = ?,
-                    tools = ?,
-                    libraries = ?,
-                    tag = ?,
-                    status = ?,
-                    pinned = ?,
-                    hidden = ?,
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE id = ?
+                    UPDATE projects
+                    SET name = ?,
+                        description = ?,
+                        link = ?,
+                        languages = ?,
+                        tools = ?,
+                        libraries = ?,
+                        tag = ?,
+                        status = ?,
+                        pinned = ?,
+                        hidden = ?,
+                        updated_at = CURRENT_TIMESTAMP
+                    WHERE id = ?
                 `)
                 .bind(
                     name,
@@ -154,7 +150,7 @@ export async function POST(req: NextRequest) {
                 )
                 .run();
 
-            revalidateTag("projects","default");
+            revalidateTag("projects","max");
 
             if (image){
                 await uploadToR2(image,"projects",id);
@@ -187,7 +183,7 @@ export async function POST(req: NextRequest) {
             )
             .run();
 
-        revalidateTag("projects","default");
+        revalidateTag("projects","max");
 
         const newId = result.meta?.last_row_id;
 
@@ -317,7 +313,7 @@ export async function PATCH(req: NextRequest) {
             .bind(id)
             .run();
 
-        revalidateTag("projects", "default");
+        revalidateTag("projects", "max");
 
         return NextResponse.json({
             success: true,
