@@ -47,14 +47,14 @@ export async function DELETE(req: NextRequest) {
             .bind(name)
             .run();
 
-        revalidateTag(`tags:${category}`, "default");
+        revalidateTag(`tags:${category}`, "max");
 
         if (category === "project" || category === "status") {
-            revalidateTag("projects", "default");
+            revalidateTag("projects", "max");
         }
 
         if (category === "experience") {
-            revalidateTag("experience", "default");
+            revalidateTag("experience", "max");
         }
 
         return NextResponse.json({ success: true });
