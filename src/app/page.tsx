@@ -9,17 +9,23 @@ export default async function Home() {
 
     const session = await validateSession() as Session;
 
-    const [
-        projects,
-        tech,
-        about,
-        experience
-    ] = await Promise.all([
-        getProjects(session),
-        getTech(),
-        getContent(),
-        getExperience()
-    ]);
+    console.log("SESSION DONE");
+
+    const projects = await getProjects(session);
+
+    console.log("PROJECTS DONE");
+
+    const tech = await getTech();
+
+    console.log("TECH DONE");
+
+    const about = await getContent();
+
+    console.log("CONTENT DONE");
+
+    const experience = await getExperience();
+
+    console.log("EXPERIENCE DONE");
 
     return (
         <HomeClient 
