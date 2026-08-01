@@ -5,9 +5,6 @@ import NavBar from "@/components/NavBar";
 import { Metadata } from "next";
 import Footer from "@/components/Footer";
 
-
-export const dynamic = "force-dynamic";
-
 const description = "Luca Mawyin is a software developer and McMaster Computer Science student focused on building clean, intuitive web applications"
 const siteUrl = "https://lucamawyin.com"
 
