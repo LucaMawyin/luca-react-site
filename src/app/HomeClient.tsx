@@ -2,13 +2,14 @@
 
 import ExperienceClient from "@/components/Experience";
 import FadeInOnView from "@/components/FadeInOnView";
-import Footer from "@/components/Footer";
 import Projects from "@/components/Projects";
 import TechStack from "@/components/Tech";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getHref } from "@/lib/getHref";
 import { icons, pages } from "@/lib/info"; 
 import { Experience, Project, Tech } from "@/lib/types";
+import Image from "next/image";
+import headshot from "@/assets/headshot.webp";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -268,11 +269,11 @@ export default function HomeClient(props :
                         w-full lg:max-w-[25%]
                         flex justify-center
                     ">
-                        <img
-                            src="/images/headshot.webp"
-                            alt="headshot"
+                        <Image
+                            src={headshot}
+                            alt="Luca Mawyin"
+                            priority
                             className="my-auto w-full h-auto object-contain rounded-2xl"
-
                         />
                     </div>					
                 </div>
