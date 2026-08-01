@@ -150,7 +150,11 @@ export async function POST(req: NextRequest) {
                 )
                 .run();
 
-            revalidateTag("projects","max");
+            console.log("BEFORE INVALIDATE");
+
+            await revalidateTag("projects", "default");
+
+            console.log("AFTER INVALIDATE");
 
             if (image){
                 await uploadToR2(image,"projects",id);
