@@ -205,6 +205,9 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     Luca Mawyin
                 </a>
                 <button 
+                    aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+                    aria-expanded={open}
+                    aria-controls="mobile-menu"
                     className="
                         flex lg:hidden
                         flex-col gap-1
@@ -212,35 +215,40 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     " 
                     onClick={() => {setOpen(!open)}}
                 >
-                    <span className="w-6 h-0.5 bg-black"></span>
-                    <span className="w-6 h-0.5 bg-black"></span>
-                    <span className="w-6 h-0.5 bg-black"></span>                    
+                    <span aria-hidden="true" className="w-6 h-0.5 bg-black"></span>
+                    <span aria-hidden="true" className="w-6 h-0.5 bg-black"></span>
+                    <span aria-hidden="true" className="w-6 h-0.5 bg-black"></span>                    
                 </button>                
             </div>
 
-            <div className={`
-                lg:hidden
-                fixed inset-0
-                w-full h-screen
-                bg-(--primary-colour)
+            <div 
+                id="mobile-menu"
+                aria-hidden={!open}
+                className={`
+                    lg:hidden
+                    fixed inset-0
+                    w-full h-screen
+                    bg-(--primary-colour)
 
-                flex flex-col items-center justify-evenly
+                    flex flex-col items-center justify-evenly
 
-                z-50
-                
-                transition-all duration-(--transition-duration) ease-out
-                ${open
-                    ? "translate-y-0 shadow-sm"
-                    : "-translate-y-full"
-                }
-            `}>
+                    z-50
+                    
+                    transition-all duration-(--transition-duration) ease-out
+                    ${open
+                        ? "translate-y-0 shadow-sm"
+                        : "-translate-y-full"
+                    }
+                `}
+            >
                 <div className="h-[5%]"/>
-                <a
+                <button
+                    aria-label="Close navigation menu"
                     className="hover:cursor-pointer text-xl"
                     onClick={() => setOpen(false)}
                 >
-                    x
-                </a>
+                    <span aria-hidden="true">x</span>
+                </button>
 
                 {visiblePages
                     .filter((page) => page.show)
@@ -275,6 +283,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     <a
                         key={icon.title}
                         href={icon.href}
+                        aria-label={`${icon.title} profile`}
                         target="_blank"
                         className="
                             block w-fit 
