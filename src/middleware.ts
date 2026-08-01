@@ -4,7 +4,7 @@ import { protectedRoutes } from "./lib/protectedRoutes";
 
 const normalize = (p: string) => (p.startsWith("/") ? p : "/" + p);
 
-export function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
     
     const path = req.nextUrl.pathname + req.nextUrl.search;
 
