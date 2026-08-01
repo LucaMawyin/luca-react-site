@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/db";
 import { validateSession } from "@/lib/auth";
 import { Experience } from "@/lib/types";
-import { revalidateTag } from "next/cache";
 
 export async function POST(req: Request) {
     try {
@@ -67,8 +66,6 @@ export async function POST(req: Request) {
             .bind(title, company, description, tag, city, region, start_date,end_date)
             .run();
 
-        revalidateTag("experience","max");
-
         return NextResponse.json({ success: true, created: true });
     } 
     
@@ -109,8 +106,6 @@ export async function DELETE(req: NextRequest) {
             .prepare("DELETE FROM experience WHERE id = ?")
             .bind(id)
             .run();
-
-        revalidateTag("experience","max");
 
         return NextResponse.json({
             success: true,

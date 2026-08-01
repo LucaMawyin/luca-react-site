@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateSession } from "@/lib/auth";
 import { getDB } from "@/lib/db";
-import { revalidateTag } from "next/cache";
 
 export async function DELETE(req: NextRequest) {
     const session = await validateSession();
@@ -46,16 +45,6 @@ export async function DELETE(req: NextRequest) {
             .prepare(`UPDATE ${table} SET ${column} = NULL WHERE ${column} = ?`)
             .bind(name)
             .run();
-
-        revalidateTag(`tags:${category}`, "max");
-
-        if (category === "project" || category === "status") {
-            revalidateTag("projects", "max");
-        }
-
-        if (category === "experience") {
-            revalidateTag("experience", "max");
-        }
 
         return NextResponse.json({ success: true });
     }

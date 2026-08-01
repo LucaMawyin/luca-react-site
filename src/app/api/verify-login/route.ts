@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getDB } from "@/lib/db";
 import { LoginVerification, VerifyLoginBody } from "@/lib/types";
 import crypto from "crypto";
-import { revalidateTag } from "next/cache";
 
 export async function POST(request: Request) {
     try {
@@ -108,8 +107,6 @@ async function createSession(
         `)
         .bind(code, type)
     ])
-
-    revalidateTag("projects","default");
 
     const res = NextResponse.json({ success: true });
 

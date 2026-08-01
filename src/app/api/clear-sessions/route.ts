@@ -1,6 +1,5 @@
 import { validateSession } from "@/lib/auth";
 import { getDB } from "@/lib/db";
-import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST() {
@@ -24,7 +23,6 @@ export async function POST() {
     `)
     .bind(session.token)
     .run();
-    revalidateTag("projects","default");
 
     return NextResponse.json({ success: true });
 }

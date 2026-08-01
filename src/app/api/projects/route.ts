@@ -3,7 +3,6 @@ import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getDB } from "@/lib/db";
 import { deleteFromR2, r2, uploadToR2 } from "@/lib/r2";
 import { Project } from "@/lib/types";
-import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 // Create/update projects
@@ -94,8 +93,6 @@ export async function POST(req: NextRequest) {
                 `)
                 .bind(tag, "project", tagColour)
                 .run();
-
-            revalidateTag("tags:project","max");
         }
 
         if (status) {
@@ -107,11 +104,8 @@ export async function POST(req: NextRequest) {
                 `)
                 .bind(status,"status",statusColour)
                 .run();
-
-            revalidateTag("tags:status","max");
         }
 
-        revalidateTag("tech","max");
 
         // UPDATE PROJECT
         if (id) {
@@ -150,12 +144,6 @@ export async function POST(req: NextRequest) {
                 )
                 .run();
 
-            console.log("BEFORE INVALIDATE");
-
-            await revalidateTag("projects", "default");
-
-            console.log("AFTER INVALIDATE");
-
             if (image){
                 await uploadToR2(image,"projects",id);
             }
@@ -186,8 +174,6 @@ export async function POST(req: NextRequest) {
                 hidden
             )
             .run();
-
-        revalidateTag("projects","max");
 
         const newId = result.meta?.last_row_id;
 
@@ -274,9 +260,6 @@ export async function DELETE(req: NextRequest) {
                 .run();
         }
 
-
-        revalidateTag("projects","max");
-
         return NextResponse.json({
             success: true,
         });
@@ -316,9 +299,7 @@ export async function PATCH(req: NextRequest) {
             `)
             .bind(id)
             .run();
-
-        revalidateTag("projects", "max");
-
+            
         return NextResponse.json({
             success: true,
         });

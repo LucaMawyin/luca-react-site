@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getDB } from "@/lib/db";
-import { revalidateTag } from "next/cache";
 
 export async function POST() {
 
@@ -16,7 +15,6 @@ export async function POST() {
         await db.prepare(`
             DELETE FROM sessions WHERE token = ?
         `).bind(token).run();
-        revalidateTag("projects","default");
     }
 
     const res = NextResponse.json({ success: true });

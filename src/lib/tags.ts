@@ -1,22 +1,15 @@
-import { unstable_cache } from "next/cache";
 import { getDB } from "./db";
 
-export const getTags = (type:string) => unstable_cache(
-    async () => {
-        const db = await getDB();
+export async function getTags(type: string) {
+    const db = await getDB();
 
-        const result = await db
-            .prepare(`SELECT * FROM tags where category = ?`)
-            .bind(type)
-            .all();
+    const result = await db
+        .prepare(`SELECT * FROM tags WHERE category = ?`)
+        .bind(type)
+        .all();
 
-        return result.results;
-    },
-    [`tags:${type}`],
-    {
-        tags: [`tags:${type}`],
-    }
-)();
+    return result.results;
+}
 
 export function shadow(hex: string): {
     glowColour: string;

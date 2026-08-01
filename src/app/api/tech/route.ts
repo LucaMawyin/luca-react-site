@@ -1,7 +1,6 @@
 import { validateSession } from "@/lib/auth";
 import { getDB } from "@/lib/db";
 import { TechBody } from "@/lib/types";
-import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -49,6 +48,5 @@ export async function POST(req: Request) {
         ),
     ])
 
-    revalidateTag("tech","max");
     return NextResponse.json({ success: true });
 }
