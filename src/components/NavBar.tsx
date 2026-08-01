@@ -223,7 +223,6 @@ export default function NavBar(props : {isLoggedIn : boolean}){
 
             <div 
                 id="mobile-menu"
-                aria-hidden={!open}
                 className={`
                     lg:hidden
                     fixed inset-0
