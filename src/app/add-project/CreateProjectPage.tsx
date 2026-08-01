@@ -231,8 +231,8 @@ export default function CreateProjectPage(props : {
             setPreview(null);
             setError(null);
 
-            router.push(nextPage ?? "/projects");
             router.refresh();
+            router.push(nextPage ?? "/projects");
         } 
 
         // Unauthorized redirect to login
