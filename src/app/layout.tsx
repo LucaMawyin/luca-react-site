@@ -225,13 +225,7 @@ export default async function RootLayout({
 
     return (
         <html lang="en">
-            <body className={`
-                min-h-screen 
-                flex 
-                flex-col 
-                justify-between
-                ${GeistMono.className}
-            `}>
+            <body className={GeistMono.className}>
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
@@ -246,7 +240,12 @@ export default async function RootLayout({
                     }}
                 />
                 <NavBar isLoggedIn={!!session} />
-                <main>
+                <main className="                
+                    min-h-[90vh] 
+                    flex 
+                    flex-col 
+                    justify-between
+                ">
                     {children}
                 </main>
                 
