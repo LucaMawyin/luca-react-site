@@ -2,7 +2,6 @@ import { getDB } from "@/lib/db";
 import CreateProjectPage from "../CreateProjectPage";
 import { getTags } from "@/lib/tags";
 import { Tag } from "@/lib/types";
-import { getImageDataUrl } from "@/lib/r2";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -52,7 +51,7 @@ export default async function Page({
     const data = draft;
 
     const imageUrl = data?.id
-        ? await getImageDataUrl("projects", String(data.id))
+        ? `/images/projects/${data.id}`
         : null;
 
     const headersList = await headers();

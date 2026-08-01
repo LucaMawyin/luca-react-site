@@ -35,7 +35,7 @@ export async function deleteFromR2(filePath:string,fileName:string){
     );
 }
 
-export async function getImageDataUrl(filePath:string, id: string) {
+export async function getEmbeddedImage(filePath:string, id: string) {
     const res = await r2.send(
         new GetObjectCommand({
             Bucket: process.env.CF_BUCKET_NAME!,
@@ -48,4 +48,22 @@ export async function getImageDataUrl(filePath:string, id: string) {
     const bytes = await res.Body.transformToByteArray();
 
     return `data:${res.ContentType || "image/jpeg"};base64,${Buffer.from(bytes).toString("base64")}`;
+}
+
+export async function getR2Object(key: string){
+    const res = await r2.send(
+        new GetObjectCommand({
+            Bucket: process.env.CF_BUCKET_NAME!,
+            Key: key,
+        })
+    );
+
+    if (!res.Body) {
+        return null;
+    }
+
+    return {
+        body: res.Body.transformToWebStream(),
+        contentType: res.ContentType ?? "image/jpeg",
+    };
 }

@@ -1,7 +1,6 @@
 import { getDB } from "@/lib/db";
 import { Project, Session, Tech } from "@/lib/types";
 import { unstable_cache } from "next/cache";
-import { getImageDataUrl } from "./r2";
 
 const getProjectsPublic = unstable_cache(
     async (): Promise<Project[]> => {
@@ -25,7 +24,6 @@ const getProjectsPrivate = unstable_cache(
 
 async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
 
-    console.log("FETCHING PROJECTS FROM DB");
     const db = await getDB();
     
     const { results } = await db
@@ -52,12 +50,10 @@ async function fetchProjects(isLoggedIn: boolean): Promise<Project[]> {
         `)
         .all() as { results: Project[] };
 
-    return Promise.all(
-        results.map(async (p) => ({
-            ...p,
-            image: await getImageDataUrl("projects", String(p.id)),
-        }))
-    );
+    return results.map((p) => ({
+        ...p,
+        image: `/images/projects/${p.id}?v=${p.updated_at}`,
+    }));
 }
 
 
