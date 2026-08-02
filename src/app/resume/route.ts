@@ -4,7 +4,7 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 export async function GET() {
     try {
 
-        const key = `resume.pdf`; 
+        const key = `resume`; 
         const object = await r2.send(
             new GetObjectCommand({
                 Bucket: `${process.env.CF_BUCKET_NAME}`,

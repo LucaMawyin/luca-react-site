@@ -1,17 +1,21 @@
 import { getDB } from "./db";
 
 type SiteContentRow = {
-    about: string;
+    key: string;
+    content: string;
 };
 
-export async function getContent(): Promise<string> {
+export async function getContent(): Promise<Record<string, string>> {
     const db = await getDB();
 
     const result = await db
-        .prepare("SELECT * FROM site_content LIMIT 1")
+        .prepare("SELECT key, content FROM site_content_new")
         .all<SiteContentRow>();
 
-    const row = result.results?.[0];
-
-    return row?.about ?? "";
+    return Object.fromEntries(
+        result.results.map((row) => [
+            row.key,
+            row.content,
+        ])
+    );
 }

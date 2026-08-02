@@ -7,9 +7,7 @@ import TechStack from "@/components/Tech";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getHref } from "@/lib/getHref";
 import { icons, pages } from "@/lib/info"; 
-import { Experience, Project, Tech } from "@/lib/types";
-import Image from "next/image";
-import headshot from "@/assets/headshot.webp";
+import { Experience, Project, SiteContent, Tech } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -19,7 +17,7 @@ export default function HomeClient(props :
         isLoggedIn : boolean, 
         projects : Project[],
         tech : Tech[],
-        about : string,
+        content : SiteContent,
         experience : Experience[],
     }) {
 
@@ -257,7 +255,7 @@ export default function HomeClient(props :
                                         ),
                                     }}
                                 >
-                                    {props.about}
+                                    {props.content.about}
                                 </ReactMarkdown>                                
                             </div>
 
@@ -270,7 +268,7 @@ export default function HomeClient(props :
                         flex justify-center
                     ">
                         <img
-                            src={`/images/headshot`}
+                            src={`/images/headshot?v=${props.content.headshot_updated_at}`}
                             alt="Luca Mawyin"
                             className="my-auto w-full h-auto object-contain rounded-2xl"
                         />

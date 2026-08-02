@@ -1,4 +1,5 @@
 import { validateSession } from "@/lib/auth";
+import { getDB } from "@/lib/db";
 import { r2 } from "@/lib/r2";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
@@ -82,11 +83,25 @@ export async function POST(req: Request) {
             })
         );
 
+        const updatedAt = Date.now();
+
+        const db = await getDB();
+        await db
+            .prepare(`
+                INSERT INTO site_content_new (key, content)
+                VALUES (?, ?)
+                ON CONFLICT(key)
+                DO UPDATE SET content = excluded.content
+            `)
+            .bind(`${name}_updated_at`, updatedAt.toString())
+            .run();
+
         return Response.json({
             key,
         });
 
     } catch (err) {
+        console.error(err);
         return Response.json(
             { error: "Upload failed" },
             { status: 500 }

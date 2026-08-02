@@ -39,6 +39,10 @@ export type User = {
     locked_until : string;
 };
 
+export type SiteContent = {
+    [key: string]: string;
+};
+
 export type LoginBody = {
     email: string;
     password: string;

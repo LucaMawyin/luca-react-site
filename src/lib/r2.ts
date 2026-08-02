@@ -65,5 +65,6 @@ export async function getR2Object(key: string){
     return {
         body: res.Body.transformToWebStream(),
         contentType: res.ContentType ?? "image/jpeg",
+        lastModified: res.LastModified,
     };
 }

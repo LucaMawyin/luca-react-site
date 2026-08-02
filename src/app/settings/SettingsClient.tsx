@@ -215,7 +215,7 @@ export default function SettingsClient(props : {
         // Uploading file
         const formData = new FormData();
         formData.append("file", resumeFile);
-        formData.append("name", "resume.pdf");
+        formData.append("name", "resume");
         formData.append("type", "pdf");
 
         const res = await fetch("/api/upload-file", {

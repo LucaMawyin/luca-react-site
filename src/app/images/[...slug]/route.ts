@@ -16,6 +16,7 @@ export async function GET(
         return new NextResponse(object.body, {
             headers: {
                 "Content-Type": object.contentType ?? "image/png",
+                "Cache-Control": "public, max-age=31536000, immutable",
             },
         });
 
