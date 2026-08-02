@@ -269,13 +269,12 @@ export default function HomeClient(props :
                         w-full lg:max-w-[25%]
                         flex justify-center
                     ">
-                        <Image
-                            src={headshot}
+                        <img
+                            src={`/images/headshot`}
                             alt="Luca Mawyin"
-                            priority
                             className="my-auto w-full h-auto object-contain rounded-2xl"
                         />
-                    </div>					
+                    </div>
                 </div>
 
             </section>	

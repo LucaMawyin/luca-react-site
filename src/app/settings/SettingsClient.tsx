@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 import DeleteButton from "@/components/DeleteButton";
 import Tile from "@/components/Tile";
 import { getDevice } from "@/lib/getDevice";
+import resizeImage from "@/lib/resizeImage";
 import { shadow } from "@/lib/tags";
 import { ChangePasswordResponse, Project, Session, User } from "@/lib/types";
 import { useRouter } from "next/navigation";
@@ -13,7 +14,7 @@ import { useState, useRef, useEffect } from "react";
 type Message = {
     text: string;
     status: "error" | "success";
-    type : "about" | "password" | "resume" | "sessions";
+    type : "about" | "password" | "resume" | "sessions" | "headshot";
 } | null;
 
 function getMessageClass(message?: Message) {
@@ -39,6 +40,11 @@ export default function SettingsClient(props : {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [ resumeName, setResumeName] = useState<string | null>(null);
     const [ resumeFile, setResumeFile] = useState<File | null>(null);
+
+    // Headshot file input stuff
+    const headshotInputRef = useRef<HTMLInputElement>(null);
+    const [ headshotName, setHeadshotName] = useState<string | null>(null);
+    const [ headshotFile, setHeadshotFile] = useState<File | null>(null);
 
     // Password states
     const [showPassword, setShowPassword] = useState(false);
@@ -244,6 +250,108 @@ export default function SettingsClient(props : {
             type:"resume",
             status: "success",
             text: "Successfully Uploaded Resume",
+        });
+        setVisible(true);
+            setTimeout(() => {
+            setVisible(false);
+            setTimeout(() => setMessage(null), 300);
+        }, 3000);
+    };
+
+    // Headshot image drop
+    const MAX_SIZE = 1024 * 1024; // Max size is 1MB
+    const handleHeadshotDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const file = e.dataTransfer.files?.[0];
+        if (!file) return;
+        if (!file.type.startsWith("image/")) {
+            setMessage({
+                type:"headshot",
+                status: "error",
+                text: "Only images are allowed",
+            });
+            setVisible(true);
+                setTimeout(() => {
+                setVisible(false);
+                setTimeout(() => setMessage(null), 300);
+            }, 3000);
+            return;
+        }
+
+        // Resize image until it's under the max size
+        let finalFile = await resizeImage(file);
+        while (finalFile.size > MAX_SIZE) {
+            finalFile = await resizeImage(finalFile);
+        }
+
+        setMessage(null);
+
+        setHeadshotFile(file);
+        setHeadshotName(file.name);
+    };
+
+    // Headshot submit
+    const handleHeadshotSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        // No image
+        if (!headshotFile) {
+            setMessage({
+                type:"headshot",
+                status: "error",
+                text: "Please select an image",
+            });
+            setVisible(true);
+                setTimeout(() => {
+                setVisible(false);
+                setTimeout(() => setMessage(null), 300);
+            }, 3000);
+            return;
+        }
+
+        // FormData
+        const formData = new FormData();
+        formData.append("file", headshotFile);
+        formData.append("name", "headshot");
+
+        // API call
+        const res = await fetch("/api/upload-image", {
+            method: "POST",
+            body: formData,
+        });
+
+        const data = await res.json() as any;
+
+        // Error
+        if (!res.ok) {
+            setMessage({
+                type:"headshot",
+                status: "error",
+                text: data.error || "Upload failed",
+            });
+            setVisible(true);
+                setTimeout(() => {
+                setVisible(false);
+                setTimeout(() => setMessage(null), 300);
+            }, 3000);
+            return;
+        }
+
+        // Nullify files
+        setHeadshotFile(null);
+        setHeadshotName(null);
+
+        if (headshotInputRef.current) {
+            headshotInputRef.current.value = "";
+        }
+
+        // Success message
+        setMessage({
+            type:"headshot",
+            status: "success",
+            text: "Successfully Uploaded Headshot",
         });
         setVisible(true);
             setTimeout(() => {
@@ -467,6 +575,74 @@ export default function SettingsClient(props : {
                                 onClick={handleAboutSubmit}
                             />                            
                         </div>
+                    </div>
+
+                    {/* HEADSHOT UPLOAD */}
+                    <div 
+                        className="py-6 border-b sm:border-b-0"
+                        onDragOver={(e) => {e.preventDefault()}}
+                        onDrop={handleHeadshotDrop}
+                    >
+
+                        <form 
+                            className="flex flex-col gap-4"
+                            onSubmit={handleHeadshotSubmit}
+                        >
+                            <h2 className="text-xl">
+                                Upload New Headshot
+                            </h2>
+                            <label htmlFor="headshot" className="text-gray-500">Drag & drop image here, or click to select</label>
+                            <div className="space-y-2">
+                                <input
+                                    id="headshot"
+                                    name="headshot"
+                                    type="file"
+                                    ref={headshotInputRef}
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (!file) return;
+
+                                        setHeadshotFile(file);
+                                        setHeadshotName(file.name);
+                                    }}
+                                    className="hidden"
+                                />
+                                <Button 
+                                    text="Select Image" 
+                                    variant="secondary" 
+                                    className="w-full self-center"
+                                    onClick={() => headshotInputRef.current?.click()}
+                                />
+                                {headshotName && (
+                                    <p className="text-sm text-gray-500">
+                                        Selected: {headshotName}
+                                    </p>
+                                )}
+                                
+                                <p   
+                                    className={`
+                                        text-sm text-center min-h-5
+                                        transition-opacity duration-300
+                                        ${visible ? "opacity-100" : "opacity-0"}
+                                    `}
+                                >
+                                    {message?.type === "headshot" && (
+                                        <span className={getMessageClass(message)}>
+                                            {message.text}
+                                        </span>
+                                    )}
+                                </p>
+                                
+                                <Button
+                                    text="Submit Headshot"
+                                    type="submit"
+                                    className="w-full sm:w-56"
+                                />                            
+                            </div>
+                            
+                        </form>
+
                     </div>
                     
                     {/* RESUME UPLOAD */}
