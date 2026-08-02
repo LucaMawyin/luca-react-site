@@ -54,7 +54,6 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                 
                 p-[5%]
                 px-[2.5%]
-                ${props.isLoggedIn ? "" : "sm:gap-16"}
                 gap-8
             `}>
 
@@ -75,46 +74,51 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                         className={`
                             relative
                             flex 
+                            flex-col
                             w-full
                             lg:px-[5%]
-
                             gap-8 
-                            ${index % 2 === 0 
-                                ? "md:justify-start" 
-                                : "md:justify-end"
-                            }
                         `}
                     >
-                        {/* DOT */}
-                        <div className="
-                            hidden md:block
-                            absolute
-                            left-1/2
-                            top-1/2
-                            w-4 h-4
-                            rounded-full
-                            bg-neutral-400
-                            -translate-x-1/2
-                            -translate-y-1/2
-                            z-10
-                        " />
+
 
                         <div className="
                             flex
                             flex-col
                             gap-8
                             w-full
-                            md:w-[45%]
+
                         ">
+                            {/* DOT */}
+                            <div className="
+                                hidden md:block
+                                relative
+                                left-1/2
+                                top-1/2
+                                w-4 h-4
+                                rounded-full
+                                bg-neutral-400
+                                -translate-x-1/2
+                                translate-y-1/2
+                                z-10
+                            " />
+
+                     
                             <div
-                                className="
+                                className={`
                                     flex
                                     flex-col
                                     rounded-xl
                                     shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
                                     p-6
                                     gap-4
-                                "
+                                    w-full
+                                    md:w-[45%]
+                                    ${index % 2 === 0 
+                                        ? "md:self-start" 
+                                        : "md:self-end"
+                                    }
+                                `}
                             >
                                 {/* TITLE + DATE */}
                                 <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
@@ -167,42 +171,53 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                 </div>
 
                             </div>
-
-                            {/* Delete button if logged in */}
-                            {props.isLoggedIn && (
-                                <div className="flex h-fit w-full justify-between">
-                                    <Button
-                                        text="Edit"
-                                        className="min-w-32 h-fit"
-                                        onClick={() => {router.push(`add-experience/edit?id=${exp.id}`)}}
-                                    />
-                                    <DeleteButton
-                                        className="min-w-32 h-fit"
-                                        text="Experience"
-                                        action={async () => {
-                                        const res = await fetch("/api/experience", {
-                                            method: "DELETE",
-                                            headers: {
-                                                "Content-Type": "application/json",
-                                            },
-                                            body: JSON.stringify({ id: exp.id }),
-                                        });
-            
-                                        if (res.status === 401) {
-                                            router.push("/login");
-                                            return;
-                                        }
-                                        
-                                            setExperience((prev) =>
-                                                prev.filter((p) => p.id !== exp.id)
-                                            );
-                                        }}
-                                    />                        
-                                </div>
-        
-        
-                            )}
                         </div>
+
+
+                        {/* Delete button if logged in */}
+                        {props.isLoggedIn && (
+                            <div className={`
+                                flex 
+                                h-fit
+                                w-full 
+                                md:w-[45%] 
+                                justify-between
+                                ${index % 2 === 0 
+                                    ? "md:self-start" 
+                                    : "md:self-end"
+                                }
+                            `}>
+                                <Button
+                                    text="Edit"
+                                    className="min-w-32 h-fit"
+                                    onClick={() => {router.push(`add-experience/edit?id=${exp.id}`)}}
+                                />
+                                <DeleteButton
+                                    className="min-w-32 h-fit"
+                                    text="Experience"
+                                    action={async () => {
+                                    const res = await fetch("/api/experience", {
+                                        method: "DELETE",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify({ id: exp.id }),
+                                    });
+        
+                                    if (res.status === 401) {
+                                        router.push("/login");
+                                        return;
+                                    }
+                                    
+                                        setExperience((prev) =>
+                                            prev.filter((p) => p.id !== exp.id)
+                                        );
+                                    }}
+                                />                        
+                            </div>
+    
+    
+                        )}
                         
                     </FadeInOnView>
                     
