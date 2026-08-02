@@ -3,12 +3,14 @@ import { getR2Object } from "@/lib/r2";
 
 export async function GET(
     req: Request,
-    { params }: { params: Promise<{ slug: string }> }
+    { params }: { params: Promise<{ slug: string[] }> }
 ) {
     try {
         const { slug } = await params;
 
-        const object = await getR2Object(`${slug}`) as any;
+        const key = slug.join("/");
+
+        const object = await getR2Object(`${key}`) as any;
 
         // Return image
         return new NextResponse(object.body, {
