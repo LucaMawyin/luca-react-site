@@ -20,6 +20,7 @@ export async function POST(req: Request) {
         const formData = await req.formData();
         const file = formData.get("file") as File | null;
         const name = formData.get("name") as string | null;
+        const type = formData.get("type") as "image" | "pdf" | null;
 
         // No file
         if (!file) {
@@ -37,10 +38,32 @@ export async function POST(req: Request) {
             );
         }
 
-        // Only allow images
-        if (!file.type.startsWith("image/")) {
+        // No type given
+        if (!type) {
+            return Response.json(
+                { error: "No file type provided" },
+                { status: 400 }
+            );
+        }
+
+        // Check if the type is valid for the given file
+        if (type === "image" && !file.type.startsWith("image/")) {
             return Response.json(
                 { error: "Only images allowed" },
+                { status: 400 }
+            );
+        }
+
+        if (type === "pdf" && file.type !== "application/pdf") {
+            return Response.json(
+                { error: "Only PDFs allowed" },
+                { status: 400 }
+            );
+        }
+
+        if (type !== "image" && type !== "pdf") {
+            return Response.json(
+                { error: "Invalid file type" },
                 { status: 400 }
             );
         }

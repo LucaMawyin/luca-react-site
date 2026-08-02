@@ -215,7 +215,10 @@ export default function SettingsClient(props : {
         // Uploading file
         const formData = new FormData();
         formData.append("file", resumeFile);
-        const res = await fetch("/api/upload-resume", {
+        formData.append("name", "resume.pdf");
+        formData.append("type", "pdf");
+
+        const res = await fetch("/api/upload-file", {
             method: "POST",
             body: formData,
         });
@@ -315,9 +318,10 @@ export default function SettingsClient(props : {
         const formData = new FormData();
         formData.append("file", headshotFile);
         formData.append("name", "headshot");
+        formData.append("type", "image");
 
         // API call
-        const res = await fetch("/api/upload-image", {
+        const res = await fetch("/api/upload-file", {
             method: "POST",
             body: formData,
         });

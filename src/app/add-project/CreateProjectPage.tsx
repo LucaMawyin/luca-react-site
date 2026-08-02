@@ -119,9 +119,9 @@ export default function CreateProjectPage(props : {
         if (!file) return;
 
         // Resize image until it's under the max size
-        let finalFile = await resizeImage(file);
+        let finalFile = await resizeImage(file, 1200, 0.8, 3 / 2);
         while (finalFile.size > MAX_SIZE) {
-            finalFile = await resizeImage(finalFile);
+            finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
         }
 
         setError(null);
@@ -138,9 +138,9 @@ export default function CreateProjectPage(props : {
         if (!file.type.startsWith("image/")) return;
 
         // Resize image until it's under the max size
-        let finalFile = await resizeImage(file);
+        let finalFile = await resizeImage(file, 1200, 0.8, 3 / 2);
         while (finalFile.size > MAX_SIZE) {
-            finalFile = await resizeImage(finalFile);
+            finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
         }
 
         setError(null);
