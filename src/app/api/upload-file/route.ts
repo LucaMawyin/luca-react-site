@@ -88,7 +88,7 @@ export async function POST(req: Request) {
         const db = await getDB();
         await db
             .prepare(`
-                INSERT INTO site_content_new (key, content)
+                INSERT INTO site_content (key, content)
                 VALUES (?, ?)
                 ON CONFLICT(key)
                 DO UPDATE SET content = excluded.content

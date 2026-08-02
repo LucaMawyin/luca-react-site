@@ -9,7 +9,7 @@ export async function getContent(): Promise<Record<string, string>> {
     const db = await getDB();
 
     const result = await db
-        .prepare("SELECT key, content FROM site_content_new")
+        .prepare("SELECT key, content FROM site_content")
         .all<SiteContentRow>();
 
     return Object.fromEntries(

@@ -28,7 +28,7 @@ export async function POST(req: Request) {
         const db = await getDB();
         await db
             .prepare(`
-                UPDATE site_content_new 
+                UPDATE site_content
                 SET content = ? 
                 WHERE key = 'about'
             `)
