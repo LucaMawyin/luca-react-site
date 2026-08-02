@@ -6,6 +6,14 @@ export async function GET(
     { params }: { params: Promise<{ slug: string[] }> }
 ) {
     try {
+
+        // Require version to access route
+        const url = new URL(req.url);
+        const version = url.searchParams.get("v");
+        if (!version) {
+            return NextResponse.redirect(new URL("/404", req.url));
+        }
+
         const { slug } = await params;
 
         const key = slug.join("/");
