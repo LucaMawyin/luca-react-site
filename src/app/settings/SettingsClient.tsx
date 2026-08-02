@@ -261,38 +261,43 @@ export default function SettingsClient(props : {
         }, 3000);
     };
 
+    // Resize headshot
+    const MAX_SIZE = 0.5 * 1024 * 1024; // Max size is 500kb
+    const processHeadshot = async (file: File) => {
+        if (!file.type.startsWith("image/")) {
+            throw new Error("Only images are allowed");
+        }
+
+        let finalFile = await resizeImage(file, 1200, 0.8, 3 / 4);
+        while (finalFile.size > MAX_SIZE) {
+            finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 4);
+        }
+
+        return finalFile;
+    };
+
     // Headshot image drop
-    const MAX_SIZE = 1024 * 1024; // Max size is 1MB
     const handleHeadshotDrop = async (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
         const file = e.dataTransfer.files?.[0];
         if (!file) return;
-        if (!file.type.startsWith("image/")) {
+
+        try {
+            const finalFile = await processHeadshot(file);
+
+            setMessage(null);
+            setHeadshotFile(finalFile);
+            setHeadshotName(finalFile.name);
+
+        } catch (err) {
             setMessage({
-                type:"headshot",
+                type: "headshot",
                 status: "error",
                 text: "Only images are allowed",
             });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
-            return;
         }
-
-        // Resize image until it's under the max size
-        let finalFile = await resizeImage(file);
-        while (finalFile.size > MAX_SIZE) {
-            finalFile = await resizeImage(finalFile);
-        }
-
-        setMessage(null);
-
-        setHeadshotFile(file);
-        setHeadshotName(file.name);
     };
 
     // Headshot submit
@@ -522,7 +527,7 @@ export default function SettingsClient(props : {
                     title="Profile Settings"
                     disableHover={true}
                     className="lg:max-w-[40vw] shadow-none pb-0"
-                    childClassName="mt-0!"
+                    childClassName="mt-0! flex-1 justify-center"
                     titleClassName="border-b"
                 >
 
@@ -583,7 +588,7 @@ export default function SettingsClient(props : {
 
                     {/* HEADSHOT UPLOAD */}
                     <div 
-                        className="py-6 border-b sm:border-b-0"
+                        className="py-6 border-b"
                         onDragOver={(e) => {e.preventDefault()}}
                         onDrop={handleHeadshotDrop}
                     >
@@ -603,12 +608,28 @@ export default function SettingsClient(props : {
                                     type="file"
                                     ref={headshotInputRef}
                                     accept="image/*"
-                                    onChange={(e) => {
+                                    onChange={async (e) => {
                                         const file = e.target.files?.[0];
                                         if (!file) return;
 
-                                        setHeadshotFile(file);
-                                        setHeadshotName(file.name);
+                                        try {
+                                            const finalFile = await processHeadshot(file);
+
+                                            setHeadshotFile(finalFile);
+                                            setHeadshotName(finalFile.name);
+                                        } catch {
+                                            setMessage({
+                                                type: "headshot",
+                                                status: "error",
+                                                text: "Only images are allowed",
+                                            });
+                                            setVisible(true);
+
+                                            setTimeout(() => {
+                                                setVisible(false);
+                                                setTimeout(() => setMessage(null), 300);
+                                            }, 3000);
+                                        }
                                     }}
                                     className="hidden"
                                 />
@@ -723,6 +744,7 @@ export default function SettingsClient(props : {
                 <Tile
                     className="lg:max-w-[40vw] shadow-none pb-0"
                     disableHover={true}
+                    childClassName="mt-0! flex-1 justify-center"
                 >
 
                     {/* Change password section */}
