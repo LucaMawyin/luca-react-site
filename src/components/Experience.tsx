@@ -18,7 +18,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
     return (
         <div
             className="
-                flex w-full flex-col items-center py-4 sm:py-16 px-4
+                flex w-full flex-col items-center py-4 sm:pt-16 px-4
             "
         >
             <h1 className={`
@@ -52,8 +52,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                 w-full
                 grid
                 
-                p-[5%]
-                px-[2.5%]
+                p-[2.5%]
                 gap-8
             `}>
 
@@ -62,7 +61,8 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                     absolute
                     hidden md:block
                     left-1/2
-                    top-8 bottom-0
+                    top-[5%]
+                    bottom-[5%]
                     w-0.5
                     bg-neutral-300
                     -translate-x-1/2
@@ -72,34 +72,35 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                     <FadeInOnView 
                         key={index}
                         className={`
-                            relative
                             flex 
                             flex-col
                             w-full
                             lg:px-[5%]
-                            gap-8 
+                            gap-8
+                            md:mb-[-5%]
+                            last:md:mb-0
                         `}
                     >
 
-
+                        {/* CARD & DOT */}
                         <div className="
+                            relative
                             flex
                             flex-col
                             gap-8
                             w-full
-
                         ">
                             {/* DOT */}
                             <div className="
                                 hidden md:block
-                                relative
+                                absolute
                                 left-1/2
                                 top-1/2
                                 w-4 h-4
                                 rounded-full
                                 bg-neutral-400
                                 -translate-x-1/2
-                                translate-y-1/2
+                                -translate-y-1/2
                                 z-10
                             " />
 
@@ -174,7 +175,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                         </div>
 
 
-                        {/* Delete button if logged in */}
+                        {/* BUTTONS */}
                         {props.isLoggedIn && (
                             <div className={`
                                 flex 
