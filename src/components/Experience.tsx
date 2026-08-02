@@ -51,9 +51,10 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                 relative
                 w-full
                 grid
-                
-                p-[2.5%]
+                auto-rows-fr
                 gap-8
+                md:gap-0
+                p-[2.5%]
             `}>
 
                 {/* CENTER LINE */}
@@ -62,7 +63,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                     hidden md:block
                     left-1/2
                     top-[5%]
-                    bottom-[5%]
+                    bottom-[10%]
                     w-0.5
                     bg-neutral-300
                     -translate-x-1/2
@@ -75,10 +76,10 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                             flex 
                             flex-col
                             w-full
+                            h-full
                             lg:px-[5%]
                             gap-8
-                            md:mb-[-5%]
-                            last:md:mb-0
+                            ${index !== 0 ? "md:translate-y-[-10%]" : ""}
                         `}
                     >
 
@@ -89,6 +90,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                             flex-col
                             gap-8
                             w-full
+                            h-full
                         ">
                             {/* DOT */}
                             <div className="
@@ -114,6 +116,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                     p-6
                                     gap-4
                                     w-full
+                                    h-full
                                     md:w-[45%]
                                     ${index % 2 === 0 
                                         ? "md:self-start" 
