@@ -8,7 +8,7 @@ export default async function DashboardPage() {
     const session = await requireSession();
 
     const user = await getUserById(session.user_id);
-    const about = await getContent();
+    const content = await getContent();
     const { currentSession, activeSessions} = await getActiveSessions();
     const projects = await getProjects(session);
 
@@ -16,7 +16,7 @@ export default async function DashboardPage() {
         return (
             <SettingsClient 
                 user={user} 
-                about={about} 
+                content={content} 
                 activeSessions={activeSessions} 
                 currentSession={currentSession}
                 projects={projects}

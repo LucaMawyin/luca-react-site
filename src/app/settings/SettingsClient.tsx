@@ -7,7 +7,7 @@ import Tile from "@/components/Tile";
 import { getDevice } from "@/lib/getDevice";
 import resizeImage from "@/lib/resizeImage";
 import { shadow } from "@/lib/tags";
-import { ChangePasswordResponse, Project, Session, User } from "@/lib/types";
+import { ChangePasswordResponse, Project, Session, SiteContent, User } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
@@ -28,7 +28,7 @@ function getMessageClass(message?: Message) {
 
 export default function SettingsClient(props : {
     user : User, 
-    about : string, 
+    content : SiteContent,
     activeSessions : Session[],
     currentSession : Session,
     projects : Project[],
@@ -57,7 +57,7 @@ export default function SettingsClient(props : {
     const [visible, setVisible] = useState(true);
 
     // About me
-    const [ about, setAbout ] = useState(props.about || "");
+    const [ about, setAbout ] = useState(props.content.about || "");
 
     // Projects
     const [projects, setProjects] = useState<Project[]>(props.projects);
