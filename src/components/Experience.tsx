@@ -81,6 +81,9 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                             gap-8
                             ${index !== 0 ? "md:translate-y-[-10%]" : ""}
                         `}
+                        style={{
+                            zIndex: experience.length - index
+                        }}
                     >
 
                         {/* CARD & DOT */}

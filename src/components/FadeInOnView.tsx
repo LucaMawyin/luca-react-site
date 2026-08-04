@@ -5,10 +5,11 @@ import { useEffect, useRef, useState } from "react";
 export default function FadeInOnView({
     children,
     className = "",
-    
+    style,
 }: {
     children: React.ReactNode;
     className?:string;
+    style?: React.CSSProperties;
 }) {
     const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
@@ -38,7 +39,9 @@ export default function FadeInOnView({
     return (
         <div
             ref={ref}
+            style={style}
             className={`
+                relative
                 transition-all duration-700 ease-out
                 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
                 ${className}
