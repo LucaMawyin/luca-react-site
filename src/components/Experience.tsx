@@ -246,18 +246,21 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                 </div>
 
                 {/* CERTIFICATES */}
-                <h2 className="
-                    relative
-                    bg-white
-                    text-center
-                    text-2xl
-                    font-bold
-                    md:translate-y-[-2vh]
-                    my-[5%]
-                    md:my-0
-                ">
-                    Certificates
-                </h2>
+                {certificates.length > 0 && (
+                    <h2 className="
+                        relative
+                        bg-white
+                        text-center
+                        text-2xl
+                        font-bold
+                        md:translate-y-[-2vh]
+                        my-[5%]
+                        md:my-0
+                    ">
+                        Certificates
+                    </h2>                    
+                )}
+
 
                 <div className=" 
                     relative 
