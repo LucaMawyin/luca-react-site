@@ -51,269 +51,351 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
     
             }
 
-            {/* CARDS */}
-            <div className={`
-                relative
-                w-full
-                h-full
-                grid
-                auto-rows-fr
-                gap-8
-                md:gap-0
-                p-[2.5%]
-            `}>
+            <div className="relative w-full">
 
-                {/* CENTER LINE */}
-                <div className="
-                    absolute
-                    hidden md:block
-                    left-1/2
-                    top-[5%]
-                    bottom-[10%]
-                    w-0.5
-                    bg-neutral-300
-                    -translate-x-1/2
-                " />
 
-                {experience.map((exp,index) => (
-                    <FadeInOnView 
-                        key={index}
-                        className={`
-                            flex 
-                            flex-col
-                            w-full
-                            h-full
-                            lg:px-[5%]
-                            gap-8
-                            ${index !== 0 ? "md:translate-y-[-10%]" : ""}
-                        `}
-                        style={{
-                            zIndex: experience.length - index
-                        }}
-                    >
 
-                        {/* CARD & DOT */}
-                        <div className="
-                            relative
-                            flex
-                            flex-col
-                            gap-8
-                            w-full
-                            h-full
-                        ">
-                            {/* DOT */}
+            <div className="
+                absolute
+                hidden md:block
+                left-1/2
+                top-[5%]
+                bottom-[5%]
+                w-0.5
+                bg-neutral-300
+                -translate-x-1/2
+            " />
+
+                {/* EXPERIENCE */}
+                <div className={`
+                    relative
+                    w-full
+                    h-full
+                    grid
+                    auto-rows-fr
+                    gap-8
+                    md:gap-0
+                    p-[2.5%]
+                    pb-0
+                `}>
+
+                    {/* CENTER LINE */}
+
+                    {experience.map((exp,index) => (
+                        <FadeInOnView 
+                            key={index}
+                            className={`
+                                flex 
+                                flex-col
+                                w-full
+                                h-full
+                                lg:px-[5%]
+                                gap-8
+                                ${index !== 0 ? "md:translate-y-[-10%]" : ""}
+                            `}
+                            style={{
+                                zIndex: experience.length - index
+                            }}
+                        >
+
+                            {/* CARD & DOT */}
                             <div className="
-                                hidden md:block
-                                absolute
-                                left-1/2
-                                top-1/2
-                                w-4 h-4
-                                rounded-full
-                                bg-neutral-400
-                                -translate-x-1/2
-                                -translate-y-1/2
-                                z-10
-                            " />
+                                relative
+                                flex
+                                flex-col
+                                gap-8
+                                w-full
+                                h-full
+                            ">
+                                {/* DOT */}
+                                <div className="
+                                    hidden md:block
+                                    absolute
+                                    left-1/2
+                                    top-1/2
+                                    w-4 h-4
+                                    rounded-full
+                                    bg-neutral-400
+                                    -translate-x-1/2
+                                    -translate-y-1/2
+                                    z-10
+                                " />
 
-                     
-                            <div
-                                className={`
-                                    flex
-                                    flex-col
-                                    rounded-xl
-                                    shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
-                                    p-6
-                                    gap-4
-                                    w-full
-                                    h-full
-                                    md:w-[45%]
+                        
+                                <div
+                                    className={`
+                                        flex
+                                        flex-col
+                                        rounded-xl
+                                        shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                        p-6
+                                        gap-4
+                                        w-full
+                                        h-full
+                                        md:w-[45%]
+                                        ${index % 2 === 0 
+                                            ? "md:self-start" 
+                                            : "md:self-end"
+                                        }
+                                    `}
+                                >
+                                    {/* TITLE + DATE */}
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
+                                        <h2 className="text-lg sm:text-xl font-semibold">
+                                            {exp.title}
+                                        </h2>
+
+                                        <span className="hidden sm:inline text-neutral-400">•</span>
+
+                                        <span className="text-sm text-neutral-500">
+                                            {formatToMonthYear(exp.start_date)} - {exp.end_date ? formatToMonthYear(exp.end_date) : "Present"}
+                                        </span>
+                                    </div>
+
+                                    {/* COMPANY + LOCATION */}
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
+                                        <span className="text-sm">
+                                            {exp.company}
+                                        </span>
+
+                                        <span className="hidden sm:inline text-neutral-400">|</span>
+
+                                        <span className="text-sm text-neutral-500">
+                                            {exp.city && exp.city}
+                                            {exp.city && exp.region && `, ${exp.region}`}
+                                            {!exp.city && exp.region && exp.region}
+                                        </span>
+                                    </div>
+
+                                    {/* TAG */}
+                                    {exp.tag && (
+                                        <div>
+                                            <span className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full">
+                                                {exp.tag}
+                                            </span>
+                                        </div>
+                                    )}
+                                    
+                                    <div className="text-sm mt-2">
+                                        <ReactMarkdown
+                                            components={{
+                                                ul: ({ ...props }) => (
+                                                    <ul className="list-disc pl-5 space-y-1" {...props} />
+                                                ),
+                                                li: ({ ...props }) => (
+                                                    <li {...props} />
+                                                ),
+                                            }}
+                                            >
+                                            {exp.description}
+                                        </ReactMarkdown>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            {/* BUTTONS */}
+                            {props.isLoggedIn && (
+                                <div className={`
+                                    flex 
+                                    h-fit
+                                    w-full 
+                                    md:w-[45%] 
+                                    justify-between
                                     ${index % 2 === 0 
                                         ? "md:self-start" 
                                         : "md:self-end"
                                     }
-                                `}
-                            >
-                                {/* TITLE + DATE */}
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                    <h2 className="text-lg sm:text-xl font-semibold">
-                                        {exp.title}
-                                    </h2>
-
-                                    <span className="hidden sm:inline text-neutral-400">•</span>
-
-                                    <span className="text-sm text-neutral-500">
-                                        {formatToMonthYear(exp.start_date)} - {exp.end_date ? formatToMonthYear(exp.end_date) : "Present"}
-                                    </span>
+                                `}>
+                                    <Button
+                                        text="Edit"
+                                        className="min-w-32 h-fit"
+                                        onClick={() => {router.push(`add-experience/edit?id=${exp.id}`)}}
+                                    />
+                                    <DeleteButton
+                                        className="min-w-32 h-fit"
+                                        text="Experience"
+                                        action={async () => {
+                                        const res = await fetch("/api/experience", {
+                                            method: "DELETE",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                            },
+                                            body: JSON.stringify({ id: exp.id }),
+                                        });
+            
+                                        if (res.status === 401) {
+                                            router.push("/login");
+                                            return;
+                                        }
+                                        
+                                            setExperience((prev) =>
+                                                prev.filter((p) => p.id !== exp.id)
+                                            );
+                                        }}
+                                    />                        
                                 </div>
+        
+        
+                            )}
+                            
+                        </FadeInOnView>
+                        
+                    ))}
+                </div>
 
-                                {/* COMPANY + LOCATION */}
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                    <span className="text-sm">
-                                        {exp.company}
-                                    </span>
+                {/* CERTIFICATES */}
+                <h2 className="
+                    relative
+                    z-20
+                    text-2xl
+                    font-bold
+                    text-center
+                    md:translate-y-[-2.5vh]
+                    my-[5%]
+                    md:my-0
+                    bg-white
+                ">
+                    Certificates
+                </h2>
+                <div className="
+                        relative
+                        w-full
+                        grid
+                        auto-rows-fr
+                        gap-8
+                        md:gap-0
+                        p-[2.5%]
+                        pt-0
+                    ">
+                
+                    {certificates.map((cert,index) => (
+                        <FadeInOnView 
+                            key={index}
+                            className={`
+                                flex 
+                                flex-col
+                                w-full
+                                h-full
+                                lg:px-[5%]
+                                gap-8
+                                ${index !== 0 ? "md:translate-y-[-10%]" : ""}
+                            `}
+                            style={{
+                                zIndex: certificates.length - index
+                            }}
+                        >
 
-                                    <span className="hidden sm:inline text-neutral-400">|</span>
+                            {/* CARD & DOT */}
+                            <div className="
+                                relative
+                                flex
+                                flex-col
+                                gap-8
+                                w-full
+                                h-full
+                            ">
+                                {/* DOT */}
+                                <div className="
+                                    hidden md:block
+                                    absolute
+                                    left-1/2
+                                    top-1/2
+                                    w-4 h-4
+                                    rounded-full
+                                    bg-neutral-400
+                                    -translate-x-1/2
+                                    -translate-y-1/2
+                                    z-10
+                                " />
 
-                                    <span className="text-sm text-neutral-500">
-                                        {exp.city && exp.city}
-                                        {exp.city && exp.region && `, ${exp.region}`}
-                                        {!exp.city && exp.region && exp.region}
-                                    </span>
-                                </div>
+                        
+                                <div
+                                    className={`
+                                        flex
+                                        flex-col
+                                        rounded-xl
+                                        shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                        p-6
+                                        gap-4
+                                        w-full
+                                        h-full
+                                        md:w-[45%]
+                                        ${(experience.length % 2 === 1) && (index % 2 === 0 )
+                                            ? "md:self-end" 
+                                            : "md:self-start"
+                                        }
+                                        ${(experience.length % 2 === 0) && (index % 2 === 0 )
+                                            ? "md:self-start" 
+                                            : "md:self-end"
+                                        }
+                                    `}
+                                >
+                                    {/* TITLE + DATE */}
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
+                                        <h2 className="text-lg sm:text-xl font-semibold">
+                                            {cert.title}
+                                        </h2>
 
-                                {/* TAG */}
-                                {exp.tag && (
-                                    <div>
-                                        <span className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full">
-                                            {exp.tag}
+                                        <span className="hidden sm:inline text-neutral-400">•</span>
+
+                                        <span className="text-sm text-neutral-500">
+                                            {formatToMonthYear(cert.start_date)}{cert.end_date && " - "}{cert.end_date ? formatToMonthYear(cert.end_date) : ""}
                                         </span>
                                     </div>
-                                )}
-                                
-                                <div className="text-sm mt-2">
-                                    <ReactMarkdown
-                                        components={{
-                                            ul: ({ ...props }) => (
-                                                <ul className="list-disc pl-5 space-y-1" {...props} />
-                                            ),
-                                            li: ({ ...props }) => (
-                                                <li {...props} />
-                                            ),
-                                        }}
-                                        >
-                                        {exp.description}
-                                    </ReactMarkdown>
-                                </div>
 
-                            </div>
-                        </div>
+                                    {/* COMPANY + LOCATION */}
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
+                                        <span className="text-sm">
+                                            {cert.company}
+                                        </span>
 
+                                        {(cert.city || cert.region) && <span className="hidden sm:inline text-neutral-400">|</span>}
 
-                        {/* BUTTONS */}
-                        {props.isLoggedIn && (
-                            <div className={`
-                                flex 
-                                h-fit
-                                w-full 
-                                md:w-[45%] 
-                                justify-between
-                                ${index % 2 === 0 
-                                    ? "md:self-start" 
-                                    : "md:self-end"
-                                }
-                            `}>
-                                <Button
-                                    text="Edit"
-                                    className="min-w-32 h-fit"
-                                    onClick={() => {router.push(`add-experience/edit?id=${exp.id}`)}}
-                                />
-                                <DeleteButton
-                                    className="min-w-32 h-fit"
-                                    text="Experience"
-                                    action={async () => {
-                                    const res = await fetch("/api/experience", {
-                                        method: "DELETE",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                        body: JSON.stringify({ id: exp.id }),
-                                    });
-        
-                                    if (res.status === 401) {
-                                        router.push("/login");
-                                        return;
-                                    }
+                                        <span className="text-sm text-neutral-500">
+                                            {cert.city && cert.city}
+                                            {cert.city && cert.region && `, ${cert.region}`}
+                                            {!cert.city && cert.region && cert.region}
+                                        </span>
+                                    </div>
+
+                                    {/* TAG */}
+                                    {cert.tag && (
+                                        <div>
+                                            <span className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full">
+                                                {cert.tag}
+                                            </span>
+                                        </div>
+                                    )}
                                     
-                                        setExperience((prev) =>
-                                            prev.filter((p) => p.id !== exp.id)
-                                        );
-                                    }}
-                                />                        
+                                    <div className="text-sm mt-2">
+                                        <ReactMarkdown
+                                            components={{
+                                                ul: ({ ...props }) => (
+                                                    <ul className="list-disc pl-5 space-y-1" {...props} />
+                                                ),
+                                                li: ({ ...props }) => (
+                                                    <li {...props} />
+                                                ),
+                                            }}
+                                            >
+                                            {cert.description}
+                                        </ReactMarkdown>
+                                    </div>
+
+                                </div>
                             </div>
-    
-    
-                        )}
-                        
-                    </FadeInOnView>
-                    
-                ))}
-            
-                {certificates.map((exp,index) => (
-                    <FadeInOnView 
-                        key={index}
-                        className={`
-                            flex 
-                            flex-col
-                            w-full
-                            h-full
-                            lg:px-[5%]
-                            gap-8
-                            ${index !== 0 ? "md:translate-y-[-10%]" : ""}
-                            ${index === 0 ? "mt-10 md:mt-0" : ""}
-                            last:mb-4
-                        `}
-                        style={{
-                            zIndex: experience.length - index
-                        }}
-                    >
-                        {index === 0 && (
-                            <h2 className="
-                                absolute
-                                -top-12
-                                md:top-[-10%]
-                                left-1/2
-                                -translate-x-1/2
-                                z-20
-                                text-2xl
-                                font-bold
-                                whitespace-nowrap
-                                before:absolute
-                                before:inset-y-0
-                                before:left-1/2
-                                before:-translate-x-1/2
-                                before:w-2
-                                before:bg-white
-                                before:-z-10
-                            ">
-                                Certificates
-                            </h2>
-                        )}
 
-                        {/* CARD & DOT */}
-                        <div className="
-                            relative
-                            flex
-                            flex-col
-                            gap-8
-                            w-full
-                            h-full
-                        ">
-                            {/* DOT */}
-                            <div className="
-                                hidden md:block
-                                absolute
-                                left-1/2
-                                top-1/2
-                                w-4 h-4
-                                rounded-full
-                                bg-neutral-400
-                                -translate-x-1/2
-                                -translate-y-1/2
-                                z-10
-                            " />
 
-                     
-                            <div
-                                className={`
-                                    flex
-                                    flex-col
-                                    rounded-xl
-                                    shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
-                                    p-6
-                                    gap-4
-                                    w-full
-                                    h-full
-                                    md:w-[45%]
+                            {/* BUTTONS */}
+                            {props.isLoggedIn && (
+                                <div className={`
+                                    flex 
+                                    h-fit
+                                    w-full 
+                                    md:w-[45%] 
+                                    justify-between
                                     ${(experience.length % 2 === 1) && (index % 2 === 0 )
                                         ? "md:self-end" 
                                         : "md:self-start"
@@ -322,118 +404,45 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                         ? "md:self-start" 
                                         : "md:self-end"
                                     }
-                                `}
-                            >
-                                {/* TITLE + DATE */}
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                    <h2 className="text-lg sm:text-xl font-semibold">
-                                        {exp.title}
-                                    </h2>
-
-                                    <span className="hidden sm:inline text-neutral-400">•</span>
-
-                                    <span className="text-sm text-neutral-500">
-                                        {formatToMonthYear(exp.start_date)}{exp.end_date && " - "}{exp.end_date ? formatToMonthYear(exp.end_date) : ""}
-                                    </span>
-                                </div>
-
-                                {/* COMPANY + LOCATION */}
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                    <span className="text-sm">
-                                        {exp.company}
-                                    </span>
-
-                                    {(exp.city || exp.region) && <span className="hidden sm:inline text-neutral-400">|</span>}
-
-                                    <span className="text-sm text-neutral-500">
-                                        {exp.city && exp.city}
-                                        {exp.city && exp.region && `, ${exp.region}`}
-                                        {!exp.city && exp.region && exp.region}
-                                    </span>
-                                </div>
-
-                                {/* TAG */}
-                                {exp.tag && (
-                                    <div>
-                                        <span className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full">
-                                            {exp.tag}
-                                        </span>
-                                    </div>
-                                )}
-                                
-                                <div className="text-sm mt-2">
-                                    <ReactMarkdown
-                                        components={{
-                                            ul: ({ ...props }) => (
-                                                <ul className="list-disc pl-5 space-y-1" {...props} />
-                                            ),
-                                            li: ({ ...props }) => (
-                                                <li {...props} />
-                                            ),
+                                `}>
+                                    <Button
+                                        text="Edit"
+                                        className="min-w-32 h-fit"
+                                        onClick={() => {router.push(`add-experience/edit?id=${cert.id}`)}}
+                                    />
+                                    <DeleteButton
+                                        className="min-w-32 h-fit"
+                                        text="Experience"
+                                        action={async () => {
+                                        const res = await fetch("/api/experience", {
+                                            method: "DELETE",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                            },
+                                            body: JSON.stringify({ id: cert.id }),
+                                        });
+            
+                                        if (res.status === 401) {
+                                            router.push("/login");
+                                            return;
+                                        }
+                                        
+                                            setCertificates((prev) =>
+                                                prev.filter((p) => p.id !== cert.id)
+                                            );
                                         }}
-                                        >
-                                        {exp.description}
-                                    </ReactMarkdown>
+                                    />                        
                                 </div>
-
-                            </div>
-                        </div>
-
-
-                        {/* BUTTONS */}
-                        {props.isLoggedIn && (
-                            <div className={`
-                                flex 
-                                h-fit
-                                w-full 
-                                md:w-[45%] 
-                                justify-between
-                                ${(experience.length % 2 === 1) && (index % 2 === 0 )
-                                    ? "md:self-end" 
-                                    : "md:self-start"
-                                }
-                                ${(experience.length % 2 === 0) && (index % 2 === 0 )
-                                    ? "md:self-start" 
-                                    : "md:self-end"
-                                }
-                            `}>
-                                <Button
-                                    text="Edit"
-                                    className="min-w-32 h-fit"
-                                    onClick={() => {router.push(`add-experience/edit?id=${exp.id}`)}}
-                                />
-                                <DeleteButton
-                                    className="min-w-32 h-fit"
-                                    text="Experience"
-                                    action={async () => {
-                                    const res = await fetch("/api/experience", {
-                                        method: "DELETE",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                        body: JSON.stringify({ id: exp.id }),
-                                    });
         
-                                    if (res.status === 401) {
-                                        router.push("/login");
-                                        return;
-                                    }
-                                    
-                                        setExperience((prev) =>
-                                            prev.filter((p) => p.id !== exp.id)
-                                        );
-                                    }}
-                                />                        
-                            </div>
-    
-    
-                        )}
+        
+                            )}
+                            
+                        </FadeInOnView>
                         
-                    </FadeInOnView>
-                    
-                ))}
-            </div>
+                    ))}
+                </div>
 
+            </div>
 
         </div>
     );
