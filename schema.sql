@@ -71,14 +71,14 @@ CREATE TABLE site_content (
     key TEXT UNIQUE NOT NULL,
     content TEXT NOT NULL
 );
-CREATE TABLE experience (
+CREATE TABLE experience_new (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     company TEXT NOT NULL,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     tag TEXT,
-    city TEXT NOT NULL,
-    region TEXT NOT NULL,
+    city TEXT,
+    region TEXT,
     start_date INTEGER NOT NULL,
     end_date INTEGER
 );

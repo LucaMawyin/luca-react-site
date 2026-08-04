@@ -59,8 +59,6 @@ export default function CreateExperiencePage(props : {
 
         return sessionStorage.getItem("nextPage") ?? props.referrer ?? null;
     });
-    console.log(nextPage);
-
 
     // Auto resize text area on load
     useEffect(() => {
@@ -341,7 +339,6 @@ export default function CreateExperiencePage(props : {
                             placeholder="City"
                             value={form.city}
                             onChange={handleChange}
-                            required
                         />
 
                         <label htmlFor="region">Company Region</label>
@@ -350,7 +347,6 @@ export default function CreateExperiencePage(props : {
                             placeholder="Region"
                             value={form.region}
                             onChange={handleChange}
-                            required
                         />
 
 

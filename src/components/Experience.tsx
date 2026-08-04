@@ -154,7 +154,9 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                     <span className="hidden sm:inline text-neutral-400">|</span>
 
                                     <span className="text-sm text-neutral-500">
-                                        {exp.city}, {exp.region}
+                                        {exp.city && exp.city}
+                                        {exp.city && exp.region && `, ${exp.region}`}
+                                        {!exp.city && exp.region && exp.region}
                                     </span>
                                 </div>
 

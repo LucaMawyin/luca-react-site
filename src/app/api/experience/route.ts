@@ -12,10 +12,12 @@ export async function POST(req: Request) {
         const company = formData.get("company")?.toString();
         const description = formData.get("description")?.toString();
         const tag = formData.get("tag")?.toString();
-        const city = formData.get("city")?.toString();
-        const region = formData.get("region")?.toString();
+        const city = formData.get("city")?.toString() || null;
+        const region = formData.get("region")?.toString() ||null;
         const start_date = formData.get("start_date")?.toString();
         const end_date = formData.get("end_date")?.toString() || null;
+
+        console.log(city)
 
         // basic validation
         if (!title || !company || !description) {
