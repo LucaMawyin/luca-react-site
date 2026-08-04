@@ -71,7 +71,7 @@ CREATE TABLE site_content (
     key TEXT UNIQUE NOT NULL,
     content TEXT NOT NULL
 );
-CREATE TABLE experience_new (
+CREATE TABLE experience (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     company TEXT NOT NULL,
     title TEXT NOT NULL,
