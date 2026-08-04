@@ -13,8 +13,13 @@ import { useState } from "react";
 export default function ExperienceClient(props: { isLoggedIn:boolean; experienceList: Experience[] }) {
 
     const router = useRouter();
-    const [experience, setExperience] = useState<Experience[]>(props.experienceList);
-
+    const [experience, setExperience] = useState<Experience[]>(
+        props.experienceList.filter(e => !e.tag?.includes("Certificate"))
+    );
+    const [certificates, setCertificates] = useState<Experience[]>(
+        props.experienceList.filter(e => e.tag?.includes("Certificate"))
+    );
+    
     return (
         <div
             className="
