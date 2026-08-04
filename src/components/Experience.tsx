@@ -51,20 +51,20 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
     
             }
 
-            <div className="relative w-full">
+            <div className="relative w-full my-[2.5%]">
 
 
 
-            <div className="
-                absolute
-                hidden md:block
-                left-1/2
-                top-[5%]
-                bottom-[5%]
-                w-0.5
-                bg-neutral-300
-                -translate-x-1/2
-            " />
+                <div className="
+                    absolute
+                    hidden md:block
+                    left-1/2
+                    top-0
+                    bottom-0
+                    w-0.5
+                    bg-neutral-300
+                    -translate-x-1/2
+                " />
 
                 {/* EXPERIENCE */}
                 <div className={`
@@ -76,7 +76,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                     gap-8
                     md:gap-0
                     p-[2.5%]
-                    pb-0
+                    py-0
                 `}>
 
                     {/* CENTER LINE */}
@@ -248,28 +248,27 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                 {/* CERTIFICATES */}
                 <h2 className="
                     relative
-                    z-20
+                    bg-white
+                    text-center
                     text-2xl
                     font-bold
-                    text-center
-                    md:translate-y-[-2.5vh]
+                    md:translate-y-[-2vh]
                     my-[5%]
                     md:my-0
-                    bg-white
                 ">
                     Certificates
                 </h2>
-                <div className="
-                        relative
-                        w-full
-                        grid
-                        auto-rows-fr
-                        gap-8
-                        md:gap-0
-                        p-[2.5%]
-                        pt-0
-                    ">
-                
+
+                <div className=" 
+                    relative 
+                    w-full 
+                    grid 
+                    auto-rows-fr 
+                    gap-8 
+                    md:gap-0 
+                    p-[2.5%] 
+                    py-0 
+                ">
                     {certificates.map((cert,index) => (
                         <FadeInOnView 
                             key={index}
