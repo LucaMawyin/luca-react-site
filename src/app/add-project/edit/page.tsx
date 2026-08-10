@@ -1,7 +1,7 @@
 import { getDB } from "@/lib/db";
 import CreateProjectPage from "../CreateProjectPage";
 import { getTags } from "@/lib/tags";
-import { Tag } from "@/lib/types";
+import { Project, Tag } from "@/lib/types";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -48,10 +48,10 @@ export default async function Page({
     const tags = await getTags("project") as Tag[];
     const statuses = await getTags("status") as Tag[];
 
-    const data = draft;
+    const data = draft as Project;
 
     const imageUrl = data?.id
-        ? `/images/projects/${data.id}`
+        ? `/images/projects/${data.id}?v=${encodeURIComponent(data.updated_at)}`
         : null;
 
     const headersList = await headers();
