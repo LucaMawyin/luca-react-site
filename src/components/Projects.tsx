@@ -166,7 +166,7 @@ export default function Projects(props : {
             </div>    
 
             {/* OTHER PROJECTS */}
-            {otherProjects.length && (
+            {(otherProjects.length > 0) && (
                 <>
                     <div className="
                         flex 
