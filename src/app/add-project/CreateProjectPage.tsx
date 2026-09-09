@@ -123,17 +123,35 @@ export default function CreateProjectPage(props : {
             "success"
         );
 
+        let quality = 0.8;
+
         // Resize image until it's under the max size
-        let finalFile = await resizeImage(file, 1200, 0.8, 3 / 2);
+        let finalFile = await resizeImage(file, 1200, quality, 3 / 2);
 
-        notify("Resize completed", "success");
+        notify(
+            `Initial WebP: ${(finalFile.size / 1024).toFixed(1)} KB`,
+            "success"
+        );
 
-        while (finalFile.size > MAX_SIZE) {
+        while (finalFile.size > MAX_SIZE && quality > 0.1) {
+            quality -= 0.1;
+
+            finalFile = await resizeImage(
+                file,
+                1200,
+                quality,
+                3 / 2
+            );
+
             notify(
-                `Loop: ${(finalFile.size / 1024).toFixed(1)} KB`,
+                `Quality ${quality.toFixed(1)}: ${(finalFile.size / 1024).toFixed(1)} KB`,
                 "error"
             );
-            finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
+        }
+
+        if (finalFile.size > MAX_SIZE) {
+            notify("Image could not be reduced below 200 KB", "error");
+            return;
         }
 
         notify(
