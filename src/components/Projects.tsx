@@ -7,6 +7,7 @@ import Button from "./Button";
 import { useRouter } from "next/navigation";
 import DeleteButton from "./DeleteButton";
 import FadeInOnView from "./FadeInOnView";
+import { useNotifications } from "./NotificationProvider";
 
 export default function Projects(props : {
     isLoggedIn : boolean,
@@ -14,6 +15,7 @@ export default function Projects(props : {
 }) {
 
     const router = useRouter();
+    const { notify } = useNotifications();
 
     // Fetching projects on load
     const [projects, setProjects] = useState<Project[]>(
@@ -156,6 +158,8 @@ export default function Projects(props : {
                                             setProjects((prev) =>
                                                 prev.filter((p) => p.id !== project.id)
                                             );
+                                            
+                                            notify("Project deleted successfully", "success");
                                         }}
                                     />                        
                                 </div>

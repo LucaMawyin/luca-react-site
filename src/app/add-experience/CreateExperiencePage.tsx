@@ -10,6 +10,7 @@ import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { ensurePunctuation } from "@/lib/ensurePunctuation";
 import { useEffect } from "react";
 import DeleteButton from "@/components/DeleteButton";
+import { useNotifications } from "@/components/NotificationProvider";
 
 export default function CreateExperiencePage(props : {
     initialData? : any;
@@ -18,6 +19,7 @@ export default function CreateExperiencePage(props : {
 }) {
 
     const router = useRouter();
+    const { notify } = useNotifications();
 
     const safeString = (v: any) => (v ?? "").toString();
 
@@ -49,10 +51,6 @@ export default function CreateExperiencePage(props : {
 
     const [customTag, setCustomTag] = useState("");
     const [useCustomTag, setUseCustomTag] = useState(false);
-
-    const [error, setError] = useState<string | null>(null);
-
-    const [fadeOut, setFadeOut] = useState(false);
 
     const [nextPage, setNextPage] = useState<string | null>(() => {
         if (typeof window === "undefined") return props.referrer ?? null;
@@ -137,21 +135,16 @@ export default function CreateExperiencePage(props : {
             body: formData,
         });
 
-        // Reset form
+        // Successful upload
         if (res.ok) {
 
-            setForm({
-                title: "",
-                company:"",
-                description: "",
-                tag:"",
-                city:"",
-                region:"",
-                start_date : "",
-                end_date : "",
-            });
+            if (props.initialData?.id){
+                notify("Experience updated successfully", "success");
+            }
 
-            setError(null);
+            else {
+                notify("Experience uploaded successfully", "success");
+            }
 
             router.refresh();
             router.push(nextPage ?? "/experience");
@@ -159,26 +152,13 @@ export default function CreateExperiencePage(props : {
 
         // Unauthorized redirect to login
         else if (res.status == 401){
-            setError(null);
             router.push("/login");
         }
 
         // Submission error
         else {
             const data = await res.json() as LoginResponse;
-            setFadeOut(false);
-            setError(data.error || "Failed to add experience");
-
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    setFadeOut(true);
-                }, 2000);
-
-                setTimeout(() => {
-                    setError(null);
-                    setFadeOut(false);
-                }, 3000);
-            });
+            notify(data.error || "Experience upload failed", "error");
         }
     };
 
@@ -400,6 +380,8 @@ export default function CreateExperiencePage(props : {
                                 });
 
                                 setForm((prev) => ({ ...prev, tag: "" }));
+
+                                notify("Tag deleted successfully", "success");
                                 router.refresh();
                             }}
                         />
@@ -417,30 +399,13 @@ export default function CreateExperiencePage(props : {
                             />
                         )}
 
-                        {/* Error messages */}
-                        <div className="h-5">
-                            {error && (
-                                <p
-                                className={`
-                                    text-red-500 
-                                    text-sm 
-                                    transition-opacity 
-                                    duration-500 
-                                    text-center
-                                    ${fadeOut ? "opacity-0" : "opacity-100"}
-                                `}
-                                >
-                                {error}
-                                </p>
-                            )}
-                        </div>
-
                         {/* Button container */}
                         <div className="
                             flex 
                             flex-col 
                             gap-2
                             sm:flex-row justify-between
+                            mt-4
                         ">
                             <Button 
                                 text="Post" 

@@ -3,6 +3,7 @@
 import Badge from "@/components/Badge";
 import Button from "@/components/Button";
 import DeleteButton from "@/components/DeleteButton";
+import { useNotifications } from "@/components/NotificationProvider";
 import Tile from "@/components/Tile";
 import { getDevice } from "@/lib/getDevice";
 import resizeImage from "@/lib/resizeImage";
@@ -10,21 +11,6 @@ import { shadow } from "@/lib/tags";
 import { ChangePasswordResponse, Project, Session, SiteContent, User } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-
-type Message = {
-    text: string;
-    status: "error" | "success";
-    type : "about" | "password" | "resume" | "sessions" | "headshot";
-} | null;
-
-function getMessageClass(message?: Message) {
-    if (!message) return "";
-
-    if (message.status === "error") return "text-red-500!";
-    if (message.status === "success") return "text-green-500!";
-
-    return "";
-}
 
 export default function SettingsClient(props : {
     user : User, 
@@ -35,6 +21,7 @@ export default function SettingsClient(props : {
 }){
 
     const router = useRouter();
+    const { notify } = useNotifications();
 
     // Resume file input stuff
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -51,10 +38,6 @@ export default function SettingsClient(props : {
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
-    // Success / error states
-    const [message, setMessage] = useState<Message>(null);
-    const [visible, setVisible] = useState(true);
 
     // About me
     const [ about, setAbout ] = useState(props.content.about || "");
@@ -108,15 +91,9 @@ export default function SettingsClient(props : {
     ){
         e.preventDefault();
 
-        setMessage(null);
-
         // Simple password check
         if (newPassword !== confirmPassword){
-            setMessage({
-                type:"password",
-                status: "error",
-                text: "Passwords do not match",
-            });
+            notify("Passwords do not match")
             return;
         }
 
@@ -136,30 +113,9 @@ export default function SettingsClient(props : {
 
         // Showing success or error message for 300ms
         if (response.ok){
-            setMessage({
-                type:"password",
-                status: "success",
-                text: "Password updated",
-            });
-            setCurrentPassword("");
-            setNewPassword("");
-            setConfirmPassword("");
-            setVisible(true);
-            setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify("Password updated", "success")
         } else {
-            setMessage({
-                type:"password",
-                status: "error",
-                text: data.error || "Failed to update password",
-            });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify(data.error || "Failed to update password", "error")
         }
     }
 
@@ -174,20 +130,9 @@ export default function SettingsClient(props : {
 
         // Only PDF
         if (file.type !== "application/pdf") {
-            setMessage({
-                type:"resume",
-                status: "error",
-                text: "Only PDF files are allowed",
-            });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify("Only PDF files are allowed for resume", "error")
             return;
         }
-
-        setMessage(null);
 
         setResumeFile(file);
         setResumeName(file.name);
@@ -199,16 +144,7 @@ export default function SettingsClient(props : {
 
         // No resume file
         if (!resumeFile) {
-            setMessage({
-                type:"resume",
-                status: "error",
-                text: "Please select a resume first",
-            });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify("Please select a resume first", "error")
             return;
         }
 
@@ -227,16 +163,7 @@ export default function SettingsClient(props : {
 
         // Error
         if (!res.ok) {
-            setMessage({
-                type:"resume",
-                status: "error",
-                text: data.error || "Upload failed",
-            });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify(data.error || "Resume upload failed", "error")
             return;
         }
 
@@ -249,16 +176,7 @@ export default function SettingsClient(props : {
         }
 
         // Success message
-        setMessage({
-            type:"resume",
-            status: "success",
-            text: "Successfully Uploaded Resume",
-        });
-        setVisible(true);
-            setTimeout(() => {
-            setVisible(false);
-            setTimeout(() => setMessage(null), 300);
-        }, 3000);
+        notify("Successfully Uploaded Resume", "success")
     };
 
     // Resize headshot
@@ -287,16 +205,11 @@ export default function SettingsClient(props : {
         try {
             const finalFile = await processHeadshot(file);
 
-            setMessage(null);
             setHeadshotFile(finalFile);
             setHeadshotName(finalFile.name);
 
         } catch (err) {
-            setMessage({
-                type: "headshot",
-                status: "error",
-                text: "Only images are allowed",
-            });
+            notify("Only images are allowed for headshot", "error")
         }
     };
 
@@ -306,16 +219,7 @@ export default function SettingsClient(props : {
 
         // No image
         if (!headshotFile) {
-            setMessage({
-                type:"headshot",
-                status: "error",
-                text: "Please select an image",
-            });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify("Please select an image for headshot", "error")
             return;
         }
 
@@ -335,16 +239,7 @@ export default function SettingsClient(props : {
 
         // Error
         if (!res.ok) {
-            setMessage({
-                type:"headshot",
-                status: "error",
-                text: data.error || "Upload failed",
-            });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify(data.error || "Headshot upload failed", "error")
             return;
         }
 
@@ -357,32 +252,14 @@ export default function SettingsClient(props : {
         }
 
         // Success message
-        setMessage({
-            type:"headshot",
-            status: "success",
-            text: "Successfully Uploaded Headshot",
-        });
-        setVisible(true);
-            setTimeout(() => {
-            setVisible(false);
-            setTimeout(() => setMessage(null), 300);
-        }, 3000);
+        notify("Successfully uploaded headshot", "success")
     };
 
     // Updating about me
     async function handleAboutSubmit() {
 
         if (!about.length){
-            setMessage({
-                type:"about",
-                status: "error",
-                text: "Please enter a bio",
-            });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify("Please enter a bio", "error")
             return;
         }
 
@@ -398,32 +275,14 @@ export default function SettingsClient(props : {
 
         // Error
         if (!res.ok) {
-            setMessage({
-                type:"about", 
-                status:"error",
-                text: data.error || "Failed to update about"
-            });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify(data.error || "Failed to update about", "error")
 
             router.refresh();
             return;
         }
 
         // Success message
-        setMessage({
-            type:"about",
-            status: "success",
-            text: "Successfully changed about me",
-        });
-        setVisible(true);
-            setTimeout(() => {
-            setVisible(false);
-            setTimeout(() => setMessage(null), 300);
-        }, 3000);
+        notify("Successfully changed about me", "success")
     }
 
     // Clearing all active sessions
@@ -436,32 +295,14 @@ export default function SettingsClient(props : {
 
         // Error
         if (!res.ok) {
-            setMessage({
-                type:"sessions",
-                status: "error",
-                text: data.error || "Failed to Clear Sessions",
-            });
-            setVisible(true);
-                setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
+            notify(data.error || "Failed to Clear Sessions", "error")
             return;
         }
 
         router.refresh();
 
         // Success message
-        setMessage({
-            type:"sessions",
-            status: "success",
-            text: "Successfully cleared all active sessions",
-        });
-        setVisible(true);
-            setTimeout(() => {
-            setVisible(false);
-            setTimeout(() => setMessage(null), 300);
-        }, 3000);
+        notify("Successfully cleared all active sessions", "success")
     }
 
     // Removing individual session
@@ -477,34 +318,13 @@ export default function SettingsClient(props : {
         const data = await res.json() as any;
 
         if (!res.ok) {
-            setMessage({
-                type: "sessions",
-                status: "error",
-                text: data.error || "Failed to remove session",
-            });
-            setVisible(true);
-
-            setTimeout(() => {
-                setVisible(false);
-                setTimeout(() => setMessage(null), 300);
-            }, 3000);
-
+            notify(data.error || "Failed to remove session", "error")
             return;
         }
 
         await router.refresh();
 
-        setMessage({
-            type: "sessions",
-            status: "success",
-            text: "Successfully removed session",
-        });
-        setVisible(true);
-
-        setTimeout(() => {
-            setVisible(false);
-            setTimeout(() => setMessage(null), 300);
-        }, 3000);
+        notify("Successfully removed session", "success")
     }
 
     return (
@@ -536,7 +356,7 @@ export default function SettingsClient(props : {
                         <h2 className="text-xl">
                             About Me
                         </h2>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-4">
                             <textarea
                                 name="about-me"
                                 value={about}
@@ -564,20 +384,6 @@ export default function SettingsClient(props : {
                                 }}
                             />
 
-                            <p   
-                                className={`
-                                    text-sm text-center min-h-5
-                                    transition-opacity duration-300
-                                    ${visible ? "opacity-100" : "opacity-0"}
-                                `}
-                            >
-                                {message?.type === "about" && (
-                                    <span className={getMessageClass(message)}>
-                                        {message.text}
-                                    </span>
-                                )}
-                            </p>
-
                             <Button
                                 text="Change About"
                                 className="w-full sm:w-56"
@@ -601,7 +407,7 @@ export default function SettingsClient(props : {
                                 Upload New Headshot
                             </h2>
                             <label htmlFor="headshot" className="text-gray-500">Drag & drop image here, or click to select</label>
-                            <div className="space-y-2">
+                            <div className="space-y-4">
                                 <input
                                     id="headshot"
                                     name="headshot"
@@ -618,17 +424,7 @@ export default function SettingsClient(props : {
                                             setHeadshotFile(finalFile);
                                             setHeadshotName(finalFile.name);
                                         } catch {
-                                            setMessage({
-                                                type: "headshot",
-                                                status: "error",
-                                                text: "Only images are allowed",
-                                            });
-                                            setVisible(true);
-
-                                            setTimeout(() => {
-                                                setVisible(false);
-                                                setTimeout(() => setMessage(null), 300);
-                                            }, 3000);
+                                            notify("Only images are allowed for headshot", "error")
                                         }
                                     }}
                                     className="hidden"
@@ -644,20 +440,6 @@ export default function SettingsClient(props : {
                                         Selected: {headshotName}
                                     </p>
                                 )}
-                                
-                                <p   
-                                    className={`
-                                        text-sm text-center min-h-5
-                                        transition-opacity duration-300
-                                        ${visible ? "opacity-100" : "opacity-0"}
-                                    `}
-                                >
-                                    {message?.type === "headshot" && (
-                                        <span className={getMessageClass(message)}>
-                                            {message.text}
-                                        </span>
-                                    )}
-                                </p>
                                 
                                 <Button
                                     text="Submit Headshot"
@@ -685,7 +467,7 @@ export default function SettingsClient(props : {
                                 Upload New Resume
                             </h2>
                             <label htmlFor="resume" className="text-gray-500">Drag & drop resume here, or click to select</label>
-                            <div className="space-y-2">
+                            <div className="space-y-4">
                                 <input
                                     id="resume"
                                     name="resume"
@@ -712,20 +494,6 @@ export default function SettingsClient(props : {
                                         Selected: {resumeName}
                                     </p>
                                 )}
-                                
-                                <p   
-                                    className={`
-                                        text-sm text-center min-h-5
-                                        transition-opacity duration-300
-                                        ${visible ? "opacity-100" : "opacity-0"}
-                                    `}
-                                >
-                                    {message?.type === "resume" && (
-                                        <span className={getMessageClass(message)}>
-                                            {message.text}
-                                        </span>
-                                    )}
-                                </p>
                                 
                                 <Button
                                     text="Submit Resume"
@@ -814,29 +582,16 @@ export default function SettingsClient(props : {
                                 />
                             </div>
 
-                            {/* Message area */}
-                            <div className="space-y-2">
-                                <p   
-                                    className={`
-                                        text-sm text-center min-h-5
-                                        transition-opacity duration-300
-                                        ${visible ? "opacity-100" : "opacity-0"}
-                                    `}
-                                >
-                                    {message?.type === "password" && (
-                                        <span className={getMessageClass(message)}>
-                                            {message.text}
-                                        </span>
-                                    )}
-                                </p>
-
+                            <div className="flex pt-2">
                                 <Button 
                                     text="Change Password" 
                                     type="submit"
-                                    className="self-center w-full sm:w-56"
+                                    className="w-full sm:w-56 "
                                     onClick={handlePasswordChange}
-                                />                            
-                            </div>                            
+                                />  
+                            </div>
+                          
+                        
                         </div>
                         
                     </div>
@@ -940,23 +695,10 @@ export default function SettingsClient(props : {
 
                                 </details>
                             ))}
-                            <p   
-                                className={`
-                                    text-sm text-center min-h-5
-                                    transition-opacity duration-300
-                                    ${visible ? "opacity-100" : "opacity-0"}
-                                `}
-                            >
-                                {message?.type === "sessions" && (
-                                    <span className={getMessageClass(message)}>
-                                        {message.text}
-                                    </span>
-                                )}
-                            </p>
                             <DeleteButton
                                 customText="Clear"
                                 customDescription="Sessions"
-                                className="w-full sm:w-56"
+                                className="w-full sm:w-56 mt-2"
                                 action={handleClearSessions}
                             />                             
                         </div>
@@ -1190,6 +932,8 @@ export default function SettingsClient(props : {
                                                             : p
                                                     )
                                                 );
+
+                                                notify("Project deleted successfully", "success");
                                             }}
                                         />                        
                                     </div>
@@ -1499,6 +1243,8 @@ export default function SettingsClient(props : {
                                                                 : p
                                                         )
                                                     );
+
+                                                    notify("Project restored successfully", "success");
                                                 }}
 
                                             />
@@ -1522,6 +1268,8 @@ export default function SettingsClient(props : {
                                                     setProjects((prev) =>
                                                         prev.filter((p) => p.id !== project.id)
                                                     );
+
+                                                    notify("Project permanently deleted successfully", "success");
                                                 }}
                                             />                        
                                         </div>

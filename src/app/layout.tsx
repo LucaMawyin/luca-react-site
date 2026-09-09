@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { Metadata } from "next";
 import Footer from "@/components/Footer";
+import { NotificationProvider } from "@/components/NotificationProvider";
 
 export const dynamic = "force-dynamic";
 
@@ -237,18 +238,21 @@ export default async function RootLayout({
                     dangerouslySetInnerHTML={{
                         __html: JSON.stringify(websiteJsonLd),
                     }}
-                />
-                <NavBar isLoggedIn={!!session} />
-                <main className="                
-                    min-h-[90vh] 
-                    flex 
-                    flex-col 
-                    justify-between
-                ">
-                    {children}
-                </main>
-                
-                <Footer/>
+                />            
+                    
+                <NotificationProvider>
+                    <NavBar isLoggedIn={!!session} />
+                    <main className="                
+                        min-h-[90vh] 
+                        flex 
+                        flex-col 
+                        justify-between
+                    ">
+                        {children}
+                    </main>
+                    
+                    <Footer/>                    
+                </NotificationProvider>
             </body>
         </html>
     );

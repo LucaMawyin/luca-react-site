@@ -1,9 +1,10 @@
 "use client";
 
 import Button from "@/components/Button";
+import { useNotifications } from "@/components/NotificationProvider";
 import Tile from "@/components/Tile";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
-import { Tech } from "@/lib/types";
+import { LoginResponse, Tech } from "@/lib/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,6 +13,8 @@ export default function EditTechClient(props : {
     tech : Tech[];
     referrer ?: string | null;
 }) {
+
+    const { notify } = useNotifications();
 
     const grouped = props.tech.reduce((acc, item) => {
         if (!acc[item.category]) acc[item.category] = [];
@@ -66,8 +69,15 @@ export default function EditTechClient(props : {
         });
 
         if (res.ok) {
+
+            notify("Tech updated successfully", "success")
             router.refresh();
             router.push(nextPage ?? "/tech");
+        }
+
+        else {
+            const data = await res.json() as LoginResponse;
+            notify(data.error || "Tech update failed", "error");
         }
     };
 

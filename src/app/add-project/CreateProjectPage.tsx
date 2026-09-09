@@ -12,6 +12,7 @@ import { ensurePunctuation } from "@/lib/ensurePunctuation";
 import { useEffect } from "react";
 import { normalizeArray } from "@/lib/normalizeJSON";
 import DeleteButton from "@/components/DeleteButton";
+import { useNotifications } from "@/components/NotificationProvider";
 
 export default function CreateProjectPage(props : {
     initialData? : any;
@@ -24,6 +25,7 @@ export default function CreateProjectPage(props : {
     const MAX_SIZE = 0.2 * 1024 * 1024;
 
     const router = useRouter();
+    const { notify } = useNotifications();
 
     const safeString = (v: any) => (v ?? "").toString();
 
@@ -54,9 +56,7 @@ export default function CreateProjectPage(props : {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [ imageFile, setImageFile ] = useState<File | null>(null);
-    const [ error, setError ] = useState<string | null>(null);
     const [ preview, setPreview ] = useState<string | null>(null);
-    const [ fadeOut, setFadeOut ] = useState(false);
 
     const [nextPage, setNextPage] = useState<string | null>(() => {
         if (typeof window === "undefined") return props.referrer ?? null;
@@ -124,7 +124,6 @@ export default function CreateProjectPage(props : {
             finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
         }
 
-        setError(null);
         setImageFile(finalFile);
         setPreview(URL.createObjectURL(finalFile));
     };
@@ -143,7 +142,6 @@ export default function CreateProjectPage(props : {
             finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
         }
 
-        setError(null);
         setImageFile(finalFile);
         setPreview(URL.createObjectURL(finalFile));
     };
@@ -155,19 +153,7 @@ export default function CreateProjectPage(props : {
 
         // No image file and no id means there is no image
         if (!imageFile && !props.initialData?.id) {
-            setError("Please upload an image");
-            setFadeOut(false);
-
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    setFadeOut(true);
-                }, 2000);
-
-                setTimeout(() => {
-                    setError(null);
-                    setFadeOut(false);
-                }, 3000);
-            });
+            notify("Please upload an image", "error");
             return;
         }
 
@@ -201,27 +187,15 @@ export default function CreateProjectPage(props : {
             body: formData,
         });
 
-        // Reset form
+        // Successful upload
         if (res.ok) {
+            if (props.initialData?.id){
+                notify("Project updated successfully", "success");
+            }
 
-            setForm({
-                name: "",
-                description: "",
-                link: "",
-                languages: "",
-                tools: "",
-                libraries:"",
-                tag:"",
-                colour:"",
-                status:"",
-                status_colour:"",
-                pinned:false,
-                hidden:false,
-            });
-
-            setImageFile(null);
-            setPreview(null);
-            setError(null);
+            else {
+                notify("Project uploaded successfully", "success");
+            }
 
             router.refresh();
             router.push(nextPage ?? "/projects");
@@ -229,26 +203,19 @@ export default function CreateProjectPage(props : {
 
         // Unauthorized redirect to login
         else if (res.status == 401){
-            setError(null);
             router.push("/login");
         }
 
         // Submission error
         else {
             const data = await res.json() as LoginResponse;
-            setFadeOut(false);
-            setError(data.error || "Failed to add project");
+            if (props.initialData?.id){
+                notify(data.error || "Project update failed", "error");
+            }
 
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    setFadeOut(true);
-                }, 2000);
-
-                setTimeout(() => {
-                    setError(null);
-                    setFadeOut(false);
-                }, 3000);
-            });
+            else {
+                notify(data.error || "Project upload failed", "error");
+            }
         }
     };
 
@@ -422,6 +389,8 @@ export default function CreateProjectPage(props : {
                                     });
 
                                     setForm((prev) => ({ ...prev, tag: "" }));
+
+                                    notify("Project tag deleted successfully", "success");
                                     router.refresh();
                                 }}
                             />
@@ -519,6 +488,8 @@ export default function CreateProjectPage(props : {
                                     });
 
                                     setForm((prev) => ({ ...prev, status: "" }));
+
+                                    notify("Project status deleted successfully", "success");
                                     router.refresh();
                                 }}
                             />
@@ -613,24 +584,6 @@ export default function CreateProjectPage(props : {
 
                             {preview && (
                                 <img src={preview} alt="Preview" />
-                            )}
-                        </div>
-
-                        {/* Error messages */}
-                        <div className="h-5">
-                            {error && (
-                                <p
-                                className={`
-                                    text-red-500 
-                                    text-sm 
-                                    transition-opacity 
-                                    duration-500 
-                                    text-center
-                                    ${fadeOut ? "opacity-0" : "opacity-100"}
-                                `}
-                                >
-                                {error}
-                                </p>
                             )}
                         </div>
 
