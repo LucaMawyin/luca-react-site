@@ -2,6 +2,7 @@ import { validateSession } from "@/lib/auth";
 import { capitalizeNamesAndTitles } from "@/lib/capitalizeNamesAndTitles";
 import { getDB } from "@/lib/db";
 import { deleteFromR2, r2, uploadToR2 } from "@/lib/r2";
+import resizeImage from "@/lib/resizeImage";
 import { Project } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -177,8 +178,24 @@ export async function POST(req: NextRequest) {
 
         const newId = result.meta?.last_row_id;
 
-        if (image){
-            await uploadToR2(image,"projects",`${newId}`);
+        const MAX_SIZE = 0.2 * 1024 * 1024;
+        if (image) {
+            let finalImage = image;
+
+            while (finalImage.size > MAX_SIZE) {
+                console.log(`Before: ${(finalImage.size / 1024).toFixed(2)} KB`);
+
+                finalImage = await resizeImage(
+                    finalImage,
+                    1200,
+                    0.8,
+                    3 / 2
+                );
+
+                console.log(`After: ${(finalImage.size / 1024).toFixed(2)} KB`);
+            }
+
+            await uploadToR2(finalImage, "projects", `${newId}`);
         }
 
         return NextResponse.json({

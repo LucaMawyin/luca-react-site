@@ -120,9 +120,6 @@ export default function CreateProjectPage(props : {
 
         // Resize image until it's under the max size
         let finalFile = await resizeImage(file, 1200, 0.8, 3 / 2);
-        while (finalFile.size > MAX_SIZE) {
-            finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
-        }
 
         setImageFile(finalFile);
         setPreview(URL.createObjectURL(finalFile));
