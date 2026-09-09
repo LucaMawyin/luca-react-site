@@ -118,46 +118,11 @@ export default function CreateProjectPage(props : {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        notify(
-            `Selected: ${file.name} | ${file.type} | ${(file.size / 1024).toFixed(1)} KB`,
-            "success"
-        );
-
-        let quality = 0.8;
-
         // Resize image until it's under the max size
-        let finalFile = await resizeImage(file, 1200, quality, 3 / 2);
-
-        notify(
-            `Initial WebP: ${(finalFile.size / 1024).toFixed(1)} KB`,
-            "success"
-        );
-
-        while (finalFile.size > MAX_SIZE && quality > 0.1) {
-            quality -= 0.1;
-
-            finalFile = await resizeImage(
-                file,
-                1200,
-                quality,
-                3 / 2
-            );
-
-            notify(
-                `Quality ${quality.toFixed(1)}: ${(finalFile.size / 1024).toFixed(1)} KB`,
-                "error"
-            );
+        let finalFile = await resizeImage(file, 1200, 0.8, 3 / 2);
+        while (finalFile.size > MAX_SIZE) {
+            finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
         }
-
-        if (finalFile.size > MAX_SIZE) {
-            notify("Image could not be reduced below 200 KB", "error");
-            return;
-        }
-
-        notify(
-            `Final: ${finalFile.name} | ${finalFile.type} | ${(finalFile.size / 1024).toFixed(1)} KB`,
-            "success"
-        );
 
         setImageFile(finalFile);
         setPreview(URL.createObjectURL(finalFile));
