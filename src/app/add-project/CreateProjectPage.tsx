@@ -118,16 +118,19 @@ export default function CreateProjectPage(props : {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        notify(
+            `Selected: ${file.name} | ${file.type} | ${(file.size / 1024).toFixed(1)} KB`,
+            "success"
+        );
+
         // Resize image until it's under the max size
         let finalFile = await resizeImage(file, 1200, 0.8, 3 / 2);
+
+        notify("Resize completed", "success");
+
         while (finalFile.size > MAX_SIZE) {
             finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
         }
-
-        notify(
-            `Original: ${file.name} | ${file.type} | ${(file.size / 1024).toFixed(1)} KB`,
-            "success"
-        );
 
         notify(
             `Final: ${finalFile.name} | ${finalFile.type} | ${(finalFile.size / 1024).toFixed(1)} KB`,
