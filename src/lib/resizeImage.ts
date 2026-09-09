@@ -51,9 +51,9 @@ export default function resizeImage(
 
             ctx.drawImage(img, sx, sy, sw, sh, 0, 0, width, height);
 
-            // Export as jpeg
-            const mimeType = "image/jpeg";
-            const newName = file.name.replace(/\.\w+$/, "") + ".jpg";
+            // Export as webp
+            const mimeType = "image/webp";
+            const newName = file.name.replace(/\.\w+$/, "") + ".webp";
 
             canvas.toBlob((blob) => {
                 if (!blob) {
