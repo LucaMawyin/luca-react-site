@@ -124,6 +124,16 @@ export default function CreateProjectPage(props : {
             finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
         }
 
+        notify(
+            `Original: ${file.name} | ${file.type} | ${(file.size / 1024).toFixed(1)} KB`,
+            "success"
+        );
+
+        notify(
+            `Final: ${finalFile.name} | ${finalFile.type} | ${(finalFile.size / 1024).toFixed(1)} KB`,
+            "success"
+        );
+
         setImageFile(finalFile);
         setPreview(URL.createObjectURL(finalFile));
     };
