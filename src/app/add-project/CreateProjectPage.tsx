@@ -129,6 +129,10 @@ export default function CreateProjectPage(props : {
         notify("Resize completed", "success");
 
         while (finalFile.size > MAX_SIZE) {
+            notify(
+                `Loop: ${(finalFile.size / 1024).toFixed(1)} KB`,
+                "error"
+            );
             finalFile = await resizeImage(finalFile, 1200, 0.8, 3 / 2);
         }
 
