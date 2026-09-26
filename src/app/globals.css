@@ -162,6 +162,10 @@ select:focus {
 }
 
 .squircle {
-    border-radius: 48px;
-    corner-shape: squircle;
+    border-radius: 1rem;
+
+    @supports (corner-shape: squircle) {
+        corner-shape: squircle;
+        border-radius: 48px;
+    }
 }
