@@ -137,7 +137,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                             ? "md:self-start" 
                                             : "md:self-end"
                                         }
-                                        squircle
+                                        squircle-large
                                         pillow
                                     `}
                                 >
@@ -334,7 +334,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                             ? "md:self-start" 
                                             : "md:self-end"
                                         }
-                                        squircle
+                                        squircle-large
                                         pillow
                                     `}
                                 >
