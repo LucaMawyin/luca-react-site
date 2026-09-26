@@ -2,8 +2,31 @@
 
 @plugin "@tailwindcss/typography";
 
+/* Firefox */
 *{
 	box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: gray transparent;
+
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: gray;
+    border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: gray;
 }
 
 :root {
