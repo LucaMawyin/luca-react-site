@@ -227,7 +227,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     lg:hidden
                     fixed inset-0
                     w-full h-screen
-                    bg-(--primary-colour)
+                    bg-(--bg)
 
                     flex flex-col items-center justify-evenly
 
