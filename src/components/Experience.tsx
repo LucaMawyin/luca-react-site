@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import { formatToMonthYear } from "@/lib/formatMonthYear";
 import DeleteButton from "./DeleteButton";
 import { useState } from "react";
+import Badge from "./Badge";
 
 
 export default function ExperienceClient(props: { isLoggedIn:boolean; experienceList: Experience[] }) {
@@ -143,15 +144,29 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                 >
                                     {/* TITLE + DATE */}
                                     <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                        <h2 className="text-lg sm:text-xl font-semibold">
+                                        <h2 className="
+                                            text-lg 
+                                            sm:text-xl 
+                                            font-semibold 
+                                            max-w-[50%]
+                                        ">
                                             {exp.title}
                                         </h2>
 
-                                        <span className="hidden sm:inline text-neutral-400">•</span>
+                                        <p className="hidden sm:inline text-neutral-400">• </p>
 
-                                        <span className="text-sm text-neutral-500">
-                                            {formatToMonthYear(exp.start_date)} - {exp.end_date ? formatToMonthYear(exp.end_date) : "Present"}
-                                        </span>
+                                        <p className="text-sm text-neutral-500">
+                                            <span className="whitespace-nowrap">
+                                                {formatToMonthYear(exp.start_date)}
+                                            </span> 
+                                            {" - "}
+                                            <span className="whitespace-nowrap">
+                                                {exp.end_date ? formatToMonthYear(exp.end_date) : "Present"}
+                                            </span>
+                                        </p>                                            
+
+
+
                                     </div>
 
                                     {/* COMPANY + LOCATION */}
@@ -168,13 +183,20 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                             {!exp.city && exp.region && exp.region}
                                         </span>
                                     </div>
-
+                                    
                                     {/* TAG */}
                                     {exp.tag && (
                                         <div>
-                                            <span className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full">
-                                                {exp.tag}
-                                            </span>
+                                            <Badge
+                                                text={exp.tag}
+                                                fit="tight"
+                                                shadow={false}
+                                                className="
+                                                    text-neutral-600! 
+                                                    text-xs 
+                                                    bg-neutral-200
+                                                "
+                                            />
                                         </div>
                                     )}
                                     
@@ -340,15 +362,29 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                 >
                                     {/* TITLE + DATE */}
                                     <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                        <h2 className="text-lg sm:text-xl font-semibold">
+                                        <h2 className="
+                                            text-lg 
+                                            sm:text-xl 
+                                            font-semibold 
+                                            max-w-[50%]
+                                        ">
                                             {cert.title}
                                         </h2>
 
-                                        <span className="hidden sm:inline text-neutral-400">•</span>
+                                        <p className="hidden sm:inline text-neutral-400">• </p>
 
-                                        <span className="text-sm text-neutral-500">
-                                            {formatToMonthYear(cert.start_date)}{cert.end_date && " - "}{cert.end_date ? formatToMonthYear(cert.end_date) : ""}
-                                        </span>
+                                        <p className="text-sm text-neutral-500">
+                                            <span className="whitespace-nowrap">
+                                                {formatToMonthYear(cert.start_date)}
+                                            </span> 
+                                            {cert.end_date && " - "}
+                                            <span className="whitespace-nowrap">
+                                                {cert.end_date ? formatToMonthYear(cert.end_date) : ""}
+                                            </span>
+                                        </p>                                            
+
+
+
                                     </div>
 
                                     {/* COMPANY + LOCATION */}
@@ -369,9 +405,16 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                     {/* TAG */}
                                     {cert.tag && (
                                         <div>
-                                            <span className="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded-full">
-                                                {cert.tag}
-                                            </span>
+                                            <Badge
+                                                text={cert.tag}
+                                                fit="tight"
+                                                shadow={false}
+                                                className="
+                                                    text-neutral-600! 
+                                                    text-xs 
+                                                    bg-neutral-200
+                                                "
+                                            />
                                         </div>
                                     )}
                                     

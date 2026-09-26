@@ -5,6 +5,7 @@ import FadeInOnView from "./FadeInOnView";
 import Tile from "./Tile";
 import Button from "./Button";
 import { useRouter } from "next/navigation";
+import Badge from "./Badge";
 
 export default function TechStack(props : {
     isLoggedIn : boolean,
@@ -75,17 +76,18 @@ export default function TechStack(props : {
                                 mt-4
                             ">
                                 {section.items.map((item) => (
-                                    <span
+                                    <Badge
                                         key={item}
+                                        shadow={false}
+                                        fit="tight"
                                         className="
-                                            px-3 py-1
-                                            border border-black/20
-                                            rounded-full
-                                            text-sm
+                                            bg-white
+                                            border
+                                            border-gray-300
+                                            font-normal
                                         "
-                                    >
-                                        {item}
-                                    </span>
+                                        text={item}
+                                    />
                                 ))}
                             </div>
                         </Tile>                        
