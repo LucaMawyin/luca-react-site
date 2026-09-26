@@ -23,7 +23,7 @@ export default function Tile(props : {
                 p-[2%]
                 
                 transition-all duration-(--transition-time) ease-out
-                squircle
+                squircle-large
                 ${props.disablePillow ? "" : "pillow"}
                 ${props.disableHover? "" : "hover:shadow-2xl hover:-translate-y-2"}
                 ${props.className??""}
