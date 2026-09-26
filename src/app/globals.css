@@ -169,3 +169,14 @@ select:focus {
         border-radius: 48px;
     }
 }
+
+@media (max-width: 640px) {
+    .squircle {
+        border-radius: 0.5em;
+        
+        @supports (corner-shape: squircle) {
+            corner-shape: squircle;
+            border-radius: 48px;
+        }
+    }
+}
