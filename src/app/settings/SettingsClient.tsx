@@ -623,9 +623,9 @@ export default function SettingsClient(props : {
                                         justify-between
                                         p-4
                                         squircle
-                                        pillow-hover
-                                        transition-colors
-                                        duration-300
+                                        pillow-hover-dark
+                                        transition-all
+                                        duration-(--transition-duration)
                                     ">
                                         <div>
                                             <p>

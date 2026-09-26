@@ -155,7 +155,9 @@ select:focus {
         inset -10px -10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.pillow:hover {
+
+
+.pillow-hover:hover {
     box-shadow:
         0 14px 22px rgba(0, 0, 0, 0.32),
 
@@ -163,20 +165,24 @@ select:focus {
         inset -10px -10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.pillow-hover {    
+.pillow-hover-dark {    
     transition:
         background 300ms ease,
         box-shadow 300ms ease;
 }
 
-.pillow-hover:hover {
-    background: linear-gradient(135deg, #b8b8b8, #dedede);
+.pillow-hover-dark:hover {
+    background: linear-gradient(
+        180deg,
+        #b8b8b8 0%,
+        #dedede 100%
+    );
 
     box-shadow:
-        0 10px 16px rgba(0, 0, 0, 0.32),
+        0 14px 22px rgba(0, 0, 0, 0.32),
 
-        inset 10px 10px 20px rgba(255, 255, 255, 0.65),
-        inset -10px -10px 20px rgba(0, 0, 0, 0.16);
+        inset 10px 10px 20px rgba(255, 255, 255, 0.8),
+        inset -10px -10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .squircle {

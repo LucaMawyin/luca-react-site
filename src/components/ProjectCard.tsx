@@ -65,6 +65,7 @@ export default function ProjectCard( props : {
                 justify-evenly
                 squircle-large
                 pillow
+                pillow-hover
                 ${props.className}
             `}
             onMouseEnter={props.onHoverStart}
