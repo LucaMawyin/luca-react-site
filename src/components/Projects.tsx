@@ -273,7 +273,15 @@ export default function Projects(props : {
                             {otherProjects.map((project) => (
                                 <div
                                     key={project.id}
-                                    className="w-full shrink-0 flex justify-center p-[5%] md:pt-[2.5%] md:pb-[2.5%]"
+                                    className="
+                                        w-full 
+                                        shrink-0 
+                                        flex 
+                                        justify-center 
+                                        p-[5%] 
+                                        md:pt-[2.5%] 
+                                        pb-12
+                                    "
                                 >
                                     <div
                                         className="flex flex-col justify-center items-center gap-8"
