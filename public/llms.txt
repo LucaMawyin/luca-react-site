@@ -57,6 +57,7 @@ Luca Mawyin is a software developer interested in full-stack development, web ap
 - Flask
 - REST APIs
 - API Development
+- HTTP
 - Server-Side Applications
 - Authentication Systems
 
@@ -76,11 +77,15 @@ Luca Mawyin is a software developer interested in full-stack development, web ap
 - Cloudflare D1
 - Cloudflare R2
 - Cloudflare Cron Triggers (Scheduled Workers)
+- Cloudflare Tunnels 
+- Vercel
 - AWS
 - Resend
 - Linux
 - DevOps
 - Git
+- GitHub Actions
+- CI/CD
 
 ### Machine Learning & Computer Vision
 
@@ -89,6 +94,8 @@ Luca Mawyin is a software developer interested in full-stack development, web ap
 - MediaPipe
 - Ultralytics
 - YOLO
+- Scikit-learn
+- Pandas
 - Computer Vision
 - Machine Learning
 - Deep Learning
@@ -96,6 +103,7 @@ Luca Mawyin is a software developer interested in full-stack development, web ap
 ### Embedded Systems
 
 - Arduino
+- Raspberry Pi
 - Microcontrollers
 - Embedded Programming
 
@@ -105,7 +113,8 @@ Projects include:
 - Full-stack web applications
 - Custom authentication systems
 - Cloud-based applications
-- Machine learning and computer vision projects
+- Machine learning and statistical predictions
+- Computer vision projects
 - Software engineering experiments
 
 Project details are available on the website.
