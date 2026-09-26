@@ -750,7 +750,7 @@ export default function SettingsClient(props : {
                                         rounded-lg 
                                         p-4
                                         gap-2
-                                        squircle
+                                        squircle-large
                                         pillow
                                     "
                                 >
@@ -1062,7 +1062,7 @@ export default function SettingsClient(props : {
                                             p-4
                                             gap-2
                                             pillow
-                                            squircle
+                                            squircle-large
                                         "
                                     >
                                         <div className="

@@ -205,7 +205,7 @@ export default function Projects(props : {
                                         duration-(--transition-duration)
                                         shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
                                         hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
-                                        hover:scale-(--subtle-scale)
+                                        hover:scale-(--link-scale)
                                         pillow
                                         squircle
                                     "
@@ -233,7 +233,7 @@ export default function Projects(props : {
                                         duration-(--transition-duration)
                                         shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
                                         hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
-                                        hover:scale-(--subtle-scale)
+                                        hover:scale-(--link-scale)
                                         pillow
                                         squircle
                                     "
