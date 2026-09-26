@@ -63,6 +63,8 @@ export default function ProjectCard( props : {
                 hover:scale-(--subtle-scale)
                 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
                 justify-evenly
+                squircle
+                pillow
                 ${props.className}
             `}
             onMouseEnter={props.onHoverStart}

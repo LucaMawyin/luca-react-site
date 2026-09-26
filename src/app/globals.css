@@ -8,6 +8,7 @@
 
 :root {
 	--primary-colour: #ffffff;
+    --bg: #f1f5f9;
 	--contrast-colour: #000000;
 	--contrast-light: #2a2a2a;
 	--transition-duration: 200ms;
@@ -24,6 +25,7 @@ html, body {
 	scroll-behavior: smooth;
 	user-select: none;
 	font-weight: 400;
+    background-color: var(--bg);
 }
 
 
@@ -140,4 +142,26 @@ select:focus {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.pillow {
+  
+    /* Step 2: Base color and soft gradient for depth */
+    background: linear-gradient(135deg, #ffffff, #e6e6e6);
+  
+    /* Step 3: Layer shadows for the 3D cushion effect */
+    box-shadow: 
+        /* Soft shadow underneath the pillow */
+        0 20px 30px rgba(0, 0, 0, 0.15), 
+        
+        /* Internal highlight (top-left puffiness) */
+        inset 10px 10px 20px rgba(255, 255, 255, 0.8),
+        
+        /* Internal shadow (bottom-right depth) */
+        inset -10px -10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.squircle {
+    border-radius: 48px;
+    corner-shape: squircle;
 }

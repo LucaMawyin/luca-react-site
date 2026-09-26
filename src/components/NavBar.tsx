@@ -130,7 +130,6 @@ export default function NavBar(props : {isLoggedIn : boolean}){
 
     return (
         <header className={`
-                bg-(--primary-colour)
                 h-[10vh]
                 fixed top-0 z-50
                 w-full 
@@ -142,6 +141,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                     ? "opacity-100 translate-y-0" 
                     : "opacity-0 -translate-y-4 pointer-events-none"
                 }
+                bg-(--bg)
         `}>
 
             {/* Desktop navbar */}
@@ -293,7 +293,7 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                         <img 
                             src={`/icons/${icon.title}.svg`}
                             alt={icon.title}
-                            className="w-[clamp(2em,2vw,5em)]"
+                            className="w-[clamp(2em,2vw,5em)] squircle"
                         />
                     </a>
                 ))}

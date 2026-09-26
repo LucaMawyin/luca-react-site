@@ -137,6 +137,8 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                             ? "md:self-start" 
                                             : "md:self-end"
                                         }
+                                        squircle
+                                        pillow
                                     `}
                                 >
                                     {/* TITLE + DATE */}
@@ -249,13 +251,13 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                 {certificates.length > 0 && (
                     <h2 className="
                         relative
-                        bg-white
                         text-center
                         text-2xl
                         font-bold
                         md:translate-y-[-2vh]
                         my-[5%]
                         md:my-0
+                        bg-(--bg)
                     ">
                         Certificates
                     </h2>                    
@@ -332,6 +334,8 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                             ? "md:self-start" 
                                             : "md:self-end"
                                         }
+                                        squircle
+                                        pillow
                                     `}
                                 >
                                     {/* TITLE + DATE */}

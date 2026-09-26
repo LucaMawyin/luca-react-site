@@ -61,6 +61,8 @@ export default function TechStack(props : {
                                 max-w-full
                                 h-full
                                 p-[2.5%]!
+                                squircle
+                                pillow
                             "
                             titleClassName="text-[2em]! w-full"
                             childClassName="mt-0!"
