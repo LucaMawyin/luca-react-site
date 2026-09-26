@@ -80,6 +80,7 @@ select {
 	border: 1px solid #d1d5db;
 	border-radius: 6px;
 	transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
+    background-color: white;
 }
 
 input:focus,
@@ -159,6 +160,23 @@ select:focus {
         
         /* Internal shadow (bottom-right depth) */
         inset -10px -10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pillow-hover {    
+    transition:
+        background 300ms ease,
+        box-shadow 300ms ease;
+}
+
+.pillow-hover:hover {
+    background: linear-gradient(135deg, #b8b8b8, #dedede);
+
+    box-shadow:
+        0 20px 30px rgba(0, 0, 0, 0.22),
+
+        inset 10px 10px 20px rgba(255, 255, 255, 0.65),
+
+        inset -10px -10px 20px rgba(0, 0, 0, 0.16);
 }
 
 .squircle {

@@ -6,6 +6,7 @@ export default function Tile(props : {
     titleClassName?: string, 
     childClassName?:string,
     disableHover?: boolean,
+    disablePillow?: boolean,
     onClick?:(e: React.MouseEvent<HTMLDivElement>) => void,
 }){
     return (
@@ -22,6 +23,8 @@ export default function Tile(props : {
                 p-[2%]
                 
                 transition-all duration-(--transition-time) ease-out
+                squircle
+                ${props.disablePillow ? "" : "pillow"}
                 ${props.disableHover? "" : "hover:shadow-2xl hover:-translate-y-2"}
                 ${props.className??""}
             `}

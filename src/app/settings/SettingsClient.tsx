@@ -349,6 +349,7 @@ export default function SettingsClient(props : {
                     className="lg:max-w-[40vw] shadow-none pb-0"
                     childClassName="mt-0! flex-1 justify-center"
                     titleClassName="border-b"
+                    disablePillow={true}
                 >
 
                     {/* ABOUT ME */}
@@ -513,6 +514,7 @@ export default function SettingsClient(props : {
                     className="lg:max-w-[40vw] shadow-none pb-0"
                     disableHover={true}
                     childClassName="mt-0! flex-1 justify-center"
+                    disablePillow={true}
                 >
 
                     {/* Change password section */}
@@ -609,6 +611,8 @@ export default function SettingsClient(props : {
                                         bg-gray-100 
                                         rounded-lg 
                                         wrap-break-word 
+                                        pillow
+                                        squircle
                                     "
                                 >
                                     <summary className="
@@ -617,10 +621,9 @@ export default function SettingsClient(props : {
                                         flex
                                         items-center
                                         justify-between
-                                        p-3
-                                        rounded-lg 
-
-                                        hover:bg-gray-300
+                                        p-4
+                                        squircle
+                                        pillow-hover
                                         transition-colors
                                         duration-300
                                     ">
@@ -647,7 +650,7 @@ export default function SettingsClient(props : {
                                         )}
                                     </summary>
 
-                                    <div className="space-y-1 p-3 pt-0">
+                                    <div className="space-y-1 p-4 pt-0">
                                         <p><span>Device: </span>{getDevice(session.user_agent)}</p>
                                         <p><span>IP Address: </span>{session.ip_address}</p>
                                         <p>
@@ -720,6 +723,7 @@ export default function SettingsClient(props : {
                     className="lg:max-w-[80vw] shadow-none py-0"
                     childClassName="mt-0!"
                     titleClassName="border-b"
+                    disablePillow={true}
                 >
                     <Button 
                         text="Add Project"
@@ -743,10 +747,11 @@ export default function SettingsClient(props : {
                                         flex
                                         flex-wrap
                                         justify-between
-                                        bg-gray-100 
                                         rounded-lg 
-                                        p-2
+                                        p-4
                                         gap-2
+                                        squircle
+                                        pillow
                                     "
                                 >
                                     <div className="
@@ -965,8 +970,8 @@ export default function SettingsClient(props : {
                                     rounded-xl
                                     transition-all
                                     duration-(--transition-duration)
-                                    shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
-                                    hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                    pillow 
+                                    squircle
                                     hover:scale-(--subtle-scale)
                                 "
                             >
@@ -993,8 +998,8 @@ export default function SettingsClient(props : {
                                     rounded-xl
                                     transition-all
                                     duration-(--transition-duration)
-                                    shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
-                                    hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                    pillow
+                                    squircle
                                     hover:scale-(--subtle-scale)
                                 "
                             >
@@ -1033,6 +1038,7 @@ export default function SettingsClient(props : {
                         className="lg:max-w-[80vw] shadow-none py-0"
                         childClassName="mt-0!"
                         titleClassName="border-b"
+                        disablePillow={true}
                     >
                         { 
                             <div className="
@@ -1053,8 +1059,10 @@ export default function SettingsClient(props : {
                                             justify-between
                                             bg-gray-100 
                                             rounded-lg 
-                                            p-2
+                                            p-4
                                             gap-2
+                                            pillow
+                                            squircle
                                         "
                                     >
                                         <div className="
