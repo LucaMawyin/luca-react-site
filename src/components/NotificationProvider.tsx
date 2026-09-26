@@ -63,7 +63,7 @@ export function NotificationProvider({
             <div
                 className="
                     fixed
-                    bottom-4
+                    bottom-8
                     left-1/2
                     -translate-x-1/2
                     z-50

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/Button";
 import Tile from "@/components/Tile";
 import { LoginResponse } from "@/lib/types";
+import { useNotifications } from "@/components/NotificationProvider";
 
 export default function Login(props : {isLoggedIn : boolean}){
 
@@ -13,10 +14,11 @@ export default function Login(props : {isLoggedIn : boolean}){
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState<string | null>(null);
     const [errorKey, setErrorKey] = useState(0);
+    const { notify } = useNotifications();
     function showError(message: string) {
-        setError(message);
+        
+        notify(message, "error");
         setErrorKey(prev => prev + 1);
     }
 
@@ -42,13 +44,13 @@ export default function Login(props : {isLoggedIn : boolean}){
         try {
             data = await response.json();
         } catch {
-            setError("Server error");
+            notify("Server error", "error");
             return;
         }
 
         // Login error response
         if (!response.ok) {
-            showError(data.error || "Login failed");
+            notify(data.error || "Login failed", "error");
             return;
         }
 
@@ -134,21 +136,6 @@ export default function Login(props : {isLoggedIn : boolean}){
                             {showPassword ? "Hide" : "Show"}
                         </button>
                     </div>
-
-                    {/* Error message */}
-                    {error && (
-                        <p
-                            key={errorKey}
-                            className="
-                                text-red-500
-                                text-sm
-                                text-center
-                                animate-[messageIn_200ms_ease-out]
-                            "
-                        >
-                            {error}
-                        </p>
-                    )}
 
                     <Button 
                         text="Login" 

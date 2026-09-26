@@ -5,10 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { LoginResponse } from "@/lib/types";
 import Button from "@/components/Button";
 import { isSafeNext } from "@/lib/nextPath";
+import { useNotifications } from "@/components/NotificationProvider";
 
 export default function VerifyLoginClient(props : {type : string}) {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const { notify } = useNotifications();
 
     const email = searchParams.get("email") || "";
     const next = searchParams.get("next") || "/";
@@ -16,7 +18,6 @@ export default function VerifyLoginClient(props : {type : string}) {
     const [code, setCode] = useState<string[]>(Array(6).fill(""));
     const fullCode = code.join("");
 
-    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(e : React.FormEvent){
@@ -26,8 +27,6 @@ export default function VerifyLoginClient(props : {type : string}) {
 
     function handleChange(value: string, index: number) {
         if (!/^\d?$/.test(value)) return; // only 0–9
-
-        setError(null);
 
         const newCode = [...code];
         newCode[index] = value;
@@ -49,12 +48,11 @@ export default function VerifyLoginClient(props : {type : string}) {
 
     async function verifyCode() {
         setLoading(true);
-        setError(null);
 
         try {
 
             if (fullCode.length !== 6) {
-                setError("Enter the full 6-digit code");
+                notify("Enter the full 6-digit code","error");
                 return;
             }
 
@@ -75,7 +73,7 @@ export default function VerifyLoginClient(props : {type : string}) {
             const data = await res.json() as LoginResponse;
 
             if (!res.ok) {
-                setError(data.error || "Invalid code");
+                notify(data.error || "Invalid code", "error");
                 return;
             }
 
@@ -85,7 +83,7 @@ export default function VerifyLoginClient(props : {type : string}) {
             router.refresh();                
 
         } catch {
-            setError("Server error");
+            notify("Server error", "error");
         } finally {
             setLoading(false);
         }
@@ -100,7 +98,20 @@ export default function VerifyLoginClient(props : {type : string}) {
 
     return (
         <div className="flex flex-1 justify-center items-center mt-[10vh]">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-center">
+            <form 
+                onSubmit={handleSubmit} 
+                className="
+                    flex 
+                    flex-col 
+                    gap-3 
+                    text-center 
+                    pillow
+                    squircle
+                    sm:p-[2.5%]
+                    p-[5%]
+                    mx-4
+                "
+            >
                 
                 <h2 className="text-3xl font-semibold">Enter verification code</h2>
 
@@ -123,8 +134,6 @@ export default function VerifyLoginClient(props : {type : string}) {
                         />
                     ))}
                 </div>
-
-                {error && <p className="text-red-500">{error}</p>}
 
                 <Button 
                     text={loading ? "Verifying..." : "Verify"} 
