@@ -330,7 +330,7 @@ export default function SettingsClient(props : {
     return (
         <div className="
             mt-[10vh]
-            min-h-[90vh]
+            min-h-[90dvh]
             flex flex-wrap justify-center items-center
         ">
             <div
@@ -338,7 +338,7 @@ export default function SettingsClient(props : {
                     flex flex-wrap
                     justify-center
                     w-full
-                    min-h-[90vh]
+                    min-h-[90dvh]
                 "
             >
 

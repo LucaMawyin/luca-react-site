@@ -33,8 +33,8 @@ section:not(#hero) {
 	display:flex;
 	flex-direction: column;
 	opacity: 0;
-	scroll-margin-top: 10vh;
-	min-height: 90vh;
+	scroll-margin-top: 10dvh;
+	min-height: 90dvh;
 }
 
 section:not(#hero).show {
