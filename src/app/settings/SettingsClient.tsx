@@ -688,7 +688,9 @@ export default function SettingsClient(props : {
                                             <DeleteButton
                                                 customText="Remove"
                                                 customDescription=" Session"
-                                                className="flex justify-center py-0! px-2! min-h-fit w-full sm:w-fit"
+                                                className="w-full sm:w-fit rounded-lg!"
+                                                x={2}
+                                                y={0}
                                                 action={() => handleRemoveSession(session.id)}
                                             />
                                         )}                              
@@ -899,11 +901,15 @@ export default function SettingsClient(props : {
                                     <div className="shrink-0 self-center flex gap-4">
                                         <Button
                                             text="Edit"
-                                            className="py-0! px-2! min-h-fit w-20! sm:w-fit"
+                                            className="w-20! sm:w-fit rounded-lg!"
+                                            x={0}
+                                            y={0}
                                             onClick={() => {router.push(`add-project/edit?id=${project.id}`)}}
                                         />
                                         <DeleteButton
-                                            className="py-0! px-2! min-h-fit w-20! sm:w-fit"
+                                            className="w-20! sm:w-fit rounded-lg!"
+                                            x={0}
+                                            y={0}
                                             text="Project"
                                             action={async () => {
                                                 const res = await fetch("/api/projects", {

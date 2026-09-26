@@ -12,6 +12,8 @@ export default function DeleteButton({
     text="",
     customText="",
     customDescription="",
+    x,
+    y,
 }: {
     action: () => void;
     className?: string;
@@ -19,6 +21,8 @@ export default function DeleteButton({
     text?:string;
     customText?:string;
     customDescription?:string;
+    x?:number;
+    y?:number;
 }) {
     
     // Handle delete action with transition
@@ -48,9 +52,12 @@ export default function DeleteButton({
             <Button
                 text={customText ? `${customText} ${customDescription ? customDescription : ""}` : `Delete`}
                 type="button"
+                variant="red"
                 disabled={disabled}
-                className={`bg-red-600 hover:bg-red-700 ${className}`}
+                className={className}
                 onClick={() => setOpen(true)}
+                x={x}
+                y={y}
             />
 
             {/* Confirmation dialog */}
