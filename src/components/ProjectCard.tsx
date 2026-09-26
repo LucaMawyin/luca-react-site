@@ -237,7 +237,7 @@ export default function ProjectCard( props : {
                                     key={i}
                                     shadow={false}
                                     fit="tight"
-                                    className="bg-gray-200 font-normal"
+                                    className="bg-gray-200 font-normal border border-gray-300"
                                     text={lang}
                                 />
                             ))}
@@ -251,7 +251,7 @@ export default function ProjectCard( props : {
                                     key={i}
                                     shadow={false}
                                     fit="tight"
-                                    className="bg-gray-100 font-normal"
+                                    className="bg-gray-100 font-normal border border-gray-300"
                                     text={libraries}
                                 />
                             ))}
@@ -265,7 +265,7 @@ export default function ProjectCard( props : {
                                     key={i}
                                     shadow={false}
                                     fit="tight"
-                                    className="bg-gray-300 font-normal"
+                                    className="bg-gray-300 font-normal border border-gray-400"
                                     text={tool}
                                 />
                             ))}
