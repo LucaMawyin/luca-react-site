@@ -146,19 +146,20 @@ select:focus {
 }
 
 .pillow {
-  
-    /* Step 2: Base color and soft gradient for depth */
     background: linear-gradient(135deg, #ffffff, #e6e6e6);
-  
-    /* Step 3: Layer shadows for the 3D cushion effect */
+
     box-shadow: 
-        /* Soft shadow underneath the pillow */
-        0 20px 30px rgba(0, 0, 0, 0.15), 
-        
-        /* Internal highlight (top-left puffiness) */
+        0 10px 16px rgba(0, 0, 0, 0.25),
+
         inset 10px 10px 20px rgba(255, 255, 255, 0.8),
-        
-        /* Internal shadow (bottom-right depth) */
+        inset -10px -10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pillow:hover {
+    box-shadow:
+        0 14px 22px rgba(0, 0, 0, 0.32),
+
+        inset 10px 10px 20px rgba(255, 255, 255, 0.8),
         inset -10px -10px 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -172,10 +173,9 @@ select:focus {
     background: linear-gradient(135deg, #b8b8b8, #dedede);
 
     box-shadow:
-        0 20px 30px rgba(0, 0, 0, 0.22),
+        0 10px 16px rgba(0, 0, 0, 0.32),
 
         inset 10px 10px 20px rgba(255, 255, 255, 0.65),
-
         inset -10px -10px 20px rgba(0, 0, 0, 0.16);
 }
 
