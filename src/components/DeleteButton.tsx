@@ -89,6 +89,8 @@ export default function DeleteButton({
                             <Button
                                 text="Cancel"
                                 variant="secondary"
+                                x={4}
+                                y={2}
                                 onClick={() => setOpen(false)}
                                 disabled={isPending}
                             >
@@ -96,7 +98,9 @@ export default function DeleteButton({
                             </Button>
                             <Button
                                 text={customText ? customText : "Delete"}
-                                className="bg-red-600 hover:bg-red-700"
+                                variant="red"
+                                x={6}
+                                y={2}
                                 onClick={() => {
                                     setOpen(false);
                                     handleDelete();
