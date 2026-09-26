@@ -49,6 +49,7 @@ html, body {
 	user-select: none;
 	font-weight: 400;
     background-color: var(--bg);
+    scrollbar-gutter: stable;
 }
 
 
