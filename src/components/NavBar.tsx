@@ -290,11 +290,13 @@ export default function NavBar(props : {isLoggedIn : boolean}){
                             hover:scale-(--link-scale)
                         "
                     >
-                        <img 
-                            src={`/icons/${icon.title}.svg`}
-                            alt={icon.title}
-                            className="w-[clamp(2em,2vw,5em)] squircle"
-                        />
+                        <div className="squircle overflow-hidden">
+                            <img
+                                src={`/icons/${icon.title}.svg`}
+                                alt={icon.title}
+                                className="w-[clamp(2em,2vw,5em)] block"
+                            />
+                        </div>
                     </a>
                 ))}
             </div>              
