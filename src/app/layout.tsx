@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar";
 import { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { NotificationProvider } from "@/components/NotificationProvider";
+import SmoothScroll from "@/components/SmoothScroll";
 
 export const dynamic = "force-dynamic";
 
@@ -226,6 +227,7 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <body className={GeistMono.className}>
+                <SmoothScroll/>
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
