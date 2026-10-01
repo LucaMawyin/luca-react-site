@@ -229,14 +229,14 @@ export default function HomeClient(props :
                     justify-between
                     my-auto
                 ">  
-                    <div className="
+                    <FadeInOnView className="
                         basis-full
                         w-full lg:basis-1/2
                         text-center sm:text-left
                     ">
 
                         <h1 className="pt-6">About Me</h1>
-                        <FadeInOnView className="
+                        <div className="
                             mb-8 
                             whitespace-pre-line 
                             prose 
@@ -259,10 +259,10 @@ export default function HomeClient(props :
                                 </ReactMarkdown>                                
                             </div>
 
-                        </FadeInOnView>
-                    </div>
+                        </div>
+                    </FadeInOnView>
 
-                    <div className="
+                    <FadeInOnView className="
                         overflow-hidden
                         w-full lg:max-w-[25%]
                         flex justify-center
@@ -272,7 +272,7 @@ export default function HomeClient(props :
                             alt="Luca Mawyin"
                             className="my-auto w-full h-auto object-contain rounded-2xl"
                         />
-                    </div>
+                    </FadeInOnView>
                 </div>
 
             </section>	

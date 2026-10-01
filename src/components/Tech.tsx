@@ -48,9 +48,10 @@ export default function TechStack(props : {
                 items-stretch
                 auto-rows-fr
             ">
-                {sections.map((section) => (
+                {sections.map((section, index) => (
                     <FadeInOnView
                         key={section.title}
+                        delay={index * 150}
                     >
                         <Tile
                             title={section.title}

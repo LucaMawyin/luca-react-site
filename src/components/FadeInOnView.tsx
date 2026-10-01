@@ -6,10 +6,12 @@ export default function FadeInOnView({
     children,
     className = "",
     style,
+    delay = 0,
 }: {
     children: React.ReactNode;
-    className?:string;
+    className?: string;
     style?: React.CSSProperties;
+    delay?: number;
 }) {
     const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
@@ -22,7 +24,8 @@ export default function FadeInOnView({
             ([entry]) => {
                 if (entry.isIntersecting) {
                     setVisible(true);
-                    observer.unobserve(element); // animate only once
+                } else {
+                    setVisible(false);
                 }
             },
             {
@@ -39,11 +42,17 @@ export default function FadeInOnView({
     return (
         <div
             ref={ref}
-            style={style}
+            style={{
+                ...style,
+                transitionDelay: `${delay}ms`,
+            }}
             className={`
                 relative
                 transition-all duration-700 ease-out
-                ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
+                ${visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-4"
+                }
                 ${className}
             `}
         >

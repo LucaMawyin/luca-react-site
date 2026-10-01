@@ -106,7 +106,7 @@ export default function VerifyLoginClient(props : {type : string}) {
                     gap-3 
                     text-center 
                     pillow
-                    squircle
+                    squircle-large
                     sm:p-[2.5%]
                     p-[5%]
                     mx-4
