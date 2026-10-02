@@ -157,7 +157,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                             text-lg 
                                             sm:text-xl 
                                             font-semibold 
-                                            max-w-[50%]
+                                            md:max-w-[50%]
                                         ">
                                             {exp.title}
                                         </h2>
