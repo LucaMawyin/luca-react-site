@@ -108,7 +108,7 @@ export const metadata: Metadata = {
                 url: "/og-image.png",
                 width:800,
                 height:800,
-                alt: "Luca Mawyin - Software Developer Portfolio",
+                alt: "Luca Mawyin | Software Developer",
             },
         ],
     },
@@ -129,7 +129,7 @@ export default async function RootLayout({
     const websiteJsonLd = {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "Luca Mawyin Portfolio",
+        name: "Luca Mawyin | Software Developer",
         url: siteUrl,
         description,
         author: {
@@ -148,7 +148,7 @@ export default async function RootLayout({
             "@type": "WebPage",
             "@id": siteUrl,
         },
-        jobTitle: "Software Developer",
+        jobTitle: "Luca Mawyin | Software Developer",
         description,
         sameAs: [
             "https://github.com/LucaMawyin",
