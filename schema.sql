@@ -1,7 +1,10 @@
 CREATE TABLE projects(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    description TEXT,
+    name TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    subtitle TEXT,
+    description TEXT NOT NULL,
+    content TEXT NOT NULL,
     link TEXT,
     languages TEXT,
     tools TEXT,

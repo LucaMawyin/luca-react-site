@@ -9,7 +9,10 @@ export type ProjectResponse = {
 export type Project= {
     id : number;
     name : string;
+    slug: string;
+    subtitle: string;
     description : string;
+    content: string;
     link : string;
     image : string | null;
     image_type : string | null;

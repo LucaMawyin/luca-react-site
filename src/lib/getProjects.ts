@@ -36,6 +36,41 @@ export async function getProjects(session: Session): Promise<Project[]> {
     }));
 }
 
+export async function getProject(slug: string): Promise<Project | null> {
+    const db = await getDB();
+
+    const project = await db
+        .prepare(`
+            SELECT 
+                p.*, 
+                project_tag.name AS tag, 
+                project_tag.colour AS colour,
+                status_tag.name AS status,
+                status_tag.colour AS status_colour
+            FROM projects p
+            LEFT JOIN tags project_tag
+                ON p.tag = project_tag.name 
+                AND project_tag.category = 'project'
+            LEFT JOIN tags status_tag
+                ON p.status = status_tag.name
+                AND status_tag.category = 'status'
+            WHERE p.slug = ?
+            AND p.deleted = FALSE
+            AND p.hidden = FALSE
+        `)
+        .bind(slug)
+        .first() as Project | null;
+
+    if (!project) {
+        return null;
+    }
+
+    return {
+        ...project,
+        image: `/images/projects/${project.id}?v=${project.updated_at}`,
+    };
+}
+
 export const getTech = async() : Promise<Tech[]> => {
 
     const db = await getDB();

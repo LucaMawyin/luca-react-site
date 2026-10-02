@@ -61,7 +61,10 @@ export async function POST(req: NextRequest) {
         // Project name, description and id (for updates)
         const id = formData.get("id") as string | null;
         const name = formData.get("name") as string;
+        const slug = formData.get("slug") as string;
+        const subtitle = formData.get("subtitle") as string;
         const description = formData.get("description") as string;
+        const content = formData.get("content") as string;
 
         // Project Tag
         const rawTag = (formData.get("tag") as string) || null;
@@ -113,7 +116,10 @@ export async function POST(req: NextRequest) {
                 .prepare(`
                     UPDATE projects
                     SET name = ?,
+                        slug = ?,
+                        subtitle = ?,
                         description = ?,
+                        content = ?,
                         link = ?,
                         languages = ?,
                         tools = ?,
@@ -127,7 +133,10 @@ export async function POST(req: NextRequest) {
                 `)
                 .bind(
                     name,
+                    slug,
+                    subtitle || null,
                     description,
+                    content,
                     link,
 
                     languages ? JSON.stringify(languages) : null,
@@ -158,18 +167,38 @@ export async function POST(req: NextRequest) {
         const result = await db
             .prepare(`
                 INSERT INTO projects
-                (name, description, link, languages, tools, libraries, tag, status, pinned, hidden)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (
+                    name,
+                    slug,
+                    subtitle,
+                    description,
+                    content,
+                    link,
+                    languages,
+                    tools,
+                    libraries,
+                    tag,
+                    status,
+                    pinned,
+                    hidden
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `)
             .bind(
                 name,
+                slug,
+                subtitle || null,
                 description,
+                content,
                 link,
+
                 languages ? JSON.stringify(languages) : null,
                 tools ? JSON.stringify(tools) : null,
                 libraries ? JSON.stringify(libraries) : null,
+
                 tag,
                 status,
+
                 pinned,
                 hidden
             )
@@ -189,7 +218,18 @@ export async function POST(req: NextRequest) {
     } 
   
     // Create/update failed
-    catch (err) {
+    catch (err: any) {
+
+        // Duplicate slug
+        if (
+            err?.message?.includes("UNIQUE constraint failed") &&
+            err?.message?.includes("projects.slug")
+        ) {
+            return NextResponse.json(
+                { error: "A project with this slug already exists" },
+                { status: 409 }
+            );
+        }
 
         return NextResponse.json(
             { error: "Failed to create project" },

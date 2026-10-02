@@ -135,7 +135,7 @@ export default function Projects(props : {
 
                             {/* Delete button if logged in */}
                             {props.isLoggedIn && (
-                                <div className="w-full md:w-[70%] flex justify-between">
+                                <div className="w-full max-w-5xl flex justify-between">
                                     <Button
                                         text="Edit"
                                         className="min-w-32"
@@ -298,7 +298,7 @@ export default function Projects(props : {
                                         />
                                         {/* Delete button if logged in */}
                                         {props.isLoggedIn && (
-                                            <div className="w-full md:w-[70%] flex justify-between">
+                                            <div className="w-full max-w-5xl flex justify-between">
                                                 <Button
                                                     text="Edit"
                                                     className="min-w-32"

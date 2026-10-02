@@ -85,6 +85,11 @@ h3{
 	font-weight: 650;
 }
 
+h4 {
+    font-size: 1.5em;
+    font-weight: 550;
+}
+
 #about p{
 	color: #000000;
 }
@@ -105,6 +110,7 @@ select {
 	border-radius: 6px;
 	transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
     background-color: white;
+    margin-bottom: 1rem;
 }
 
 input:focus,
@@ -239,6 +245,24 @@ select:focus {
 }
 
 b {
+    width: fit-content;
+    height: fit-content;
 	display: flex;
 	align-items: center;
+}
+
+@keyframes step-in {
+    from {
+        opacity: 0;
+        transform: translateX(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-step-in {
+    animation: step-in 250ms ease-out;
 }
