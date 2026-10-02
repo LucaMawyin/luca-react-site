@@ -6,6 +6,7 @@ import Button from "./Button";
 import { useRouter } from "next/navigation";
 import Badge from "./Badge";
 import { useEffect, useState } from "react";
+import { getTechIcon } from "@/lib/techIcons";
 
 export default function TechStack(props: {
     isLoggedIn: boolean;
@@ -79,9 +80,36 @@ export default function TechStack(props: {
     );
 
     const sections = [
-        { key: "languages", title: "Languages" },
-        { key: "libraries", title: "Libraries & Frameworks" },
-        { key: "tools", title: "Tools" },
+        {
+            key: "languages",
+            title: "Languages",
+            accent: {
+                bg: "bg-blue-50",
+                border: "border-blue-200",
+                text: "text-blue-600",
+                icon: "bg-blue-100",
+            },
+        },
+        {
+            key: "libraries",
+            title: "Libraries & Frameworks",
+            accent: {
+                bg: "bg-purple-50",
+                border: "border-purple-200",
+                text: "text-purple-600",
+                icon: "bg-purple-100",
+            },
+        },
+        {
+            key: "tools",
+            title: "Tools",
+            accent: {
+                bg: "bg-emerald-50",
+                border: "border-emerald-200",
+                text: "text-emerald-600",
+                icon: "bg-emerald-100",
+            },
+        },
     ];
 
     const router = useRouter();
@@ -187,6 +215,7 @@ export default function TechStack(props: {
                                     >
                                         {items.map((item) => {
                                             const isHighlighted = highlighted[section.key] === item;
+                                            const icon = getTechIcon(item);
 
                                             const initials = item
                                                 .split(/[\s.+#-]+/)
@@ -201,41 +230,58 @@ export default function TechStack(props: {
                                                     key={item}
                                                     textSize="sm"
                                                     borderRadius="xl"
-                                                    shadow={`${isHighlighted ? "md" : "none"}`}
-                                                    fontWeight={`${isHighlighted ? "semibold" : "normal"}`}
+                                                    shadow={isHighlighted ? "md" : "none"}
+                                                    fontWeight={isHighlighted ? "semibold" : "normal"}
                                                     px={2}
                                                     className={`
-                                                        bg-white
-                                                        border
                                                         transition-all
                                                         duration-500
+                                                        border
 
                                                         ${
                                                             isHighlighted
                                                                 ? `
-                                                                    border-gray-400
+                                                                    ${section.accent.bg}
+                                                                    ${section.accent.border}
+                                                                    ${section.accent.text}
                                                                     -translate-y-1
                                                                 `
                                                                 : `
+                                                                    bg-white
                                                                     border-gray-300
                                                                 `
                                                         }
                                                     `}
-
                                                     text={item}
                                                 >
                                                     <div
-                                                        className="
-                                                            flex items-center justify-center
-                                                            w-6 h-6
+                                                        className={`
+                                                            flex
+                                                            items-center
+                                                            justify-center
+                                                            w-6
+                                                            h-6
                                                             rounded-md
-                                                            bg-gray-100
                                                             text-[10px]
                                                             font-semibold
-                                                            text-gray-500
-                                                        "
+                                                            ${
+                                                                isHighlighted
+                                                                    ? `${section.accent.icon} ${section.accent.text}`
+                                                                    : "bg-gray-100 text-gray-500"
+                                                            }
+                                                        `}
                                                     >
-                                                        {initials}
+                                                        {icon ? (
+                                                            <svg
+                                                                viewBox="0 0 24 24"
+                                                                className="w-4 h-4 fill-current"
+                                                                aria-hidden="true"
+                                                            >
+                                                                <path d={icon.path} />
+                                                            </svg>
+                                                        ) : (
+                                                            initials
+                                                        )}
                                                     </div>
                                                 </Badge>
                                             );

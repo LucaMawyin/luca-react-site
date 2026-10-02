@@ -55,7 +55,6 @@ export default function Badge(props: {
     return (
         <div
             style={{
-                color: "black",
                 paddingLeft: `${px * 0.25}rem`,
                 paddingRight: `${px * 0.25}rem`,
                 paddingTop: `${py * 0.25}rem`,
