@@ -184,7 +184,7 @@ export default function Projects(props : {
 
                         {/* TITLE + BUTTONS */}
                         <FadeInOnView
-                            className="flex w-full md:w-[70%] h-fit justify-between"
+                            className="flex w-full max-w-5xl h-fit justify-between"
                         >
                             <h3>
                                 Other Projects
