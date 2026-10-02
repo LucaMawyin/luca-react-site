@@ -52,7 +52,7 @@ export default function ProjectCard( props : {
                 shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
                 w-full
                 h-full
-                md:w-[70%]
+                max-w-5xl
                 md:p-8
                 p-4
                 
@@ -89,8 +89,7 @@ export default function ProjectCard( props : {
                 w-full 
                 border-b border-gray-200 
                 items-center sm:items-stretch 
-                md:gap-6 gap-4
-                sm:pb-6
+                gap-2
                 pb-4
             `}>
                 <h1
@@ -124,8 +123,6 @@ export default function ProjectCard( props : {
                             justify-center
                             px-3
                             py-1
-                            mt-2
-                            sm:mt-0
                             font-semibold
                             rounded-full
                             border
@@ -226,6 +223,7 @@ export default function ProjectCard( props : {
                     flex flex-col
                     min-w-75
                     justify-evenly
+                    text-sm
                 ">
                     <ReactMarkdown>{props.project.description}</ReactMarkdown> 
                     <div>
@@ -237,8 +235,8 @@ export default function ProjectCard( props : {
                                 <Badge
                                     key={i}
                                     fontWeight="normal"
-                                    borderRadius="xl"
-                                    textSize="sm"
+                                    borderRadius="lg"
+                                    textSize="xs"
                                     shadow="sm"
                                     px={2}
                                     py={1}
@@ -255,12 +253,12 @@ export default function ProjectCard( props : {
                                 <Badge
                                     key={i}
                                     fontWeight="normal"
-                                    borderRadius="xl"
-                                    textSize="sm"
+                                    borderRadius="lg"
+                                    textSize="xs"
                                     shadow="sm"
                                     px={2}
                                     py={1}
-                                    className="bg-gray-100 font-normal border border-gray-300"
+                                    className="bg-gray-100 border border-gray-300"
                                     text={libraries}
                                 />
                             ))}
@@ -273,12 +271,12 @@ export default function ProjectCard( props : {
                                 <Badge
                                     key={i}
                                     fontWeight="normal"
-                                    borderRadius="xl"
-                                    textSize="sm"
+                                    borderRadius="lg"
+                                    textSize="xs"
                                     shadow="sm"
                                     px={2}
                                     py={1}
-                                    className="bg-gray-300 font-normal border border-gray-400 rounded-xl shadow-sm"
+                                    className="bg-gray-300 border border-gray-400"
                                     text={tool}
                                 />
                             ))}

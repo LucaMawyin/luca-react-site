@@ -237,3 +237,8 @@ select:focus {
         }
     }
 }
+
+b {
+	display: flex;
+	align-items: center;
+}
