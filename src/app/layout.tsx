@@ -245,7 +245,7 @@ export default async function RootLayout({
                 <NotificationProvider>
                     <NavBar isLoggedIn={!!session} />
                     <main className="                
-
+                        min-h-[90vh] 
                         flex 
                         flex-col 
                         justify-between
