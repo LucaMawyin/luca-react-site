@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Badge from "./Badge";
 import { useEffect, useState } from "react";
 import { getTechIcon } from "@/lib/techIcons";
+import { getInitials } from "@/lib/getInitials";
 
 export default function TechStack(props: {
     isLoggedIn: boolean;
@@ -216,14 +217,7 @@ export default function TechStack(props: {
                                         {items.map((item) => {
                                             const isHighlighted = highlighted[section.key] === item;
                                             const icon = getTechIcon(item);
-
-                                            const initials = item
-                                                .split(/[\s.+#-]+/)
-                                                .filter(Boolean)
-                                                .map((word) => word[0])
-                                                .join("")
-                                                .slice(0, 2)
-                                                .toUpperCase();
+                                            const initials = getInitials(item);
 
                                             return (
                                                 <Badge
