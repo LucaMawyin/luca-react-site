@@ -236,9 +236,13 @@ export default function ProjectCard( props : {
                             {(languages ?? []).map((lang, i) => (
                                 <Badge
                                     key={i}
-                                    shadow={false}
-                                    fit="tight"
-                                    className="bg-gray-200 font-normal border border-gray-300"
+                                    fontWeight="normal"
+                                    borderRadius="xl"
+                                    textSize="sm"
+                                    shadow="sm"
+                                    px={2}
+                                    py={1}
+                                    className="bg-gray-200 border border-gray-300"
                                     text={lang}
                                 />
                             ))}
@@ -250,8 +254,12 @@ export default function ProjectCard( props : {
                             {(libraries ?? []).map((libraries, i) => (
                                 <Badge
                                     key={i}
-                                    shadow={false}
-                                    fit="tight"
+                                    fontWeight="normal"
+                                    borderRadius="xl"
+                                    textSize="sm"
+                                    shadow="sm"
+                                    px={2}
+                                    py={1}
                                     className="bg-gray-100 font-normal border border-gray-300"
                                     text={libraries}
                                 />
@@ -264,9 +272,13 @@ export default function ProjectCard( props : {
                             {(tools ?? []).map((tool, i) => (
                                 <Badge
                                     key={i}
-                                    shadow={false}
-                                    fit="tight"
-                                    className="bg-gray-300 font-normal border border-gray-400"
+                                    fontWeight="normal"
+                                    borderRadius="xl"
+                                    textSize="sm"
+                                    shadow="sm"
+                                    px={2}
+                                    py={1}
+                                    className="bg-gray-300 font-normal border border-gray-400 rounded-xl shadow-sm"
                                     text={tool}
                                 />
                             ))}

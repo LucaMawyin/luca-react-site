@@ -20,7 +20,7 @@ export default function Button(props : {
     }
 
     // Base button style
-    const base = `${props.y ? "" : "py-4"}  ${props.x ? "" : "px-8"}  rounded-xl transition duration-(--transition-duration) cursor-pointer`;
+    const base = `${props.y ? "" : "py-4"}  ${props.x ? "" : "px-8"} rounded-xl transition duration-(--transition-duration) cursor-pointer`;
 
     // Variant styles
     const styles = {

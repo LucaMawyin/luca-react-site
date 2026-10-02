@@ -85,28 +85,31 @@ export default function Projects(props : {
         <>
 
             {/* FEATURED PROJECTS */}
-            <h1 className={`
-                text-center
-                ${props.isLoggedIn ? "pb-0" : "pb-8"}
-            `}>
-                Featured Projects
-            </h1>
+            <FadeInOnView>
+                <h1 className={`
+                    text-center
+                    ${props.isLoggedIn ? "pb-0" : "pb-8"}
+                `}>
+                    Featured Projects
+                </h1>
 
-            {/* Add Project button if logged in */}
-            {props.isLoggedIn && 
-                <div className="
-                    flex 
-                    w-full
-                    justify-center
-                    p-4 sm:p-0
-                ">
-                    <Button 
-                        text="Add Project"
-                        onClick={() => (router.push("/add-project"))}
-                    />            
-                </div>
-            }
-            
+                {/* Add Project button if logged in */}
+                {props.isLoggedIn && 
+                    <div className="
+                        flex 
+                        w-full
+                        justify-center
+                        p-4 sm:p-0
+                    ">
+                        <Button 
+                            text="Add Project"
+                            onClick={() => (router.push("/add-project"))}
+                        />            
+                    </div>
+                }
+                                
+            </FadeInOnView>
+
             {/* Project cards */}
             <div className="
                 grid

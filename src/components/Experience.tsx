@@ -24,33 +24,42 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
     return (
         <div
             className="
-                flex w-full flex-col items-center py-4 sm:pt-16 px-4
+                flex 
+                w-full 
+                flex-col 
+                items-center 
+                py-4 
+                px-4
             "
         >
-            <h1 className={`
-                text-3xl 
-                font-bold
-                pt-4 sm:pt-0
-                ${props.isLoggedIn ? "" : "pb-8 sm:pb-0"}
-            `}>
-                Experience
-            </h1>
+            <FadeInOnView>
+                <h1 className={`
+                    text-3xl 
+                    font-bold
 
-            {/* Add Experience button if logged in */}
-            {props.isLoggedIn && 
-                <div className="
-                    flex 
-                    w-full
-                    justify-center
-                    p-4 sm:p-0 sm:pt-4
-                ">
-                    <Button 
-                        text="Add Experience"
-                        onClick={() => (router.push("/add-experience"))}
-                    />            
-                </div>
-    
-            }
+                    ${props.isLoggedIn ? "" : "pb-8 sm:pb-0"}
+                `}>
+                    Experience
+                </h1>
+                
+                {/* Add Experience button if logged in */}
+                {props.isLoggedIn && 
+                    <div className="
+                        flex 
+                        w-full
+                        justify-center
+                        p-4 sm:p-0 sm:pt-4
+                    ">
+                        <Button 
+                            text="Add Experience"
+                            onClick={() => (router.push("/add-experience"))}
+                        />            
+                    </div>
+        
+                }
+            </FadeInOnView>
+
+
 
             <div className="relative w-full my-[2.5%]">
 
@@ -189,11 +198,12 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                         <div>
                                             <Badge
                                                 text={exp.tag}
-                                                fit="tight"
-                                                shadow={false}
+                                                px={2}
+                                                py={1}
+                                                textSize="xs"
+                                                shadow="none"
                                                 className="
                                                     text-neutral-600! 
-                                                    text-xs 
                                                     bg-neutral-200
                                                 "
                                             />
@@ -407,11 +417,12 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                         <div>
                                             <Badge
                                                 text={cert.tag}
-                                                fit="tight"
-                                                shadow={false}
+                                                px={2}
+                                                py={1}
+                                                textSize="xs"
+                                                shadow="none"
                                                 className="
                                                     text-neutral-600! 
-                                                    text-xs 
                                                     bg-neutral-200
                                                 "
                                             />

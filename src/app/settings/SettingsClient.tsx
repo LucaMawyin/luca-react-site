@@ -773,21 +773,23 @@ export default function SettingsClient(props : {
                                         ">
                                             <p className="font-medium">{project.name}</p>
                                             {project.status && (
-                                                <p>
-                                                    <Badge
-                                                        text={project.status}
-                                                        shadow={false}
-                                                        fit="short"
-                                                        style={
-                                                            {
-                                                                color: shadow(project.status_colour).glowColour,
-                                                                backgroundColor: project.status_colour,
-                                                                borderColor: shadow(project.status_colour).borderColour,
-                                                            }
+
+                                                <Badge
+                                                    text={project.status}
+                                                    shadow="none"
+                                                    textSize="base"
+                                                    py={0}
+                                                    fontWeight="normal"
+                                                    style={
+                                                        {
+                                                            color: shadow(project.status_colour).glowColour,
+                                                            backgroundColor: project.status_colour,
+                                                            borderColor: shadow(project.status_colour).borderColour,
                                                         }
-                                                        className="border font-normal"
-                                                    />
-                                                </p>                                            
+                                                    }
+                                                    className="border font-normal"
+                                                />
+                                        
                                             )}        
                                         </div>   
 
@@ -798,7 +800,7 @@ export default function SettingsClient(props : {
                                                     <Badge
                                                         text="Pinned"
                                                         className="bg-yellow-400"
-                                                        shadow={false}
+                                                        shadow="none"
                                                     />
                                                 )}
 
@@ -807,7 +809,7 @@ export default function SettingsClient(props : {
                                                     <Badge
                                                         text="Hidden"
                                                         className="bg-orange-400"
-                                                        shadow={false}
+                                                        shadow="none"
                                                     />
                                                 )}
                                             </div>
@@ -815,14 +817,16 @@ export default function SettingsClient(props : {
   
 
                                         {project.tag && (
-                                            <p>
+                                            <div className="flex gap-2">
                                                 <span>Tag: </span>
 
                                                 <Badge
                                                     text={project.tag}
-                                                    shadow={false}
-                                                    fit="short"
-                                                    className="border font-normal"
+                                                    shadow="none"
+                                                    fontWeight="normal"
+                                                    textSize="base"
+                                                    py={0}
+                                                    className="border"
                                                     style={
                                                         {
                                                             color: shadow(project.colour).glowColour,
@@ -831,7 +835,7 @@ export default function SettingsClient(props : {
                                                         }
                                                     }
                                                 />
-                                            </p>                                            
+                                            </div>                                            
                                         )}
 
                                         <p>
@@ -1087,23 +1091,24 @@ export default function SettingsClient(props : {
                                                 gap-4
                                             ">
                                                 <p className="font-medium">{project.name}</p>
-
                                                 {project.status && (
-                                                    <p>
-                                                        <Badge
-                                                            text={project.status}
-                                                            shadow={false}
-                                                            fit="short"
-                                                            style={
-                                                                {
-                                                                    color: shadow(project.status_colour).glowColour,
-                                                                    backgroundColor: project.status_colour,
-                                                                    borderColor: shadow(project.status_colour).borderColour,
-                                                                }
+
+                                                    <Badge
+                                                        text={project.status}
+                                                        shadow="none"
+                                                        textSize="base"
+                                                        py={0}
+                                                        fontWeight="normal"
+                                                        style={
+                                                            {
+                                                                color: shadow(project.status_colour).glowColour,
+                                                                backgroundColor: project.status_colour,
+                                                                borderColor: shadow(project.status_colour).borderColour,
                                                             }
-                                                            className="border font-normal"
-                                                        />
-                                                    </p>                                            
+                                                        }
+                                                        className="border font-normal"
+                                                    />
+                                            
                                                 )}        
                                             </div>   
 
@@ -1112,7 +1117,7 @@ export default function SettingsClient(props : {
                                                 <Badge
                                                     text="Deleted"
                                                     className="bg-red-400"
-                                                    shadow={false}
+                                                    shadow="none"
                                                 />
 
                                                 {/* PIN */}
@@ -1120,7 +1125,7 @@ export default function SettingsClient(props : {
                                                     <Badge
                                                         text="Pinned"
                                                         className="bg-yellow-400"
-                                                        shadow={false}
+                                                        shadow="none"
                                                     />
                                                 )}
 
@@ -1129,21 +1134,23 @@ export default function SettingsClient(props : {
                                                     <Badge
                                                         text="Hidden"
                                                         className="bg-orange-400"
-                                                        shadow={false}
+                                                        shadow="none"
                                                     />
                                                 )}
                                             </div>
     
 
                                             {project.tag && (
-                                                <p>
+                                                <div className="flex gap-2">
                                                     <span>Tag: </span>
 
                                                     <Badge
                                                         text={project.tag}
-                                                        shadow={false}
-                                                        fit="short"
-                                                        className="border font-normal"
+                                                        shadow="none"
+                                                        fontWeight="normal"
+                                                        textSize="base"
+                                                        py={0}
+                                                        className="border"
                                                         style={
                                                             {
                                                                 color: shadow(project.colour).glowColour,
@@ -1152,7 +1159,7 @@ export default function SettingsClient(props : {
                                                             }
                                                         }
                                                     />
-                                                </p>                                            
+                                                </div>                                            
                                             )}
 
                                             <p>
@@ -1231,7 +1238,7 @@ export default function SettingsClient(props : {
                                         <div className="shrink-0 self-center flex gap-4">
                                             <Button
                                                 text="Restore"
-                                                className="py-0! px-2! min-h-fit w-20! sm:w-fit"
+                                                className="py-0! px-2! min-h-fit w-20! sm:w-fit rounded-lg!"
                                                 onClick={async () => {
                                                     const res = await fetch("/api/projects", {
                                                         method: "PATCH",
@@ -1263,7 +1270,7 @@ export default function SettingsClient(props : {
 
                                             />
                                             <DeleteButton
-                                                className="py-0! px-2! min-h-fit w-20! sm:w-fit"
+                                                className="py-0! px-2! min-h-fit w-20! sm:w-fit rounded-lg!"
                                                 text="Project"
                                                 action={async () => {
                                                     const res = await fetch("/api/projects", {
