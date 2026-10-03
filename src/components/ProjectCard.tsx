@@ -206,7 +206,7 @@ export default function ProjectCard( props : {
 
                 
                 {/* Image */}
-                <div className="flex-1 min-w-75 flex justify-center">
+                <div className="flex-1 min-w-75 lg:min-w-0 max-w-full flex justify-center">
                     {props.project.image && 
                         <div className="flex items-center">
                             <img

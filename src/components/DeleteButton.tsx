@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import { useEffect, useState, useTransition } from "react";
 import Tile from "./Tile";
 import { createPortal } from "react-dom";
+import { getLenis } from "./SmoothScroll";
 
 export default function DeleteButton({
     action,
@@ -38,12 +39,20 @@ export default function DeleteButton({
     useEffect(() => {
         if (open) {
             document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden";
+
+            getLenis()?.stop();
         } else {
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+
+            getLenis()?.start();
         }
 
         return () => {
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+            getLenis()?.start();
         };
     }, [open]);
 
@@ -68,6 +77,7 @@ export default function DeleteButton({
                         bg-black/50
                         flex items-center justify-center
                         z-60
+                        touch-none
                     "
                     onClick={() => setOpen(false)}
                 >

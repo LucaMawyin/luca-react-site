@@ -22,11 +22,7 @@ export default function FadeInOnView({
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
-                    setVisible(true);
-                } else {
-                    setVisible(false);
-                }
+                setVisible(entry.isIntersecting);
             },
             {
                 threshold: 0,
@@ -44,7 +40,7 @@ export default function FadeInOnView({
             ref={ref}
             style={{
                 ...style,
-                transitionDelay: `${delay}ms`,
+                transitionDelay: `var(--delay, 0ms)`,
             }}
             className={`
                 relative

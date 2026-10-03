@@ -3,6 +3,12 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
+let lenisInstance: Lenis | null = null;
+
+export function getLenis() {
+    return lenisInstance;
+}
+
 export default function SmoothScroll() {
     useEffect(() => {
         const lenis = new Lenis({
@@ -12,15 +18,21 @@ export default function SmoothScroll() {
             smoothWheel: true,
         });
 
+        lenisInstance = lenis;
+
+        let animationFrame: number;
+
         function raf(time: number) {
             lenis.raf(time);
-            requestAnimationFrame(raf);
+            animationFrame = requestAnimationFrame(raf);
         }
 
-        requestAnimationFrame(raf);
+        animationFrame = requestAnimationFrame(raf);
 
         return () => {
+            cancelAnimationFrame(animationFrame);
             lenis.destroy();
+            lenisInstance = null;
         };
     }, []);
 
