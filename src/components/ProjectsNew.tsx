@@ -9,6 +9,7 @@ import DeleteButton from "./DeleteButton";
 import FadeInOnView from "./FadeInOnView";
 import { useNotifications } from "./NotificationProvider";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 
 export default function Projects(props : {
     isLoggedIn : boolean,
@@ -35,7 +36,98 @@ export default function Projects(props : {
     const [startX, setStartX] = useState<number | null>(null);
     const [timerDeadline, setTimerDeadline] = useState(Date.now() + 10000);
     const [isInteracting, setIsInteracting] = useState(false);
+
+    const pausedTimeRemaining = useRef<number | null>(null);
+
     const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
+    const [modalStyle, setModalStyle] = useState<React.CSSProperties>({});
+
+    const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const [holdProgress, setHoldProgress] = useState(0);
+    const [holdingProjectId, setHoldingProjectId] = useState<number | null>(null);
+
+    const holdAnimation = useRef<number | null>(null);
+    const holdStartTime = useRef<number | null>(null);
+    const holdingProject = useRef<Project | null>(null);
+
+    const HOLD_DURATION = 1500;
+
+    const cancelModalClose = () => {
+        if (closeTimeout.current) {
+            clearTimeout(closeTimeout.current);
+            closeTimeout.current = null;
+        }
+    };
+
+    const closeModal = () => {
+        cancelModalClose();
+
+        closeTimeout.current = setTimeout(() => {
+            setHoveredProject(null);
+            setModalStyle({});
+            setIsInteracting(false);
+        }, 100);
+    };
+
+    const cancelHold = () => {
+        if (holdAnimation.current !== null) {
+            cancelAnimationFrame(holdAnimation.current);
+            holdAnimation.current = null;
+        }
+
+        holdStartTime.current = null;
+        holdingProject.current = null;
+
+        setHoldProgress(0);
+        setHoldingProjectId(null);
+        setIsInteracting(false);
+    };
+
+    const startHold = (project: Project) => {
+        if (project.id === undefined || hoveredProject) return;
+
+        cancelHold();
+
+        holdingProject.current = project;
+        holdStartTime.current = performance.now();
+
+        setHoldingProjectId(project.id);
+        setHoldProgress(0);
+        setIsInteracting(true);
+
+        const update = (now: number) => {
+            if (
+                holdStartTime.current === null ||
+                holdingProject.current !== project
+            ) {
+                return;
+            }
+
+            const elapsed = now - holdStartTime.current;
+            const progress = Math.min(elapsed / HOLD_DURATION, 1);
+
+            setHoldProgress(progress);
+
+            if (progress >= 1) {
+                holdAnimation.current = null;
+                holdStartTime.current = null;
+                holdingProject.current = null;
+
+                setHoldProgress(0);
+                setHoldingProjectId(null);
+                setIsInteracting(false);
+
+                setHoveredProject(project);
+
+                return;
+            }
+
+            holdAnimation.current = requestAnimationFrame(update);
+        };
+
+        holdAnimation.current = requestAnimationFrame(update);
+    };
 
     const goPrev = () => {
         setFeaturedStart(
@@ -57,12 +149,19 @@ export default function Projects(props : {
         }
     };
 
-    const onTouchStart = (e: React.TouchEvent) => {
+    const onTouchStart = (
+        e: React.TouchEvent,
+        project: Project
+    ) => {
         setStartX(e.touches[0].clientX);
         setIsInteracting(true);
+
+        startHold(project);
     };
 
     const onTouchEnd = (e: React.TouchEvent) => {
+        cancelHold();
+
         if (startX === null) {
             setIsInteracting(false);
             advanceIfExpired();
@@ -88,18 +187,97 @@ export default function Projects(props : {
     useEffect(() => {
         if (featuredPool.length <= 3) return;
 
-        const remaining = timerDeadline - Date.now();
-
-        const timeout = setTimeout(() => {
-            if (isInteracting) {
-                return;
+        // Pause the timer while the modal is open
+        if (hoveredProject) {
+            if (pausedTimeRemaining.current === null) {
+                pausedTimeRemaining.current = Math.max(
+                    timerDeadline - Date.now(),
+                    0
+                );
             }
 
-            goNext();
-        }, Math.max(remaining, 0));
+            return;
+        }
+
+        // Resume the timer when the modal closes
+        if (pausedTimeRemaining.current !== null) {
+            const remaining = pausedTimeRemaining.current;
+
+            pausedTimeRemaining.current = null;
+            setTimerDeadline(Date.now() + remaining);
+
+            return;
+        }
+
+        const remaining = Math.max(
+            timerDeadline - Date.now(),
+            0
+        );
+
+        const timeout = setTimeout(() => {
+            if (!isInteracting && !hoveredProject) {
+                goNext();
+            }
+        }, remaining);
 
         return () => clearTimeout(timeout);
-    }, [timerDeadline, featuredPool.length, isInteracting]);
+    }, [
+        timerDeadline,
+        featuredPool.length,
+        isInteracting,
+        hoveredProject,
+    ]);
+
+    useEffect(() => {
+        if (!hoveredProject) return;
+
+        // Give the browser one render with the card
+        // sitting at its original position.
+        const timeout = setTimeout(() => {
+            setModalStyle((prev) => ({
+                ...prev,
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+            }));
+        }, 20);
+
+        return () => clearTimeout(timeout);
+    }, [hoveredProject]);
+
+    useEffect(() => {
+        if (!hoveredProject) return;
+
+        const body = document.body;
+        const scrollY = window.scrollY;
+
+        body.style.position = "fixed";
+        body.style.top = `-${scrollY}px`;
+        body.style.left = "0";
+        body.style.right = "0";
+        body.style.overflow = "hidden";
+
+        return () => {
+            // Restore the body's original positioning first.
+            body.style.position = "";
+            body.style.top = "";
+            body.style.left = "";
+            body.style.right = "";
+            body.style.overflow = "";
+
+            // Restore the scroll position immediately.
+            window.scrollTo({
+                top: scrollY,
+                left: 0,
+                behavior: "instant",
+            });
+        };
+    }, [hoveredProject]);
+
+    const cancelHoldAndPauseCarousel = () => {
+        cancelHold();
+        setIsInteracting(true);
+    };
 
     return(
         <>
@@ -229,9 +407,9 @@ export default function Projects(props : {
                     px-[5%]
                     gap-16
                 "
-                onTouchStart={onTouchStart}
                 onTouchEnd={onTouchEnd}
                 onTouchCancel={() => {
+                    cancelHold();
                     setStartX(null);
                     setIsInteracting(false);
                     advanceIfExpired();
@@ -241,32 +419,96 @@ export default function Projects(props : {
                     featuredProjects.map((project,i) => (
                         <FadeInOnView
                             key={`${project.id}-${featuredStart}`}
-                            className="w-full flex flex-col items-center gap-8 justify-between"
+                            className="w-full flex flex-col items-center gap-8 justify-between fade-right sm:fade-up"
                             style={{
                                 "--delay": `${i * 150}ms`,
                             } as React.CSSProperties}
                         >
                             <div
-                                className="flex flex-1"
+                                className="relative flex flex-1"
                                 onMouseEnter={() => {
+                                    startHold(project);
                                     setIsInteracting(true);
-                                    setHoveredProject(project);
                                 }}
                                 onMouseLeave={() => {
+                                    cancelHold();
                                     setIsInteracting(false);
-                                    advanceIfExpired();
                                 }}
+                                onTouchStart={(e) => onTouchStart(e, project)}
                             >
-                                <ProjectCard
-                                    key={project.id ?? i}
-                                    project={project}
-                                    condenseTech={true}
-                                    isLoggedIn={props.isLoggedIn}
-                                    childClassName="xl:flex-col!"
-                                    position={`${i % 2 === 0 ? "start" : "end"}`}
-                                />                                
-                            </div>
+                                {holdProgress > 0 &&
+                                    holdingProjectId === project.id &&
+                                    !hoveredProject && (
+                                        <svg
+                                            className="
+                                                absolute
+                                                -inset-5
+                                                z-0
+                                                w-[calc(100%+2.5rem)]
+                                                h-[calc(100%+2.5rem)]
+                                                pointer-events-none
+                                                overflow-visible
+                                            "
+                                            viewBox="0 0 100 100"
+                                            preserveAspectRatio="none"
+                                        >
+                                            <defs>
+                                                <filter
+                                                    id={`hold-shadow-${project.id}`}
+                                                    x="-50%"
+                                                    y="-50%"
+                                                    width="200%"
+                                                    height="200%"
+                                                >
+                                                    <feGaussianBlur
+                                                        stdDeviation="4"
+                                                        result="blur"
+                                                    />
 
+                                                    <feOffset
+                                                        in="blur"
+                                                        dx="0"
+                                                        dy="1"
+                                                        result="offset"
+                                                    />
+
+                                                    <feComponentTransfer>
+                                                        <feFuncA
+                                                            type="linear"
+                                                            slope="0.45"
+                                                        />
+                                                    </feComponentTransfer>
+                                                </filter>
+                                            </defs>
+
+                                            <rect
+                                                x="7"
+                                                y="7"
+                                                width="86"
+                                                height="86"
+                                                rx="5"
+                                                fill="none"
+                                                stroke="black"
+                                                strokeWidth="5"
+                                                pathLength="100"
+                                                strokeDasharray="100"
+                                                strokeDashoffset={100 - holdProgress * 100}
+                                                filter={`url(#hold-shadow-${project.id})`}
+                                            />
+                                        </svg>
+                                    )}
+
+                                <div className="relative z-10 flex flex-1">
+                                    <ProjectCard
+                                        project={project}
+                                        condenseTech={true}
+                                        isLoggedIn={props.isLoggedIn}
+                                        childClassName="xl:flex-col!"
+                                        position={`${i % 2 === 0 ? "start" : "end"}`}
+                                        onHoldCancel={cancelHoldAndPauseCarousel}
+                                    />
+                                </div>
+                            </div>
 
                             {/* Delete button if logged in */}
                             {props.isLoggedIn && (
@@ -358,6 +600,92 @@ export default function Projects(props : {
                     group-hover:bg-black
                 " />
             </Link>
+
+            {hoveredProject &&
+                typeof document !== "undefined" &&
+                createPortal(
+                    <div
+                        className="
+                            fixed
+                            inset-0
+                            z-9999
+                            overflow-hidden
+                            overscroll-contain
+                        "
+                    >
+                        {/* Backdrop */}
+                        <div
+                            className="
+                                absolute
+                                inset-0
+                                bg-black/50
+                                backdrop-blur-[2px]
+                            "
+                            onClick={closeModal}
+                        />
+
+                        {/* Modal card */}
+                        <div
+                            className="
+                                fixed
+                                z-10000
+                                transition-all
+                                duration-500
+                                ease-[cubic-bezier(0.22,1,0.36,1)]
+                            "
+                            style={modalStyle}
+                        >
+                            {/* Close button */}
+                            <div className="relative group">
+                                <button
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        closeModal();
+                                    }}
+                                    aria-label="Close project"
+                                    className="
+                                        absolute
+                                        -top-2
+                                        -right-2
+                                        z-10
+                                        w-10
+                                        h-10
+                                        flex
+                                        items-center
+                                        justify-center
+                                        rounded-full
+                                        bg-white
+                                        text-black
+                                        text-2xl
+                                        leading-none
+                                        shadow-[0_4px_15px_rgba(0,0,0,0.2)]
+                                        cursor-pointer
+                                        transition-transform
+                                        duration-200
+                                        hover:scale-110
+                                        group-hover:-translate-y-1
+                                        group-hover:translate-x-1
+                                        hover:translate-y-0
+                                        hover:translate-x-0
+                                    "
+                                >
+                                    &times;
+                                </button>
+
+                                <ProjectCard
+                                    project={hoveredProject}
+                                    condenseTech={true}
+                                    isLoggedIn={props.isLoggedIn}
+                                    childClassName="xl:flex-col! max-w-lg"
+                                    position="start"
+                                />
+                            </div>
+                        </div>
+                    </div>,
+                    document.body
+                )
+            }
         </>
 
     );

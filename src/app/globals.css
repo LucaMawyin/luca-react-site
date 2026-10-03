@@ -277,3 +277,13 @@ b {
 .animate-step-in {
     animation: step-in 250ms ease-out;
 }
+
+@keyframes arrow-idle {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(1px, -1px);
+    }
+}

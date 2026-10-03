@@ -249,6 +249,7 @@ export default async function RootLayout({
                         flex 
                         flex-col 
                         justify-between
+                        overflow-x-hidden
                     ">
                         {children}
                     </main>

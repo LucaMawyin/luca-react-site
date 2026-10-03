@@ -14,7 +14,10 @@ export default function ProjectCard( props : {
     childClassName?:string;
     onHoverStart?: () => void;
     onHoverEnd?: () => void;
-    condenseTech?:boolean;
+    onHoldCancel?: () => void;
+    onButtonHoverStart?: () => void;
+    onButtonHoverEnd?: () => void;
+    condenseTech?: boolean;
 }){
     const tools = (
     typeof props.project.tools === "string"
@@ -207,7 +210,7 @@ export default function ProjectCard( props : {
 
                 
                 {/* Image */}
-                <div className="flex-1 min-w-75 lg:min-w-0 max-w-full flex justify-center">
+                <div className="flex-1 min-w-75! lg:min-w-0 max-w-full flex justify-center">
                     {props.project.image && 
                         <div className="flex items-center">
                             <img
@@ -257,6 +260,82 @@ export default function ProjectCard( props : {
                     </div>
 
                 </div>
+                {props.project.link && (() => {
+                    let isGithub = false;
+
+                    try {
+                        const hostname = new URL(props.project.link).hostname;
+                        isGithub = hostname === "github.com" || hostname.endsWith(".github.com");
+                    } catch {
+                        // Invalid URL — treat it as a normal website link
+                    }
+
+                    return (
+                        <button
+                            type="button"
+                            onMouseEnter={() => {
+                                props.onHoldCancel?.();
+                                props.onButtonHoverStart?.();
+                            }}
+                            onMouseLeave={props.onButtonHoverEnd}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                window.open(
+                                    props.project.link,
+                                    "_blank",
+                                    "noopener,noreferrer"
+                                );
+                            }}
+                            aria-label={
+                                isGithub
+                                    ? `View ${props.project.name} source code`
+                                    : `Visit ${props.project.name} website`
+                            }
+                            className="
+                                group
+                                mt-auto
+                                ml-auto
+                                h-fit
+                                flex
+                                items-center
+                                gap-2
+                                px-4
+                                py-2
+                                rounded-full
+                                border-2
+                                border-gray-400
+                                bg-gray-100
+                                text-sm
+                                font-semibold
+                                shadow-[0_2px_8px_rgba(0,0,0,0.12)]
+                                cursor-pointer
+                                transition-all
+                                duration-200
+                                hover:scale-105
+                                hover:border-gray-500
+                                hover:bg-gray-200
+                                hover:shadow-[0_4px_12px_rgba(0,0,0,0.18)]
+                                active:scale-95
+                            "
+                            style={{
+                                borderColor: borderColour,
+                                boxShadow: `0 2px 10px ${glowRGB}`,
+                                color: glowColour,
+                            }}
+                        >
+                            <span>{isGithub ? "View Code" : "Visit Website"}</span>
+                            <span className="
+                                animate-[arrow-idle_1.2s_ease-in-out_infinite]
+                                transition-transform
+                                duration-200
+                            ">
+                                ↗
+                            </span>
+                        </button>
+                    );
+                })()}
             </div>
         </a>
     );

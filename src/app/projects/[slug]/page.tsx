@@ -10,13 +10,13 @@ export default async function ProjectPage({
 }) {
     const { slug } = await params;
 
-    const project = await getProject(slug);
+    const session = await validateSession();
+
+    const project = await getProject(slug, session);
 
     if (!project) {
         notFound();
     }
-
-    const session = await validateSession();
 
     return (
         <ProjectPageClient

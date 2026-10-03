@@ -36,8 +36,13 @@ export async function getProjects(session: Session | null): Promise<Project[]> {
     }));
 }
 
-export async function getProject(slug: string): Promise<Project | null> {
+export async function getProject(
+    slug: string,
+    session: Session | null
+): Promise<Project | null> {
     const db = await getDB();
+
+    const isLoggedIn = !!session;
 
     const project = await db
         .prepare(`
@@ -55,8 +60,7 @@ export async function getProject(slug: string): Promise<Project | null> {
                 ON p.status = status_tag.name
                 AND status_tag.category = 'status'
             WHERE p.slug = ?
-            AND p.deleted = FALSE
-            AND p.hidden = FALSE
+            ${isLoggedIn ? "" : "AND p.deleted = FALSE AND p.hidden = FALSE"}
         `)
         .bind(slug)
         .first() as Project | null;

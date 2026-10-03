@@ -1048,7 +1048,10 @@ export default function SettingsClient(props : {
                                     </div>
 
                                     {/* Delete/Edit Buttons */}
-                                    <div className="shrink-0 self-center flex gap-4">
+                                    <div 
+                                        className="shrink-0 self-center flex gap-4"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
                                         <Button
                                             text="Edit"
                                             className="w-20! sm:w-fit rounded-lg!"

@@ -7,7 +7,7 @@ import { useNotifications } from "@/components/NotificationProvider";
 import ProjectCard from "@/components/ProjectCard";
 import { Project } from "@/lib/types";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AllProjects(props: {
     projects: Project[];
@@ -21,6 +21,13 @@ export default function AllProjects(props: {
     const [projects, setProjects] = useState<Project[]>(
         props.projects.filter((project) => project.deleted === 0)
     );
+
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "instant",
+        });
+    }, []);
 
     const getDelay = (i: number) => {
         if (typeof window === "undefined") return 0;
