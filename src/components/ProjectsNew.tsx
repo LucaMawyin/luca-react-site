@@ -32,28 +32,174 @@ export default function Projects(props : {
         (_, i) => featuredPool[(featuredStart + i) % featuredPool.length]
     );
 
-    const [isPaused, setIsPaused] = useState(false);
+    const [startX, setStartX] = useState<number | null>(null);
+    const [timerDeadline, setTimerDeadline] = useState(Date.now() + 10000);
+    const [isInteracting, setIsInteracting] = useState(false);
+    const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
+
+    const goPrev = () => {
+        setFeaturedStart(
+            (prev) => (prev - 1 + featuredPool.length) % featuredPool.length
+        );
+        setTimerDeadline(Date.now() + 10000);
+    };
+
+    const goNext = () => {
+        setFeaturedStart(
+            (prev) => (prev + 1) % featuredPool.length
+        );
+        setTimerDeadline(Date.now() + 10000);
+    };
+
+    const advanceIfExpired = () => {
+        if (Date.now() >= timerDeadline) {
+            goNext();
+        }
+    };
+
+    const onTouchStart = (e: React.TouchEvent) => {
+        setStartX(e.touches[0].clientX);
+        setIsInteracting(true);
+    };
+
+    const onTouchEnd = (e: React.TouchEvent) => {
+        if (startX === null) {
+            setIsInteracting(false);
+            advanceIfExpired();
+            return;
+        }
+
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+        const threshold = 50;
+
+        if (diff > threshold) {
+            goNext();
+        } else if (diff < -threshold) {
+            goPrev();
+        } else {
+            advanceIfExpired();
+        }
+
+        setStartX(null);
+        setIsInteracting(false);
+    };
+
     useEffect(() => {
-        if (featuredPool.length <= 3 || isPaused) return;
+        if (featuredPool.length <= 3) return;
+
+        const remaining = timerDeadline - Date.now();
 
         const timeout = setTimeout(() => {
-            setFeaturedStart((prev) => (prev + 1) % featuredPool.length);
-        }, 10000);
+            if (isInteracting) {
+                return;
+            }
+
+            goNext();
+        }, Math.max(remaining, 0));
 
         return () => clearTimeout(timeout);
-    }, [featuredStart, featuredPool.length, isPaused]);
+    }, [timerDeadline, featuredPool.length, isInteracting]);
 
     return(
         <>
 
             {/* FEATURED PROJECTS */}
             <FadeInOnView>
-                <h1 className={`
-                    text-center
+                <div className={`
+                    flex
+                    flex-wrap
+                    px-[10%]
+                    justify-between
+                    items-center
+                    gap-4
                     ${props.isLoggedIn ? "pb-4 lg:pb-0" : "pb-8"}
                 `}>
-                    Featured Projects
-                </h1>
+                    <h1 className="
+                        flex-1
+                        min-w-min
+                        text-start
+                    ">
+                        Featured Projects
+                    </h1>
+                    <div className="
+                        flex
+                        flex-row
+                        gap-2
+                        sm:gap-4
+                        shrink-0
+                    ">
+                        <button
+                            type="button"
+                            onClick={goPrev}
+                            className="
+                                cursor-pointer
+                                w-10 h-10 p-3
+                                flex items-center justify-center
+                                rounded-xl
+                                transition-all duration-(--transition-duration)
+                                shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                hover:scale-(--link-scale)
+                                pillow
+                                squircle
+                            "
+                        >
+                            <img src="/arrow-left.svg" alt="Previous projects" />
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={goNext}
+                            className="
+                                cursor-pointer
+                                w-10 h-10 p-3
+                                flex items-center justify-center
+                                rounded-xl
+                                transition-all duration-(--transition-duration)
+                                shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
+                                hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
+                                hover:scale-(--link-scale)
+                                pillow
+                                squircle
+                            "
+                        >
+                            <img src="/arrow-right.svg" alt="Next projects" />
+                        </button>
+                    </div>            
+                </div>
+
+                <div className={`
+                    flex
+                    sm:hidden
+                    justify-center
+                    gap-2
+                    mt-3
+                    ${props.isLoggedIn ? "pb-4 lg:pb-0" : "pb-8"}
+                `}>
+                    {featuredPool.map((_, i) => (
+                        <button
+                            key={i}
+                            type="button"
+                            onClick={() => {
+                                setFeaturedStart(i);
+                                setTimerDeadline(Date.now() + 10000);
+                            }}
+                            aria-label={`Show projects starting at position ${i + 1}`}
+                            className={`
+                                w-2 h-2
+                                rounded-full
+                                cursor-pointer
+                                transition-all duration-300
+                                ${i === featuredStart
+                                    ? "scale-125 bg-current"
+                                    : "bg-black/25"
+                                }
+                            `}
+                        />
+                    ))}
+                </div>
+
 
                 {/* Add Project button if logged in */}
                 {props.isLoggedIn && 
@@ -73,15 +219,24 @@ export default function Projects(props : {
             </FadeInOnView>
 
             {/* Project cards */}
-            <div className="
-                grid
-                grid-cols-1
-                xl:grid-cols-3
-                auto-rows-fr
-                items-stretch
-                px-[5%]
-                gap-16
-            ">
+            <div
+                className="
+                    grid
+                    grid-cols-1
+                    xl:grid-cols-3
+                    auto-rows-fr
+                    items-stretch
+                    px-[5%]
+                    gap-16
+                "
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+                onTouchCancel={() => {
+                    setStartX(null);
+                    setIsInteracting(false);
+                    advanceIfExpired();
+                }}
+            >
                 {                
                     featuredProjects.map((project,i) => (
                         <FadeInOnView
@@ -91,13 +246,16 @@ export default function Projects(props : {
                                 "--delay": `${i * 150}ms`,
                             } as React.CSSProperties}
                         >
-                            <div    
+                            <div
                                 className="flex flex-1"
-                                onMouseEnter={() => setIsPaused(true)}
-                                onMouseLeave={() => setIsPaused(false)}
-                                onTouchStart={() => setIsPaused(true)}
-                                onTouchEnd={() => setIsPaused(false)}
-                                onTouchCancel={() => setIsPaused(false)}
+                                onMouseEnter={() => {
+                                    setIsInteracting(true);
+                                    setHoveredProject(project);
+                                }}
+                                onMouseLeave={() => {
+                                    setIsInteracting(false);
+                                    advanceIfExpired();
+                                }}
                             >
                                 <ProjectCard
                                     key={project.id ?? i}

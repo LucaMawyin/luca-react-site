@@ -33,17 +33,6 @@ export default function ProjectCard( props : {
         ? JSON.parse(props.project.libraries || "[]")
         : props.project.libraries || []
     ) as string[];
-
-    const techLimit = props.condenseTech ? 2 : Infinity;
-
-    const visibleLanguages = languages.slice(0, techLimit);
-    const visibleLibraries = libraries.slice(0, techLimit);
-    const visibleTools = tools.slice(0, techLimit);
-
-    const remainingLanguages = Math.max(0, languages.length - techLimit);
-    const remainingLibraries = Math.max(0, libraries.length - techLimit);
-    const remainingTools = Math.max(0, tools.length - techLimit);
-
     
     const { glowColour, glowRGB, borderColour } = shadow(props.project.colour);
     const { 
@@ -108,7 +97,7 @@ export default function ProjectCard( props : {
                 <h1
                     className={`
                         text-2xl!
-                        w-fit
+                        min-w-min
                         text-center
                         ${props.position === "start" ? "sm:mr-auto sm:text-left" : "sm:ml-auto sm:text-right"}
                     `}
