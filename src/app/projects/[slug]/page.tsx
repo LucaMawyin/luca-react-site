@@ -55,8 +55,10 @@ export default async function ProjectPage({
                     href="/projects" 
                     className="
                         w-fit 
-                        transition-transform duration-(--transition-duration)
-                        hover:scale-(--link-scale)
+                        transition-all
+                        duration-(--transition-duration)
+                        hover:scale-(--subtle-scale)
+                        hover:font-semibold
                     "
                 >
                     &lt; Return to Projects
@@ -91,7 +93,7 @@ export default async function ProjectPage({
                     <img
                         src="/new-tab.svg"
                         alt="Open In New Tab"
-                        className="ml-2 h-12 w-12 brightness-0 self-center"
+                        className="ml-4 h-8 w-8 brightness-0 self-center"
                     />
                 </a>
 

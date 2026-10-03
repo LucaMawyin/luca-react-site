@@ -25,13 +25,15 @@ export default function SettingsClient(props : {
 
     // Resume file input stuff
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [ resumeName, setResumeName] = useState<string | null>(null);
-    const [ resumeFile, setResumeFile] = useState<File | null>(null);
+    const [resumeName, setResumeName] = useState<string | null>(null);
+    const [resumeFile, setResumeFile] = useState<File | null>(null);
+    const [resumeDragActive, setResumeDragActive] = useState(false);
 
     // Headshot file input stuff
     const headshotInputRef = useRef<HTMLInputElement>(null);
-    const [ headshotName, setHeadshotName] = useState<string | null>(null);
-    const [ headshotFile, setHeadshotFile] = useState<File | null>(null);
+    const [headshotName, setHeadshotName] = useState<string | null>(null);
+    const [headshotFile, setHeadshotFile] = useState<File | null>(null);
+    const [headshotDragActive, setHeadshotDragActive] = useState(false);
 
     // Password states
     const [showPassword, setShowPassword] = useState(false);
@@ -84,6 +86,22 @@ export default function SettingsClient(props : {
 
     }, []);
 
+    const [headshotPreview, setHeadshotPreview] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!headshotFile) {
+            setHeadshotPreview(null);
+            return;
+        }
+
+        const url = URL.createObjectURL(headshotFile);
+        setHeadshotPreview(url);
+
+        return () => {
+            URL.revokeObjectURL(url);
+        };
+    }, [headshotFile]);
+
 
     // Handling password change
     async function handlePasswordChange(
@@ -125,12 +143,13 @@ export default function SettingsClient(props : {
         e.preventDefault();
         e.stopPropagation();
 
+        setResumeDragActive(false);
+
         const file = e.dataTransfer.files?.[0];
         if (!file) return;
 
-        // Only PDF
         if (file.type !== "application/pdf") {
-            notify("Only PDF files are allowed for resume", "error")
+            notify("Only PDF files are allowed for resume", "error");
             return;
         }
 
@@ -199,6 +218,8 @@ export default function SettingsClient(props : {
         e.preventDefault();
         e.stopPropagation();
 
+        setHeadshotDragActive(false);
+
         const file = e.dataTransfer.files?.[0];
         if (!file) return;
 
@@ -207,9 +228,8 @@ export default function SettingsClient(props : {
 
             setHeadshotFile(finalFile);
             setHeadshotName(finalFile.name);
-
-        } catch (err) {
-            notify("Only images are allowed for headshot", "error")
+        } catch {
+            notify("Only images are allowed for headshot", "error");
         }
     };
 
@@ -365,7 +385,6 @@ export default function SettingsClient(props : {
                                     w-full
                                     min-h-28
                                     rounded-md
-                                    border
                                     text-sm
                                     text-gray-700
                                     bg-gray-50
@@ -394,27 +413,62 @@ export default function SettingsClient(props : {
                     </div>
 
                     {/* HEADSHOT UPLOAD */}
-                    <div 
-                        className="py-6 border-b"
-                        onDragOver={(e) => {e.preventDefault()}}
-                        onDrop={handleHeadshotDrop}
-                    >
-
-                        <form 
+                    <div className="py-6 border-b">
+                        <form
                             className="flex flex-col gap-4"
                             onSubmit={handleHeadshotSubmit}
                         >
                             <h2 className="text-xl">
                                 Upload New Headshot
                             </h2>
-                            <label htmlFor="headshot" className="text-gray-500">Drag & drop image here, or click to select</label>
-                            <div className="space-y-4">
+
+                            <div
+                                className={`
+                                    relative
+                                    flex
+                                    flex-col
+                                    items-center
+                                    justify-center
+                                    gap-3
+                                    min-h-40
+                                    p-4
+                                    rounded-xl
+                                    border-2
+                                    border-dashed
+                                    transition-all
+                                    duration-(--transition-duration)
+                                    cursor-pointer
+                                    ${
+                                        headshotDragActive
+                                            ? "border-gray-500 bg-gray-100"
+                                            : "border-gray-300 bg-gray-50"
+                                    }
+                                `}
+                                onDragEnter={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setHeadshotDragActive(true);
+                                }}
+                                onDragOver={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setHeadshotDragActive(true);
+                                }}
+                                onDragLeave={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setHeadshotDragActive(false);
+                                }}
+                                onDrop={handleHeadshotDrop}
+                                onClick={() => headshotInputRef.current?.click()}
+                            >
                                 <input
                                     id="headshot"
                                     name="headshot"
                                     type="file"
                                     ref={headshotInputRef}
                                     accept="image/*"
+                                    className="hidden"
                                     onChange={async (e) => {
                                         const file = e.target.files?.[0];
                                         if (!file) return;
@@ -425,86 +479,172 @@ export default function SettingsClient(props : {
                                             setHeadshotFile(finalFile);
                                             setHeadshotName(finalFile.name);
                                         } catch {
-                                            notify("Only images are allowed for headshot", "error")
+                                            notify(
+                                                "Only images are allowed for headshot",
+                                                "error"
+                                            );
                                         }
                                     }}
-                                    className="hidden"
                                 />
-                                <Button 
-                                    text="Select Image" 
-                                    variant="secondary" 
-                                    className="w-full self-center"
-                                    onClick={() => headshotInputRef.current?.click()}
-                                />
-                                {headshotName && (
-                                    <p className="text-sm text-gray-500">
-                                        Selected: {headshotName}
-                                    </p>
+
+                                {headshotPreview ? (
+                                    <>
+                                        <img
+                                            src={headshotPreview}
+                                            alt="Selected headshot preview"
+                                            className="
+                                                max-h-32
+                                                max-w-full
+                                                rounded-lg
+                                                object-contain
+                                                shadow
+                                            "
+                                        />
+
+                                        <p className="text-sm text-gray-500 wrap-break-word text-center">
+                                            {headshotName}
+                                        </p>
+
+                                        <p className="text-xs text-gray-400">
+                                            Click or drop another image to replace
+                                        </p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-center">
+                                            <p className="font-medium">
+                                                Drag & drop an image here
+                                            </p>
+                                            <p className="text-sm text-gray-500">
+                                                or click to select an image
+                                            </p>
+                                        </div>
+                                    </>
                                 )}
-                                
-                                <Button
-                                    text="Submit Headshot"
-                                    type="submit"
-                                    className="w-full sm:w-56"
-                                />                            
                             </div>
-                            
+
+                            <Button
+                                text="Submit Headshot"
+                                type="submit"
+                                className="w-full sm:w-56"
+                            />
                         </form>
-
                     </div>
-                    
-                    {/* RESUME UPLOAD */}
-                    <div 
-                        className="py-6 border-b sm:border-b-0"
-                        onDragOver={(e) => {e.preventDefault()}}
-                        onDrop={handleResumeDrop}
-                    >
 
-                        <form 
+                    {/* RESUME UPLOAD */}
+                    <div className="py-6 border-b sm:border-b-0">
+                        <form
                             className="flex flex-col gap-4"
                             onSubmit={handleResumeSubmit}
                         >
                             <h2 className="text-xl">
                                 Upload New Resume
                             </h2>
-                            <label htmlFor="resume" className="text-gray-500">Drag & drop resume here, or click to select</label>
-                            <div className="space-y-4">
+
+                            <div
+                                className={`
+                                    relative
+                                    flex
+                                    flex-col
+                                    items-center
+                                    justify-center
+                                    gap-3
+                                    min-h-40
+                                    p-4
+                                    rounded-xl
+                                    border-2
+                                    border-dashed
+                                    transition-all
+                                    duration-(--transition-duration)
+                                    cursor-pointer
+                                    ${
+                                        resumeDragActive
+                                            ? "border-gray-500 bg-gray-100"
+                                            : "border-gray-300 bg-gray-50"
+                                    }
+                                `}
+                                onDragEnter={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setResumeDragActive(true);
+                                }}
+                                onDragOver={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setResumeDragActive(true);
+                                }}
+                                onDragLeave={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setResumeDragActive(false);
+                                }}
+                                onDrop={handleResumeDrop}
+                                onClick={() => fileInputRef.current?.click()}
+                            >
                                 <input
                                     id="resume"
                                     name="resume"
                                     type="file"
                                     ref={fileInputRef}
                                     accept="application/pdf"
+                                    className="hidden"
                                     onChange={(e) => {
                                         const file = e.target.files?.[0];
                                         if (!file) return;
 
+                                        if (file.type !== "application/pdf") {
+                                            notify(
+                                                "Only PDF files are allowed for resume",
+                                                "error"
+                                            );
+                                            return;
+                                        }
+
                                         setResumeFile(file);
                                         setResumeName(file.name);
                                     }}
-                                    className="hidden"
                                 />
-                                <Button 
-                                    text="Select PDF" 
-                                    variant="secondary" 
-                                    className="w-full self-center"
-                                    onClick={() => fileInputRef.current?.click()}
-                                />
-                                {resumeName && (
-                                    <p className="text-sm text-gray-500">
-                                        Selected: {resumeName}
-                                    </p>
-                                )}
-                                
-                                <Button
-                                    text="Submit Resume"
-                                    type="submit"
-                                    className="w-full sm:w-56"
-                                />                            
-                            </div>
-                            
-                        </form>
 
+                                {resumeName ? (
+                                    <>
+                                        <div className="text-center">
+                                            <p className="text-lg font-medium">
+                                                PDF selected
+                                            </p>
+
+                                            <p className="text-sm text-gray-500 wrap-break-word">
+                                                {resumeName}
+                                            </p>
+
+                                            {resumeFile && (
+                                                <p className="text-xs text-gray-400 mt-1">
+                                                    {(resumeFile.size / 1024 / 1024).toFixed(2)} MB
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        <p className="text-xs text-gray-400">
+                                            Click or drop another PDF to replace
+                                        </p>
+                                    </>
+                                ) : (
+                                    <div className="text-center">
+                                        <p className="font-medium">
+                                            Drag & drop your resume here
+                                        </p>
+                                        <p className="text-sm text-gray-500">
+                                            or click to select a PDF
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+
+                            <Button
+                                text="Submit Resume"
+                                type="submit"
+                                className="w-full sm:w-56"
+                            />
+                        </form>
                     </div>
 
                 </Tile>
@@ -752,9 +892,14 @@ export default function SettingsClient(props : {
                                         rounded-lg 
                                         p-4
                                         gap-2
-                                        squircle-large
+                                        transition
                                         pillow
+                                        squircle-large
+                                        pillow-hover
+                                        hover:cursor-pointer
+                                        hover:scale-(--subtle-scale)
                                     "
+                                    onClick={() => router.push(`/projects/${project.slug}`)}
                                 >
                                     <div className="
                                         flex 
@@ -865,6 +1010,7 @@ export default function SettingsClient(props : {
                                                 <a 
                                                     href={project.link}
                                                     target="_blank"
+                                                    onClick={(e) => e.stopPropagation()}
                                                     className="
                                                         block
                                                         max-w-[75%]
