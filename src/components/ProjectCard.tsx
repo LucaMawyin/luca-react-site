@@ -10,6 +10,7 @@ export default function ProjectCard( props : {
     position : "start" | "end";
     isLoggedIn : boolean;
     className?:string;
+    childClassName?:string;
     onHoverStart?: () => void;
     onHoverEnd?: () => void;
 }){
@@ -97,7 +98,7 @@ export default function ProjectCard( props : {
                         text-2xl!
                         w-fit
                         text-center
-                        ${props.position === "start" ? "sm:mr-auto" : "sm:ml-auto"}
+                        ${props.position === "start" ? "sm:mr-auto sm:text-left" : "sm:ml-auto sm:text-right"}
                     `}
                 >
                     {props.project.name}
@@ -116,7 +117,7 @@ export default function ProjectCard( props : {
                         className={`
                             self-center sm:self-start
                             text-xl
-                            min-w-fit
+                            max-w-fit
                             w-fit
                             inline-flex
                             text-center
@@ -128,6 +129,7 @@ export default function ProjectCard( props : {
                             border
                             leading-none
                             animate-tag-pulse
+                            ${props.childClassName?.includes("flex-col") ? "flex-wrap" : ""}
                         `}
                     >
                         {props.project.tag}
@@ -198,6 +200,7 @@ export default function ProjectCard( props : {
                     ${props.position === "end" ? "flex-row-reverse" : "flex-row"}
                     justify-between
                     gap-8
+                    ${props.childClassName}
                 `}
             >
 

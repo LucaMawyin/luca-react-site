@@ -1,7 +1,7 @@
 import { getDB } from "@/lib/db";
 import { Project, Session, Tech } from "@/lib/types";
 
-export async function getProjects(session: Session): Promise<Project[]> {
+export async function getProjects(session: Session | null): Promise<Project[]> {
     const isLoggedIn = !!session;
 
     const db = await getDB();
