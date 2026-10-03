@@ -233,6 +233,7 @@ export default function HomeClient(props :
                         basis-full
                         w-full lg:basis-1/2
                         text-center sm:text-left
+                        sm:fade-left
                     ">
 
                         <h1 className="pt-6">About Me</h1>
@@ -264,8 +265,11 @@ export default function HomeClient(props :
 
                     <FadeInOnView className="
                         overflow-hidden
-                        w-full lg:max-w-[25%]
-                        flex justify-center
+                        w-full 
+                        lg:max-w-[25%]
+                        flex 
+                        justify-center
+                        sm:fade-right
                     ">
                         <img
                             src={`/images/headshot?v=${props.content.headshot_updated_at}`}

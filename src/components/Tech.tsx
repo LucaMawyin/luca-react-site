@@ -159,6 +159,7 @@ export default function TechStack(props: {
                     return (
                         <FadeInOnView
                             key={section.key}
+                            className={`fade-left`}
                         >
                             <div
                                 className={`

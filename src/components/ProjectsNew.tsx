@@ -11,11 +11,10 @@ import { useNotifications } from "./NotificationProvider";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 
-export default function Projects(props : {
-    isLoggedIn : boolean,
-    projects : Project[]
+export default function Projects(props: {
+    isLoggedIn: boolean;
+    projects: Project[];
 }) {
-
     const router = useRouter();
     const { notify } = useNotifications();
 
@@ -28,24 +27,41 @@ export default function Projects(props : {
 
     const [featuredStart, setFeaturedStart] = useState(0);
 
-    const featuredProjects = Array.from(
-        { length: Math.min(3, featuredPool.length) },
-        (_, i) => featuredPool[(featuredStart + i) % featuredPool.length]
+    /*
+     * The carousel always displays up to 3 projects.
+     * It stops at the last complete 3-project window rather than
+     * wrapping individual projects around at the end.
+     */
+    const maxFeaturedStart = Math.max(
+        featuredPool.length - 3,
+        0
+    );
+
+    const featuredProjects = featuredPool.slice(
+        featuredStart,
+        featuredStart + 3
     );
 
     const [startX, setStartX] = useState<number | null>(null);
-    const [timerDeadline, setTimerDeadline] = useState(Date.now() + 10000);
+    const [timerDeadline, setTimerDeadline] = useState(
+        Date.now() + 10000
+    );
     const [isInteracting, setIsInteracting] = useState(false);
 
     const pausedTimeRemaining = useRef<number | null>(null);
 
-    const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
-    const [modalStyle, setModalStyle] = useState<React.CSSProperties>({});
+    const [hoveredProject, setHoveredProject] =
+        useState<Project | null>(null);
 
-    const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [modalStyle, setModalStyle] =
+        useState<React.CSSProperties>({});
+
+    const closeTimeout =
+        useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const [holdProgress, setHoldProgress] = useState(0);
-    const [holdingProjectId, setHoldingProjectId] = useState<number | null>(null);
+    const [holdingProjectId, setHoldingProjectId] =
+        useState<number | null>(null);
 
     const holdAnimation = useRef<number | null>(null);
     const holdStartTime = useRef<number | null>(null);
@@ -104,8 +120,13 @@ export default function Projects(props : {
                 return;
             }
 
-            const elapsed = now - holdStartTime.current;
-            const progress = Math.min(elapsed / HOLD_DURATION, 1);
+            const elapsed =
+                now - holdStartTime.current;
+
+            const progress = Math.min(
+                elapsed / HOLD_DURATION,
+                1
+            );
 
             setHoldProgress(progress);
 
@@ -123,23 +144,35 @@ export default function Projects(props : {
                 return;
             }
 
-            holdAnimation.current = requestAnimationFrame(update);
+            holdAnimation.current =
+                requestAnimationFrame(update);
         };
 
-        holdAnimation.current = requestAnimationFrame(update);
+        holdAnimation.current =
+            requestAnimationFrame(update);
     };
 
     const goPrev = () => {
-        setFeaturedStart(
-            (prev) => (prev - 1 + featuredPool.length) % featuredPool.length
+        if (featuredPool.length <= 3) return;
+
+        setFeaturedStart((prev) =>
+            prev <= 0
+                ? maxFeaturedStart
+                : prev - 1
         );
+
         setTimerDeadline(Date.now() + 10000);
     };
 
     const goNext = () => {
-        setFeaturedStart(
-            (prev) => (prev + 1) % featuredPool.length
+        if (featuredPool.length <= 3) return;
+
+        setFeaturedStart((prev) =>
+            prev >= maxFeaturedStart
+                ? 0
+                : prev + 1
         );
+
         setTimerDeadline(Date.now() + 10000);
     };
 
@@ -201,10 +234,14 @@ export default function Projects(props : {
 
         // Resume the timer when the modal closes
         if (pausedTimeRemaining.current !== null) {
-            const remaining = pausedTimeRemaining.current;
+            const remaining =
+                pausedTimeRemaining.current;
 
             pausedTimeRemaining.current = null;
-            setTimerDeadline(Date.now() + remaining);
+
+            setTimerDeadline(
+                Date.now() + remaining
+            );
 
             return;
         }
@@ -238,7 +275,8 @@ export default function Projects(props : {
                 ...prev,
                 left: "50%",
                 top: "50%",
-                transform: "translate(-50%, -50%)",
+                transform:
+                    "translate(-50%, -50%)",
             }));
         }, 20);
 
@@ -258,14 +296,12 @@ export default function Projects(props : {
         body.style.overflow = "hidden";
 
         return () => {
-            // Restore the body's original positioning first.
             body.style.position = "";
             body.style.top = "";
             body.style.left = "";
             body.style.right = "";
             body.style.overflow = "";
 
-            // Restore the scroll position immediately.
             window.scrollTo({
                 top: scrollY,
                 left: 0,
@@ -279,121 +315,217 @@ export default function Projects(props : {
         setIsInteracting(true);
     };
 
-    return(
-        <>
+    /*
+     * Keep featuredStart valid if projects are deleted while
+     * the carousel is near the end.
+     */
+    useEffect(() => {
+        if (featuredStart > maxFeaturedStart) {
+            setFeaturedStart(maxFeaturedStart);
+        }
+    }, [
+        featuredStart,
+        maxFeaturedStart,
+    ]);
 
+    return (
+        <>
             {/* FEATURED PROJECTS */}
             <FadeInOnView>
-                <div className={`
-                    flex
-                    flex-wrap
-                    px-[10%]
-                    justify-between
-                    items-center
-                    gap-4
-                    ${props.isLoggedIn ? "pb-4 lg:pb-0" : "pb-8"}
-                `}>
-                    <h1 className="
-                        flex-1
-                        min-w-min
-                        text-start
-                    ">
+                <div
+                    className="
+                        flex
+                        flex-wrap
+                        px-[10%]
+                        justify-between
+                        items-center
+                        gap-4
+                        pb-4
+                        sm:pb-0
+                    "
+                >
+                    <h1
+                        className="
+                            flex-1
+                            min-w-min
+                            text-start
+                        "
+                    >
                         Featured Projects
                     </h1>
-                    <div className="
-                        flex
-                        flex-row
-                        gap-2
-                        sm:gap-4
-                        shrink-0
-                    ">
+
+                    <div
+                        className="
+                            flex
+                            flex-row
+                            gap-2
+                            sm:gap-4
+                            shrink-0
+                        "
+                    >
                         <button
                             type="button"
                             onClick={goPrev}
+                            disabled={
+                                featuredPool.length <= 3
+                            }
                             className="
                                 cursor-pointer
                                 w-10 h-10 p-3
                                 flex items-center justify-center
                                 rounded-xl
-                                transition-all duration-(--transition-duration)
+                                transition-all
+                                duration-(--transition-duration)
                                 shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
                                 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
                                 hover:scale-(--link-scale)
                                 pillow
                                 squircle
+                                disabled:opacity-30
+                                disabled:pointer-events-none
                             "
                         >
-                            <img src="/arrow-left.svg" alt="Previous projects" />
+                            <img
+                                src="/arrow-left.svg"
+                                alt="Previous projects"
+                            />
                         </button>
 
                         <button
                             type="button"
                             onClick={goNext}
+                            disabled={
+                                featuredPool.length <= 3
+                            }
                             className="
                                 cursor-pointer
                                 w-10 h-10 p-3
                                 flex items-center justify-center
                                 rounded-xl
-                                transition-all duration-(--transition-duration)
+                                transition-all
+                                duration-(--transition-duration)
                                 shadow-[0_4px_10px_rgba(0,0,0,0.08),0_-1px_3px_rgba(0,0,0,0.04)]
                                 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12),0_-2px_4px_rgba(0,0,0,0.05)]
                                 hover:scale-(--link-scale)
                                 pillow
                                 squircle
+                                disabled:opacity-30
+                                disabled:pointer-events-none
                             "
                         >
-                            <img src="/arrow-right.svg" alt="Next projects" />
+                            <img
+                                src="/arrow-right.svg"
+                                alt="Next projects"
+                            />
                         </button>
-                    </div>            
+                    </div>
                 </div>
 
-                <div className={`
-                    flex
-                    sm:hidden
-                    justify-center
-                    gap-2
-                    mt-3
-                    ${props.isLoggedIn ? "pb-4 lg:pb-0" : "pb-8"}
-                `}>
-                    {featuredPool.map((_, i) => (
-                        <button
-                            key={i}
-                            type="button"
-                            onClick={() => {
-                                setFeaturedStart(i);
-                                setTimerDeadline(Date.now() + 10000);
-                            }}
-                            aria-label={`Show projects starting at position ${i + 1}`}
-                            className={`
-                                w-2 h-2
-                                rounded-full
-                                cursor-pointer
-                                transition-all duration-300
-                                ${i === featuredStart
-                                    ? "scale-125 bg-current"
-                                    : "bg-black/25"
-                                }
-                            `}
-                        />
-                    ))}
-                </div>
+                {/* Project position indicators */}
+                {featuredPool.length > 0 && (
+                    <div
+                        className="
+                            flex
+                            justify-center
+                            mt-3
+                            pb-8
+                        "
+                    >
+                        <div
+                            className="
+                                relative
+                                flex
+                                items-center
+                                gap-2
+                            "
+                        >
+                            {/* Three-project slider */}
+                            <div
+                                className="
+                                    absolute
+                                    top-1/2
+                                    -translate-y-1/2
+                                    h-5
+                                    rounded-full
+                                    bg-black/10
+                                    transition-all
+                                    duration-300
+                                    pointer-events-none
+                                "
+                                style={{
+                                    width: "48px",
+                                    left: `${-4 + featuredStart * 16}px`,
+                                }}
+                            />
 
+                            {featuredPool.map((_, i) => (
+                                <button
+                                    key={i}
+                                    type="button"
+                                    onClick={() => {
+                                        setFeaturedStart(
+                                            Math.min(i, maxFeaturedStart)
+                                        );
+
+                                        setTimerDeadline(
+                                            Date.now() + 10000
+                                        );
+                                    }}
+                                    aria-label={`Show projects starting at position ${
+                                        i + 1
+                                    }`}
+                                    className="
+                                        relative
+                                        z-10
+                                        w-2
+                                        h-2
+                                        rounded-full
+                                        cursor-pointer
+                                        transition-transform
+                                        duration-300
+                                    "
+                                >
+                                    <span
+                                        className={`
+                                            block
+                                            w-2
+                                            h-2
+                                            rounded-full
+                                            transition-transform
+                                            duration-300
+                                            ${
+                                                i === featuredStart
+                                                    ? "scale-125 bg-current"
+                                                    : "bg-black/25"
+                                            }
+                                        `}
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* Add Project button if logged in */}
-                {props.isLoggedIn && 
-                    <div className="
-                        flex 
-                        w-full
-                        justify-center
-                        pb-8
-                    ">
-                        <Button 
+                {props.isLoggedIn && (
+                    <div
+                        className="
+                            flex
+                            w-full
+                            justify-center
+                            pb-8
+                        "
+                    >
+                        <Button
                             text="Add Project"
-                            onClick={() => (router.push("/add-project"))}
-                        />            
+                            onClick={() =>
+                                router.push(
+                                    "/add-project"
+                                )
+                            }
+                        />
                     </div>
-                }
-                                
+                )}
             </FadeInOnView>
 
             {/* Project cards */}
@@ -415,17 +547,30 @@ export default function Projects(props : {
                     advanceIfExpired();
                 }}
             >
-                {                
-                    featuredProjects.map((project,i) => (
+                {featuredProjects.map(
+                    (project, i) => (
                         <FadeInOnView
                             key={`${project.id}-${featuredStart}`}
-                            className="w-full flex flex-col items-center gap-8 justify-between fade-right sm:fade-up"
+                            className="
+                                w-full
+                                flex
+                                flex-col
+                                items-center
+                                gap-8
+                                justify-between
+                                fade-right
+                                sm:fade-up
+                            "
                             style={{
                                 "--delay": `${i * 150}ms`,
                             } as React.CSSProperties}
                         >
                             <div
-                                className="relative flex flex-1"
+                                className="
+                                    relative
+                                    flex
+                                    flex-1
+                                "
                                 onMouseEnter={() => {
                                     startHold(project);
                                     setIsInteracting(true);
@@ -434,10 +579,16 @@ export default function Projects(props : {
                                     cancelHold();
                                     setIsInteracting(false);
                                 }}
-                                onTouchStart={(e) => onTouchStart(e, project)}
+                                onTouchStart={(e) =>
+                                    onTouchStart(
+                                        e,
+                                        project
+                                    )
+                                }
                             >
                                 {holdProgress > 0 &&
-                                    holdingProjectId === project.id &&
+                                    holdingProjectId ===
+                                        project.id &&
                                     !hoveredProject && (
                                         <svg
                                             className="
@@ -492,62 +643,115 @@ export default function Projects(props : {
                                                 strokeWidth="5"
                                                 pathLength="100"
                                                 strokeDasharray="100"
-                                                strokeDashoffset={100 - holdProgress * 100}
+                                                strokeDashoffset={
+                                                    100 -
+                                                    holdProgress *
+                                                        100
+                                                }
                                                 filter={`url(#hold-shadow-${project.id})`}
                                             />
                                         </svg>
                                     )}
 
-                                <div className="relative z-10 flex flex-1">
+                                <div
+                                    className="
+                                        relative
+                                        z-10
+                                        flex
+                                        flex-1
+                                    "
+                                >
                                     <ProjectCard
                                         project={project}
                                         condenseTech={true}
-                                        isLoggedIn={props.isLoggedIn}
+                                        isLoggedIn={
+                                            props.isLoggedIn
+                                        }
                                         childClassName="xl:flex-col!"
-                                        position={`${i % 2 === 0 ? "start" : "end"}`}
-                                        onHoldCancel={cancelHoldAndPauseCarousel}
+                                        position={`${
+                                            i % 2 === 0
+                                                ? "start"
+                                                : "end"
+                                        }`}
+                                        onHoldCancel={
+                                            cancelHoldAndPauseCarousel
+                                        }
                                     />
                                 </div>
                             </div>
 
-                            {/* Delete button if logged in */}
+                            {/* Edit/Delete buttons if logged in */}
                             {props.isLoggedIn && (
-                                <div className="w-full max-w-5xl flex justify-between">
+                                <div
+                                    className="
+                                        w-full
+                                        max-w-5xl
+                                        flex
+                                        justify-between
+                                    "
+                                >
                                     <Button
                                         text="Edit"
                                         className="min-w-32"
-                                        onClick={() => {router.push(`add-project/edit?id=${project.id}`)}}
+                                        onClick={() => {
+                                            router.push(
+                                                `add-project/edit?id=${project.id}`
+                                            );
+                                        }}
                                     />
+
                                     <DeleteButton
                                         className="min-w-32"
                                         text="Project"
                                         action={async () => {
-                                            const res = await fetch("/api/projects", {
-                                                method: "DELETE",
-                                                headers: {
-                                                    "Content-Type": "application/json",
-                                                },
-                                                body: JSON.stringify({ id: project.id }),
-                                            });
+                                            const res =
+                                                await fetch(
+                                                    "/api/projects",
+                                                    {
+                                                        method: "DELETE",
+                                                        headers: {
+                                                            "Content-Type":
+                                                                "application/json",
+                                                        },
+                                                        body: JSON.stringify(
+                                                            {
+                                                                id: project.id,
+                                                            }
+                                                        ),
+                                                    }
+                                                );
 
-                                            if (res.status === 401) {
-                                                router.push("/login");
+                                            if (
+                                                res.status ===
+                                                401
+                                            ) {
+                                                router.push(
+                                                    "/login"
+                                                );
                                                 return;
                                             }
-                                            
-                                            setProjects((prev) =>
-                                                prev.filter((p) => p.id !== project.id)
+
+                                            setProjects(
+                                                (prev) =>
+                                                    prev.filter(
+                                                        (p) =>
+                                                            p.id !==
+                                                            project.id
+                                                    )
                                             );
-                                            
-                                            notify("Project deleted successfully", "success");
+
+                                            notify(
+                                                "Project deleted successfully",
+                                                "success"
+                                            );
                                         }}
-                                    />                        
+                                    />
                                 </div>
                             )}
                         </FadeInOnView>
-                    ))
-                }
-            </div>    
+                    )
+                )}
+            </div>
 
             <Link
                 href="/projects/all"
@@ -558,47 +762,59 @@ export default function Projects(props : {
                     px-[5%]
                 "
             >
-                <h2 className="
-                    relative
-                    whitespace-nowrap
-                    text-[clamp(2rem,5vw,3rem)]
-                    font-bold
-                    text-center
-                    transition-transform duration-300
-                    group-hover:translate-x-2
-                ">
+                <h2
+                    className="
+                        relative
+                        whitespace-nowrap
+                        text-[clamp(2rem,5vw,3rem)]
+                        font-bold
+                        text-center
+                        transition-transform
+                        duration-300
+                        group-hover:translate-x-2
+                    "
+                >
                     View All Projects
 
-                    <span className="
-                        inline-block
-                        ml-3
-                        transition-transform duration-300
-                        group-hover:translate-x-2
-                    ">
+                    <span
+                        className="
+                            inline-block
+                            ml-3
+                            transition-transform
+                            duration-300
+                            group-hover:translate-x-2
+                        "
+                    >
                         →
                     </span>
 
-                    <span className="
-                        absolute
-                        left-0
-                        -bottom-1.5
-                        h-1
-                        w-0
-                        bg-current
-                        transition-all duration-300
-                        group-hover:w-full
-                    " />
+                    <span
+                        className="
+                            absolute
+                            left-0
+                            -bottom-1.5
+                            h-1
+                            w-0
+                            bg-current
+                            transition-all
+                            duration-300
+                            group-hover:w-full
+                        "
+                    />
                 </h2>
 
-                <span className="
-                    mt-8 sm:mt-12
-                    h-px
-                    w-24
-                    bg-black/30
-                    transition-all duration-300
-                    group-hover:w-40
-                    group-hover:bg-black
-                " />
+                <span
+                    className="
+                        mt-8 sm:mt-12
+                        h-px
+                        w-24
+                        bg-black/30
+                        transition-all
+                        duration-300
+                        group-hover:w-40
+                        group-hover:bg-black
+                    "
+                />
             </Link>
 
             {hoveredProject &&
@@ -676,7 +892,9 @@ export default function Projects(props : {
                                 <ProjectCard
                                     project={hoveredProject}
                                     condenseTech={true}
-                                    isLoggedIn={props.isLoggedIn}
+                                    isLoggedIn={
+                                        props.isLoggedIn
+                                    }
                                     childClassName="xl:flex-col! max-w-lg"
                                     position="start"
                                 />
@@ -684,9 +902,7 @@ export default function Projects(props : {
                         </div>
                     </div>,
                     document.body
-                )
-            }
+                )}
         </>
-
     );
 }

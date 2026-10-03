@@ -92,7 +92,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                     {/* CENTER LINE */}
 
                     {experience.map((exp,index) => (
-                        <FadeInOnView 
+                        <div 
                             key={index}
                             className={`
                                 flex 
@@ -132,7 +132,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                 " />
 
                         
-                                <div
+                                <FadeInOnView
                                     className={`
                                         flex
                                         flex-col
@@ -149,6 +149,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                         }
                                         squircle-large
                                         pillow
+                                        ${index % 2 === 0 ? "sm:fade-left" : "sm:fade-right"}
                                     `}
                                 >
                                     {/* TITLE + DATE */}
@@ -225,7 +226,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
                                         </ReactMarkdown>
                                     </div>
 
-                                </div>
+                                </FadeInOnView>
                             </div>
 
 
@@ -274,7 +275,7 @@ export default function ExperienceClient(props: { isLoggedIn:boolean; experience
         
                             )}
                             
-                        </FadeInOnView>
+                        </div>
                         
                     ))}
                 </div>
