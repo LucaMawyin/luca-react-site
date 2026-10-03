@@ -70,16 +70,85 @@ export default async function ProjectPage({
                         className="w-full rounded-2xl"
                     />
                 )}
+                
+                <a
+                    href={project.link}
+                    target="_blank"
+                    className="
+                        group
+                        flex
+                        flex-row
+                        w-fit
+                        transition-colors
+                        duration-200
+                        hover:text-blue-800
+                    "
+                >
+                    <h2 className="m-0 text-6xl leading-none">
+                        {project.name}
+                    </h2>
 
-                <h2 className="text-6xl">{project.name}</h2>
+                    <img
+                        src="/new-tab.svg"
+                        alt="Open In New Tab"
+                        className="ml-2 h-12 w-12 brightness-0 self-center"
+                    />
+                </a>
+
+                <div className="
+                    text-gray-400 
+                    text-sm
+                    flex
+                    flex-col
+                    gap-2
+                ">
+                    <p>
+                        Created{" "}
+                        {new Date(project.created_at).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        })}                    
+                    </p>
+
+                    <p>
+                        Updated{" "}
+                        {new Date(project.updated_at).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        })}                    
+                    </p>                    
+                </div>
+
+                
 
                 {project.subtitle && (
-                    <h2>{project.subtitle}</h2>
+                    <h2 className="
+                        min-w-full
+                        prose
+                        prose-sm
+                        prose-a:text-blue-400
+                        prose-a:transition-colors
+                        prose-a:duration-100
+                        prose-a:no-underline
+                        prose-a:hover:text-blue-800
+                        prose-h1:mb-0
+                        prose-h1:text-6xl!
+                        prose-h2:mt-0
+                        prose-h2:mb-4
+                        prose-h2:text-4xl!
+                        prose-h3:mt-0
+                        prose-h3:text-2xl!
+                    ">
+                        <ReactMarkdown>
+                            {project.subtitle}
+                        </ReactMarkdown>
+                    </h2>  
                 )}
                 
                 <div className="
                     min-w-full
-
                     prose
                     prose-sm
                     prose-a:text-blue-400

@@ -43,10 +43,9 @@ export default function CreateProjectPage(props : {
         description: safeString(props.initialData?.description),
         content: safeString(props.initialData?.content),
         link: safeString(props.initialData?.link),
-        languages: safeString(normalizeArray(props.initialData?.languages)),
-        tools: safeString(normalizeArray(props.initialData?.tools)),
-        libraries: safeString(normalizeArray(props.initialData?.libraries)),
-        tag: safeString(props.initialData?.tag),
+        languages: safeString(normalizeArray(props.initialData?.languages)).replace(/\s*,\s*/g, ", "),
+        tools: safeString(normalizeArray(props.initialData?.tools)).replace(/\s*,\s*/g, ", "),
+        libraries: safeString(normalizeArray(props.initialData?.libraries)).replace(/\s*,\s*/g, ", "),        tag: safeString(props.initialData?.tag),
         colour: safeString(props.initialData?.colour),
         status: safeString(props.initialData?.status),
         status_colour: safeString(props.initialData?.status_colour),
@@ -81,15 +80,16 @@ export default function CreateProjectPage(props : {
         
     }, [props.initialData]); 
 
-    // Auto resize text area on load
     useEffect(() => {
-        const textareas = document.querySelectorAll("textarea");
-            textareas.forEach((ta) => {
-                ta.style.height = "auto";
-                ta.style.height = ta.scrollHeight + "px";
-            }
-        );
-    }, []);
+        requestAnimationFrame(() => {
+            const textareas = document.querySelectorAll("textarea");
+
+            textareas.forEach((textarea) => {
+                textarea.style.height = "auto";
+                textarea.style.height = `${textarea.scrollHeight}px`;
+            });
+        });
+    }, [form, step]);
 
     // Auto capitalize project name, tools and languages
     const handleChange = (
@@ -106,11 +106,11 @@ export default function CreateProjectPage(props : {
                 value.replace(/\s{2,}/g, ", ")
             );
 
-            setForm({
-                ...form,
+            setForm((prev) => ({
+                ...prev,
                 name: formattedValue,
                 slug: slugify(value),
-            });
+            }));
         } else {
             const shouldCapitalize =
                 name === "tools" ||
@@ -118,19 +118,15 @@ export default function CreateProjectPage(props : {
                 name === "libraries";
 
             formattedValue = shouldCapitalize
-                ? capitalizeNamesAndTitles(value.replace(/\s{2,}/g, ", "))
+                ? capitalizeNamesAndTitles(
+                    value.replace(/\s*,\s*/g, ", ")
+                )
                 : value;
 
-            setForm({
-                ...form,
+            setForm((prev) => ({
+                ...prev,
                 [name]: formattedValue,
-            });
-        }
-
-        if (e.target instanceof HTMLTextAreaElement) {
-            const el = e.target;
-            el.style.height = "auto";
-            el.style.height = el.scrollHeight + "px";
+            }));
         }
     };
   
@@ -257,7 +253,7 @@ export default function CreateProjectPage(props : {
         "Overview",
         "Details",
         "Technologies",
-        "Classification",
+        "Tags",
         "Review",
     ];
 
@@ -344,11 +340,11 @@ export default function CreateProjectPage(props : {
         <div className="flex justify-center min-h-[90vh]">
             <form 
                 className="
-                    flex 
-                    flex-col 
-                    w-full 
-                    max-w-3xl 
-                    justify-center 
+                    flex
+                    flex-col
+                    w-full
+                    h-full
+                    max-w-3xl
                     mt-[10vh]
                     [&_div]:mt-4
                 "
@@ -359,8 +355,6 @@ export default function CreateProjectPage(props : {
                     <div className="flex items-center justify-center w-full">
                         {steps.map((label, index) => {
                             const item = index + 1;
-                            const isCurrent = item === step;
-                            const isCompleted = item < step;
 
                             return (
                                 <div
@@ -448,7 +442,7 @@ export default function CreateProjectPage(props : {
                 </div>
 
                 {/* FORM */}
-                <div className="relative w-full mt-0!">
+                <div className="relative w-full mt-0! px-2">
                     <div
                         key={step}
                         className="
@@ -514,9 +508,28 @@ export default function CreateProjectPage(props : {
                                 <div
                                     onDragOver={(e) => {e.preventDefault()}}
                                     onDrop={handleDrop}
-                                    className="flex flex-col gap-3"
+                                    className="
+                                        flex 
+                                        flex-col 
+                                        items-center
+                                        justify-center
+                                        gap-3
+                                        min-h-32
+                                        p-6
+                                        m-1
+                                        border-2
+                                        border-dashed
+                                        rounded-xl
+                                        border-gray-400
+                                        bg-gray-200
+                                        cursor-pointer
+                                        transition-colors
+                                        duration-200
+                                        hover:bg-gray-300
+                                        hover:border-gray-500
+                                    "
+                                    onClick={() => inputRef.current?.click()} 
                                 >
-                                    <label htmlFor="thumbnail">Drag & drop an image here, or click to select</label>
                                     <input 
                                         id="thumbnail"
                                         type="file" 
@@ -525,15 +538,16 @@ export default function CreateProjectPage(props : {
                                         ref={inputRef}
                                         className="hidden"
                                     />            
-                                    <Button 
-                                        text="Select Image" 
-                                        variant="secondary" 
-                                        className="w-fit sm:w-48"
-                                        onClick={() => inputRef.current?.click()} 
-                                    />
+                                    <span className="font-medium">
+                                        Drag & drop an image here
+                                    </span>
+
+                                    <span className="text-sm text-gray-500">
+                                        or click to select
+                                    </span>
 
                                     {preview && (
-                                        <img src={preview} alt="Preview" className="max-w-1/2 self-center"/>
+                                        <img src={preview} alt="Preview" className="max-w-1/2 self-center rounded-lg"/>
                                     )}
                                 </div>
                                 
@@ -895,6 +909,8 @@ export default function CreateProjectPage(props : {
                                         gap-2
                                         p-4 
                                         rounded-xl 
+                                        transition-colors
+                                        duration-100
                                         hover:bg-gray-200
                                         hover:cursor-pointer
                                     "
@@ -978,6 +994,8 @@ export default function CreateProjectPage(props : {
                                         gap-2
                                         p-4 
                                         rounded-xl 
+                                        transition-colors
+                                        duration-100
                                         hover:bg-gray-200
                                         hover:cursor-pointer
                                     "
@@ -1010,6 +1028,8 @@ export default function CreateProjectPage(props : {
                                         gap-2
                                         p-4 
                                         rounded-xl 
+                                        transition-colors
+                                        duration-100
                                         hover:bg-gray-200
                                         hover:cursor-pointer
                                     "
@@ -1085,6 +1105,8 @@ export default function CreateProjectPage(props : {
                                         gap-2
                                         p-4 
                                         rounded-xl 
+                                        transition-colors
+                                        duration-100
                                         hover:bg-gray-200
                                         hover:cursor-pointer
                                     "

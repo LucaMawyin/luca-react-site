@@ -49,7 +49,6 @@ html, body {
 	user-select: none;
 	font-weight: 400;
     background-color: var(--bg);
-    scrollbar-gutter: stable;
 }
 
 
@@ -103,22 +102,33 @@ footer a:hover {
   transform: scale(var(--link-scale));
 }
 
+label {
+    color: #64748b;
+}
+
 input,
 textarea,
 select {
-	border: 1px solid #d1d5db;
-	border-radius: 6px;
-	transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
-    background-color: white;
-    margin-bottom: 1rem;
+    transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
+    background-color: #d5dce6;
+    border-radius: 0.75rem;
+    padding: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
 input:focus,
 textarea:focus,
 select:focus {
-	border-color: #9ca3af;
 	box-shadow: 0 0 0 2px rgba(156, 163, 175, 0.2);
 	outline: none;
+}
+
+textarea {
+    overflow: hidden;
+    resize: none;
+    overflow-wrap: normal;
+    word-break: normal;
+    white-space: pre-wrap;
 }
 
 @keyframes bounce-slow {
