@@ -3,6 +3,7 @@ import { Project } from "@/lib/types";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import Badge from "./Badge";
+import TechBadges from "./TechBadges";
 
 
 export default function ProjectCard( props : {
@@ -13,6 +14,7 @@ export default function ProjectCard( props : {
     childClassName?:string;
     onHoverStart?: () => void;
     onHoverEnd?: () => void;
+    condenseTech?:boolean;
 }){
     const tools = (
     typeof props.project.tools === "string"
@@ -31,6 +33,16 @@ export default function ProjectCard( props : {
         ? JSON.parse(props.project.libraries || "[]")
         : props.project.libraries || []
     ) as string[];
+
+    const techLimit = props.condenseTech ? 2 : Infinity;
+
+    const visibleLanguages = languages.slice(0, techLimit);
+    const visibleLibraries = libraries.slice(0, techLimit);
+    const visibleTools = tools.slice(0, techLimit);
+
+    const remainingLanguages = Math.max(0, languages.length - techLimit);
+    const remainingLibraries = Math.max(0, libraries.length - techLimit);
+    const remainingTools = Math.max(0, tools.length - techLimit);
 
     
     const { glowColour, glowRGB, borderColour } = shadow(props.project.colour);
@@ -231,59 +243,26 @@ export default function ProjectCard( props : {
                     <ReactMarkdown>{props.project.description}</ReactMarkdown> 
                     <div>
 
-                        {/* LANGUAGES */}
-                        <div className="flex flex-wrap gap-2 mt-2">
-                            {(languages ?? []).length > 0 && <b>Languages:</b>}
-                            {(languages ?? []).map((lang, i) => (
-                                <Badge
-                                    key={i}
-                                    fontWeight="normal"
-                                    borderRadius="lg"
-                                    textSize="xs"
-                                    shadow="sm"
-                                    px={2}
-                                    py={1}
-                                    className="bg-gray-200 border border-gray-300"
-                                    text={lang}
-                                />
-                            ))}
-                        </div>
+                        <TechBadges
+                            label="Languages"
+                            items={languages}
+                            condensed={props.condenseTech}
+                            className="bg-gray-200 border border-gray-300"
+                        />
 
-                        {/* LIBRARIES */}
-                        <div className="flex flex-wrap gap-2 mt-2">
-                            {(libraries ?? []).length > 0 && <b>Libraries:</b>}
-                            {(libraries ?? []).map((libraries, i) => (
-                                <Badge
-                                    key={i}
-                                    fontWeight="normal"
-                                    borderRadius="lg"
-                                    textSize="xs"
-                                    shadow="sm"
-                                    px={2}
-                                    py={1}
-                                    className="bg-gray-100 border border-gray-300"
-                                    text={libraries}
-                                />
-                            ))}
-                        </div>
+                        <TechBadges
+                            label="Libraries"
+                            items={libraries}
+                            condensed={props.condenseTech}
+                            className="bg-gray-100 border border-gray-300"
+                        />
 
-                        {/* TOOLS */}
-                        <div className="flex flex-wrap gap-2 mt-2">
-                            {(tools ?? []).length > 0 && <b>Tools:</b>}
-                            {(tools ?? []).map((tool, i) => (
-                                <Badge
-                                    key={i}
-                                    fontWeight="normal"
-                                    borderRadius="lg"
-                                    textSize="xs"
-                                    shadow="sm"
-                                    px={2}
-                                    py={1}
-                                    className="bg-gray-300 border border-gray-400"
-                                    text={tool}
-                                />
-                            ))}
-                        </div>
+                        <TechBadges
+                            label="Tools"
+                            items={tools}
+                            condensed={props.condenseTech}
+                            className="bg-gray-300 border border-gray-400"
+                        />
 
 
                     </div>

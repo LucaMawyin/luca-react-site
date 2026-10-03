@@ -108,7 +108,8 @@ label {
 
 input,
 textarea,
-select {
+select,
+#date-picker {
     transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
     background-color: #d5dce6;
     border-radius: 0.75rem;

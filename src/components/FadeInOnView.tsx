@@ -7,11 +7,21 @@ export default function FadeInOnView({
     className = "",
     style,
     delay = 0,
+    onMouseEnter,
+    onMouseLeave,
+    onTouchStart,
+    onTouchEnd,
+    onTouchCancel,
 }: {
     children: React.ReactNode;
     className?: string;
     style?: React.CSSProperties;
     delay?: number;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
+    onTouchStart?: () => void;
+    onTouchEnd?: () => void;
+    onTouchCancel?: () => void;
 }) {
     const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
@@ -38,6 +48,11 @@ export default function FadeInOnView({
     return (
         <div
             ref={ref}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            onTouchCancel={onTouchCancel}
             style={{
                 ...style,
                 transitionDelay: `var(--delay, 0ms)`,

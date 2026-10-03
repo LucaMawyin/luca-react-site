@@ -22,7 +22,26 @@ export default function Projects(props : {
     const [projects, setProjects] = useState<Project[]>(
         props.projects.filter((project) => project.deleted === 0)
     );
-    const featuredProjects = projects.slice(0,3);
+
+    const featuredPool = projects;
+
+    const [featuredStart, setFeaturedStart] = useState(0);
+
+    const featuredProjects = Array.from(
+        { length: Math.min(3, featuredPool.length) },
+        (_, i) => featuredPool[(featuredStart + i) % featuredPool.length]
+    );
+
+    const [isPaused, setIsPaused] = useState(false);
+    useEffect(() => {
+        if (featuredPool.length <= 3 || isPaused) return;
+
+        const timeout = setTimeout(() => {
+            setFeaturedStart((prev) => (prev + 1) % featuredPool.length);
+        }, 10000);
+
+        return () => clearTimeout(timeout);
+    }, [featuredStart, featuredPool.length, isPaused]);
 
     return(
         <>
@@ -31,7 +50,7 @@ export default function Projects(props : {
             <FadeInOnView>
                 <h1 className={`
                     text-center
-                    ${props.isLoggedIn ? "pb-0" : "pb-8"}
+                    ${props.isLoggedIn ? "pb-4 lg:pb-0" : "pb-8"}
                 `}>
                     Featured Projects
                 </h1>
@@ -42,7 +61,7 @@ export default function Projects(props : {
                         flex 
                         w-full
                         justify-center
-                        p-4 sm:p-0
+                        pb-8
                     ">
                         <Button 
                             text="Add Project"
@@ -60,27 +79,36 @@ export default function Projects(props : {
                 xl:grid-cols-3
                 auto-rows-fr
                 items-stretch
-                pt-[2.5%]
                 px-[5%]
                 gap-16
             ">
                 {                
                     featuredProjects.map((project,i) => (
                         <FadeInOnView
-                            key={project.id}
+                            key={`${project.id}-${featuredStart}`}
                             className="w-full flex flex-col items-center gap-8 justify-between"
                             style={{
                                 "--delay": `${i * 150}ms`,
                             } as React.CSSProperties}
                         >
+                            <div    
+                                className="flex flex-1"
+                                onMouseEnter={() => setIsPaused(true)}
+                                onMouseLeave={() => setIsPaused(false)}
+                                onTouchStart={() => setIsPaused(true)}
+                                onTouchEnd={() => setIsPaused(false)}
+                                onTouchCancel={() => setIsPaused(false)}
+                            >
+                                <ProjectCard
+                                    key={project.id ?? i}
+                                    project={project}
+                                    condenseTech={true}
+                                    isLoggedIn={props.isLoggedIn}
+                                    childClassName="xl:flex-col!"
+                                    position={`${i % 2 === 0 ? "start" : "end"}`}
+                                />                                
+                            </div>
 
-                            <ProjectCard
-                                key={project.id ?? i}
-                                project={project}
-                                isLoggedIn={props.isLoggedIn}
-                                childClassName="xl:flex-col!"
-                                position={`${i % 2 === 0 ? "start" : "end"}`}
-                            />
 
                             {/* Delete button if logged in */}
                             {props.isLoggedIn && (

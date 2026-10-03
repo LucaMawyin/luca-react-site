@@ -17,6 +17,7 @@ import ReactMarkdown from "react-markdown";
 import Badge from "@/components/Badge";
 import { shadow } from "@/lib/tags";
 import { slugify } from "@/lib/slugify";
+import DayPickerClient from "@/components/DayPicker";
 
 export default function CreateProjectPage(props : {
     initialData? : any;
@@ -43,9 +44,11 @@ export default function CreateProjectPage(props : {
         description: safeString(props.initialData?.description),
         content: safeString(props.initialData?.content),
         link: safeString(props.initialData?.link),
+        created_at: safeString(props.initialData?.created_at),
         languages: safeString(normalizeArray(props.initialData?.languages)).replace(/\s*,\s*/g, ", "),
         tools: safeString(normalizeArray(props.initialData?.tools)).replace(/\s*,\s*/g, ", "),
-        libraries: safeString(normalizeArray(props.initialData?.libraries)).replace(/\s*,\s*/g, ", "),        tag: safeString(props.initialData?.tag),
+        libraries: safeString(normalizeArray(props.initialData?.libraries)).replace(/\s*,\s*/g, ", "),        
+        tag: safeString(props.initialData?.tag),
         colour: safeString(props.initialData?.colour),
         status: safeString(props.initialData?.status),
         status_colour: safeString(props.initialData?.status_colour),
@@ -71,6 +74,10 @@ export default function CreateProjectPage(props : {
 
         return sessionStorage.getItem("nextPage") ?? props.referrer ?? null;
     });
+
+    const initialCreatedAt = form.created_at
+        ? new Date(form.created_at)
+        : undefined;
 
     // Setting data if loading a draft that exists
     useEffect(() => {
@@ -189,6 +196,7 @@ export default function CreateProjectPage(props : {
         formData.append("description", form.description);
         formData.append("content", form.content);
         formData.append("link", form.link);
+        formData.append("created_at", form.created_at);
         formData.append("languages", form.languages);
         formData.append("tools", form.tools);
         formData.append("libraries", form.libraries);
@@ -582,6 +590,24 @@ export default function CreateProjectPage(props : {
                                     placeholder="Link"
                                     value={form.link}
                                     onChange={handleChange}
+                                />
+
+                                <label htmlFor="created_at">Created Date</label>
+                                <DayPickerClient
+                                    initialDate={
+                                        form.created_at
+                                            ? new Date(form.created_at)
+                                            : undefined
+                                    }
+                                    onChange={(date) => {
+                                        if (!date) return;
+
+                                        setForm((prev) => ({
+                                            ...prev,
+                                            created_at: date.toISOString(),
+                                        }));
+                                    }}
+                                    className="mt-0!"
                                 />
                             
 

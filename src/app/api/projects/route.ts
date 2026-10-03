@@ -61,6 +61,7 @@ export async function POST(req: NextRequest) {
         // Project name, description and id (for updates)
         const id = formData.get("id") as string | null;
         const name = formData.get("name") as string;
+        const createdAt = formData.get("created_at") as string | null;
         const slug = formData.get("slug") as string;
         const subtitle = formData.get("subtitle") as string;
         const description = formData.get("description") as string;
@@ -128,6 +129,7 @@ export async function POST(req: NextRequest) {
                         status = ?,
                         pinned = ?,
                         hidden = ?,
+                        created_at = ?,
                         updated_at = CURRENT_TIMESTAMP
                     WHERE id = ?
                 `)
@@ -148,7 +150,7 @@ export async function POST(req: NextRequest) {
 
                     pinned,
                     hidden,
-
+                    createdAt || null,
                     id
                 )
                 .run();
@@ -180,9 +182,10 @@ export async function POST(req: NextRequest) {
                     tag,
                     status,
                     pinned,
-                    hidden
+                    hidden,
+                    created_at
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `)
             .bind(
                 name,
@@ -200,7 +203,8 @@ export async function POST(req: NextRequest) {
                 status,
 
                 pinned,
-                hidden
+                hidden,
+                createdAt || null
             )
             .run();
 

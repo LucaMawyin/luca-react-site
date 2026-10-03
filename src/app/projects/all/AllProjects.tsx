@@ -2,6 +2,7 @@
 
 import Button from "@/components/Button";
 import DeleteButton from "@/components/DeleteButton";
+import FadeInOnView from "@/components/FadeInOnView";
 import { useNotifications } from "@/components/NotificationProvider";
 import ProjectCard from "@/components/ProjectCard";
 import { Project } from "@/lib/types";
@@ -21,6 +22,17 @@ export default function AllProjects(props: {
         props.projects.filter((project) => project.deleted === 0)
     );
 
+    const getDelay = (i: number) => {
+        if (typeof window === "undefined") return 0;
+
+        const columns =
+            window.innerWidth >= 1280 ? 3 :
+            window.innerWidth >= 1024 ? 2 :
+            1;
+
+        return (i % columns) * 150;
+    };
+
     return (
         <div className="w-full mt-[10vh]">
             <h1 className="text-center pb-4 px-8">
@@ -38,9 +50,9 @@ export default function AllProjects(props: {
                 pb-4
                 gap-16
             ">
-                {props.projects.map((project) => (
+                {props.projects.map((project, i) => (
                     
-                    <div
+                    <FadeInOnView
                         key={project.id}
                         className="
                             flex 
@@ -50,6 +62,9 @@ export default function AllProjects(props: {
                             h-full 
                             justify-center
                         "
+                        style={{
+                            "--delay": `${getDelay(i)}ms`,
+                        } as React.CSSProperties}
                     >
                         <ProjectCard
                             project={project}
@@ -96,7 +111,7 @@ export default function AllProjects(props: {
                                 />                        
                             </div>
                         )}
-                    </div>              
+                    </FadeInOnView>              
                     
 
 
